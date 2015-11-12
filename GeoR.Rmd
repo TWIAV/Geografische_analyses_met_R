@@ -64,7 +64,7 @@ Al kort na het uitbrengen van een vroege versie in 1994 sporen collega's van ove
 
 En daarmee wordt een spectaculaire groei in gang gezet. Al snel kunnen Ihaka en Gentleman het niet meer samen aan en wordt het ontwikkelteam uitgebreid met een select gezelschap van programmeurs die direct toeganghebben tot de broncode - met schrijfrechten. In dit kernteam van ongeveer 20 man zitten een aantal bekende onderzoekers op het gebied van statistiek.
 
-Op 29 februari 2000 besluit men dat de programmeertaal voldoende functionaliteit heeft, en stabiel genoeg is, om over te gaan tot het vrijgeven van versie R-1.0.0. (Ihaka, 2009)
+Op 29 februari 2000 besluit men dat de programmeertaal voldoende functionaliteit heeft, en stabiel genoeg is, om over te gaan tot het vrijgeven van versie R-1.0.0 ([Ihaka, 2009](https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf)).
 
 ##	R downloaden en installeren
 
@@ -141,7 +141,7 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 + **Linksboven:** zodra je een nieuw R Script aanmaakt, of een bestaand script opent, dan wordt dat bestand hier in de linkerbovenhoek getoond. En ook het venster van de *Data Viewer* wordt hier getoond.
 
-+ **Rechtsboven:** op het tabblad *Environment* welke objecten en welke waarden R in het geheugen heeft. Ook kun je hier zien welke packages geladen zijn. Op het tabblad *History* kun je naar eerder ingevoerde commando's zoeken, en deze eventueel hergebruiken.
++ **Rechtsboven:** op het tabblad **Environment** welke objecten en welke waarden R in het geheugen heeft. Ook kun je hier zien welke packages geladen zijn. Op het tabblad **History** kun je naar eerder ingevoerde commando's zoeken, en deze eventueel hergebruiken.
 
 + **Rechtsonder:** hier in der rechteronderhoek vind je vijf verschillende tabbladen:
     + **Files:** hier kun je door het bestandssysteem bladeren
@@ -156,6 +156,34 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 \caption{De grafische gebruikersinterface van RStudio}
 \label{RStudioGUI}
 \end{figure}
+
+\newpage
+
+# Het werken met geografische gegevens in R 
+
+## De bibliotheek `sp`
+
+Het package `sp` is een belangrijk element voor het gebruik van geografische data in R. Deze bibliotheek biedt een aantal klassen en methoden voor het verwerken van deze gegegevens. Zo zijn er ruimtelijke datastructuren gedefinieerd voor het opslaan van punt-, lijn- en vlakobjecten, en voor rasterdata, al dan niet met daaraan gekoppelde attribuutgegevens.
+
+De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aanlevert, worden door vele andere geografische R packages gebruikt, zowel direct als indirect. En dat was precies de bedoeling van Edzer Pebesma en Roger Bivand, toen zij rond 2003 met de ontwikkeling van deze package begonnen.
+
+R is oorspronkelijk ontwikkeld als programmeertaal voor èn door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van R was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken éénduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
+
+
+Zie voor meer informatie over de bibliotheek `sp` ook de handleiding op het CRAN: <https://cran.r-project.org/web/packages/sp/sp.pdf>.
+
+
+
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De bocht in de Maas\, ten westen van Stein]
+    \begin{minipage}[t]{0.75\linewidth}
+    \vspace*{0pt}
+    \end{minipage}\hfill%
+    \begin{minipage}[t]{0.20\linewidth}
+    \vspace*{0pt}
+        \includegraphics[height=4.07cm,width=2.04cm]{images/Meuse.png}
+    \end{minipage}
+\end{tcolorbox}
+
 
 \newpage
 
@@ -202,3 +230,7 @@ Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownlo
 
 
 + Ihaka, Ross (2009), *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
+
++ Pebesma, Edzer en Bivand, Roger S. (2005), *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
+
+
