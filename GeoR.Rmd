@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "11 november 2015"
+date: "12 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.0.3}
+   - \providecommand{\versionnumber}{0.1.0}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -21,7 +21,6 @@ output:
   pdf_document:
     number_sections: true
     latex_engine: xelatex
-    fig_caption: yes
 mainfont: Calibri
 ---
 \thispagestyle{empty}
@@ -85,19 +84,27 @@ Dubbelklik na het downloaden op het bestand **R-X.X.X-win.exe** om de installati
 
 \tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Codenaam]
-Elke nieuwe versie van R krijgt naast een nummer ook een codenaam. Zo heet versie 3.2.2  \textbf{Fire Safety}. Voorbeelden van enkele codenamen uit het verleden zijn:  \textbf{Spring Dance} (3.0.3),  \textbf{Security Blanket} (2.15.3),  \textbf{Trick or Treat} (2.15.2) en  \textbf{December Snowflakes} (2.14.1).\par
-En ook de release die jij hebt geïnstalleerd  heeft een bijzonder codenaam. Deze verschijnt in de console als je R opstart.
+Elke nieuwe versie van \textbf{R} krijgt naast een nummer ook een codenaam. Zo heet versie 3.2.2  \textbf{Fire Safety}. Voorbeelden van enkele codenamen uit het verleden zijn:  \textbf{Spring Dance} (3.0.3),  \textbf{Security Blanket} (2.15.3),  \textbf{Trick or Treat} (2.15.2) en  \textbf{December Snowflakes} (2.14.1).\par
+En ook de release die jij hebt geïnstalleerd  heeft een bijzonder codenaam. Deze verschijnt in de console als je \textbf{R} opstart.
 \end{tcolorbox}
 
 Tijdens het installatieproces kun je - afhankelijk van het besturingssysteem - kiezen of je de 32-bit of de 64-bit versie wilt installeren. Als je geen keuze maakt, dan worden beide versies geïnstalleerd.
 
-![R op het bureaublad](images/Rondesktop.png)
-
+\begin{figure}[!htb]
+\centering
+\includegraphics{images/Rondesktop.png}
+\caption{R op het bureaublad}
+\label{Rondesktop}
+\end{figure}
 
 Na het voltooien van de installatie kun je **R** opstarten. In de afbeelding hieronder zie je de **RGui** met daarin de **R Console**.
 
+\begin{figure}[!htb]
+\includegraphics{images/RGUI.png}
+\caption{De grafische gebruikersinterface van R}
+\label{RGUI}
+\end{figure}
 
-![De grafische gebruikersinterface van R](images/RGUI.png)
 
 Voor nu kiezen we er voor om **R** direct te verlaten door *q()* te typen achter de prompt.
 
@@ -112,7 +119,7 @@ In de vorige paragraaf hebben we **R** direct na het opstarten weer afgesloten. 
 **RStudio** is een **IDE**, een *integrated development environment* ofwel een geïntegreerde ontwikkelomgeving, die het werken met **R** op een aantal punten veel gemakkelijker maakt. Het is niet strikt noodzakelijk om **RStudio** te installeren. Je kan ook met **R** werken zonder deze toevoeging, maar zoals gezegd: het leven van een **R** programmeur wordt zoveel makkelijker met **RStudio**. Daarom zullen wij in deze handleiding gebruik maken van deze omgeving.       
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Productiviteit]
-RStudio bied een grote hoeveelheid functionaliteiten om de productiviteit van een R programmeur te verhogen.\par
+RStudio bied een grote hoeveelheid functionaliteiten om de productiviteit van een \textbf{R} programmeur te verhogen.\par
 Twee belangrijke voorbeelden hiervan zijn:
 \begin{itemize}
 \item \textbf{Syntax Highlighting} (in het Nederlands \textit{syntaxiskleuring} of \textit{accentuering}): door het gebruik van verschillende kleuren tekst is de structuur van de code gemakkelijker te doorgronden, en zijn syntaxisfouten gemakkelijker op te sporen.
@@ -129,7 +136,13 @@ Op het moment van schrijven is versie 0.99.489 van 5 november 2015 de meest rece
 
 Dubbelklik na het downloaden op het bestand **RStudio-X.XX.XXX.exe** om de installatie te starten. (Op dit moment is dat *RStudio-0.99.489.exe*.)
 
-![RStudio op het bureaublad](images/RStudioondesktop.png)
+\begin{figure}[!htb]
+\centering
+\includegraphics{images/RStudioondesktop.png}
+\caption{RStudio op het bureaublad}
+\label{RStudioondesktop}
+\end{figure}
+
 
 \newpage
 
@@ -139,9 +152,9 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 + **Linksonder:** hier zie je het *Console* venster. Dit is de commandoregel van **R**. Achter de prompt (**>**) kun je commando's ingeven die worden uitgevoerd door **R**, zodra je een \<ENTER\> hebt gegeven. En dit is ook de plek waar **R** waarschuwingen en/of foutmeldingen zal afdrukken.
 
-+ **Linksboven:** zodra je een nieuw R Script aanmaakt, of een bestaand script opent, dan wordt dat bestand hier in de linkerbovenhoek getoond. En ook het venster van de *Data Viewer* wordt hier getoond.
++ **Linksboven:** zodra je een nieuw **R** Script aanmaakt, of een bestaand script opent, dan wordt dat bestand hier in de linkerbovenhoek getoond. En ook het venster van de *Data Viewer* wordt hier getoond.
 
-+ **Rechtsboven:** op het tabblad **Environment** welke objecten en welke waarden R in het geheugen heeft. Ook kun je hier zien welke packages geladen zijn. Op het tabblad **History** kun je naar eerder ingevoerde commando's zoeken, en deze eventueel hergebruiken.
++ **Rechtsboven:** op het tabblad **Environment** welke objecten en welke waarden **R** in het geheugen heeft. Ook kun je hier zien welke packages geladen zijn. Op het tabblad **History** kun je naar eerder ingevoerde commando's zoeken, en deze eventueel hergebruiken.
 
 + **Rechtsonder:** hier in der rechteronderhoek vind je vijf verschillende tabbladen:
     + **Files:** hier kun je door het bestandssysteem bladeren
@@ -151,7 +164,7 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
     + **Viewer:** op dit tabblad wordt lokale webinhoud getoond (bijvoorbeeld als je - later in dit boek - met de bibliotheek `leaflet` aan de slag gaat).
 
 
-\begin{figure}
+\begin{figure}[!htb]
 \includegraphics{images/RStudio.png}
 \caption{De grafische gebruikersinterface van RStudio}
 \label{RStudioGUI}
@@ -159,35 +172,192 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 \newpage
 
-# Het werken met geografische gegevens in R 
+# Het werken met geografische gegevens in R
 
 ## De bibliotheek `sp`
 
-Het package `sp` is een belangrijk element voor het gebruik van geografische data in R. Deze bibliotheek biedt een aantal klassen en methoden voor het verwerken van deze gegegevens. Zo zijn er ruimtelijke datastructuren gedefinieerd voor het opslaan van punt-, lijn- en vlakobjecten, en voor rasterdata, al dan niet met daaraan gekoppelde attribuutgegevens.
+Het package `sp` is een belangrijk element voor het gebruik van geografische data in **R**. Deze bibliotheek biedt een aantal klassen en methoden voor het verwerken van deze gegegevens. Zo zijn er ruimtelijke datastructuren gedefinieerd voor het opslaan van punt-, lijn- en vlakobjecten, en voor rasterdata, al dan niet met daaraan gekoppelde attribuutgegevens.
 
-De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aanlevert, worden door vele andere geografische R packages gebruikt, zowel direct als indirect. En dat was precies de bedoeling van Edzer Pebesma en Roger Bivand, toen zij rond 2003 met de ontwikkeling van deze package begonnen.
+De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aanlevert, worden door vele andere geografische **R** packages gebruikt, zowel direct als indirect. En dat was precies de bedoeling van de auteurs, Edzer Pebesma en Roger Bivand, toen zij rond 2003 met de ontwikkeling van deze package begonnen.
 
-R is oorspronkelijk ontwikkeld als programmeertaal voor èn door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van R was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken éénduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
+**R** is oorspronkelijk ontwikkeld als programmeertaal voor èn door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van **R** was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken éénduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
 
-
-Zie voor meer informatie over de bibliotheek `sp` ook de handleiding op het CRAN: <https://cran.r-project.org/web/packages/sp/sp.pdf>.
-
-
-
-\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De bocht in de Maas\, ten westen van Stein]
-    \begin{minipage}[t]{0.75\linewidth}
-    \vspace*{0pt}
-    \end{minipage}\hfill%
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De bocht in de Maas]
     \begin{minipage}[t]{0.20\linewidth}
     \vspace*{0pt}
-        \includegraphics[height=4.07cm,width=2.04cm]{images/Meuse.png}
+        \includegraphics[height=6.03cm,width=2.61cm]{images/Meuse.png}
     \end{minipage}
+    \begin{minipage}[t]{0.75\linewidth}
+    \vspace*{0pt}
+        Met \textbf{R} worden een aantaal oefendatasets meegeleverd, handig voor onderwijs- en demonstratiedoeleinden. Zo zul je vaak \textbf{R} oefeningen tegenkomen, waarin bijvoorbeeld de {\small\ttfamily{mtcars}} of de {\small\ttfamily{iris}} dataset wordt gebruikt.\par
+        En ook bij het {\small\ttfamily{sp}} package zit een dergelijk oefenbestand: de \textit{Meuse river data set}. Deze set bevat gegevens over de locatie van concentraties van zware metalen (cadmium, koper, lood en zink) in de bodem van een overstromingsvlakte in een bocht van de Maas, ten westen van het Limburgse plaatsje Stein.  Deze gegevens zijn in 1993 verzameld door Ruud van Rijn and Mathieu Rikken, in het kader van hun afstudeerproject Fysische Geografie aan de Universiteit Utrecht.\par
+        Deze data zijn door Edzer Pebesma - ook Fysisch Geograaf, in 1996 gepromoveerd aan dezelfde universiteit in Utrecht - toegevoegd aan 'zijn'  {\small\ttfamily{sp}} bibliotheek.\par
+        Tegenwoordig is Pebesma hoogleraar aan de \textbf{Westfälische Wilhelms-Universität (WWU)} in Münster (Duitsland), waar hij directeur is van het \textbf{Institut für Geoinformatik}.
+    \end{minipage}\hfill%
 \end{tcolorbox}
+
+Zie voor meer informatie over de bibliotheek `sp`
+
+* de handleiding op het CRAN: <https://cran.r-project.org/web/packages/sp/sp.pdf>.
+* de voorbeelden op deze pagina: <http://rspatial.r-forge.r-project.org/gallery/>
+
+\newpage
+
+## Het aanmaken van een `SpatialPointsDataFrame`
+
+In deze paragraaf gaan we kennismaken met één van de hiervoor genoemde ruimtelijke datastructuren. We gaan zelf een SpatialPointsDataFrame aanmaken, op basis van gegevens in een data.frame.
+
+Begin met het installeren van de betreffende bibliotheek en laad deze in het geheugen:
+
+```{r eval=FALSE}
+install.packages("sp") #éénmalig
+library(sp)
+```
+
+```{r echo=FALSE}
+library(sp)
+```
+
+Het [invoerbestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is een lijstje met enkele bezienswaardigheden in Amsterdam, met bijbehorende x- en y-coördinaten. Dit [bestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is online beschikbaar en staat op [deze lokatie](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv). 
+
+Overigens hoef je dit bestand niet te downloaden en op te slaan. Je kan het direct inlezen vanaf de huidige lokatie.
+
+```{r}
+URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
+ams.df <- read.csv(URL)
+ams.df
+```
+Bekijk van welke klasse ams.df is:
+
+```{r}
+class(ams.df)
+```
+De kolommen 3 en 4 bevatten de coordinaatinformatie (x en y). Deze kun je op de volgende wijze selecteren:
+
+```{r}
+ams.df[3:4]
+```
+
+En de eerste twee Kolommen bevatten attribuutgegevens. Deze kun je desgewenst ook even bekijken: `ams.df[1:2]`
+
+Met deze informatie kunnen we nu een geografisch object maken:
+
+```{r}
+ams.spdf <- SpatialPointsDataFrame(coords = ams.df[3:4], data = ams.df[1:2])
+ams.spdf
+```
+
+Bekijk van welke klasse ams.spdf is:
+
+```{r}
+class(ams.spdf)
+```
+
+En vraag de samenvatting op:
+```{r}
+summary(ams.spdf)
+```
+
+**Dat ziet er goed uit.**
+
+\newpage
+
+### Plot
+
+In de vorige paragraaf hebben we een SpatialPointsDataFrame aangemaakt, en nu gaan we dit plotten, om te zien hoe dat er uit ziet.
+
+De snelste manier is:
+
+```{r eval=FALSE}
+plot(ams.spdf)
+```
+
+Dit geeft wel een erg saai kaartbeeld. Dat moet beter kunnen. Na wat experimenteren en uitzoeken zou je tot het volgende commando kunnen komen:
+
+```{r eval=FALSE}
+plot(ams.spdf, pch = 19, col = "blue", axes = TRUE,
+     main = "Enkele bezienswaardigheden in Amsterdam")
+```
+
+Je wordt hier uitgenodigd om gebruik te gaan maken van het uitgebreide helpsysteem dat bij **R** hoort, om uit te zoeken wat de verschillende parameters precies doen.
+
+Je kunt tekstlabels toevoegen aan de musea met onderstaande opdracht:
+
+```{r eval=FALSE}
+text(coordinates(ams.spdf), as.character(ams.spdf$Name),
+     cex = .7, pos = 4, col = "blue")
+```
+
+Doordat alle tekstlabels rechts van het museum staan ontstaat op het Museumplein enige overlap.
+
+Dit kunnen we oplossen door niet één generieke positie (`pos = 4`) voor alle labels op te geven, maar door een vector aan te maken waarin ieder museum een eigen labelpositie krijgt.
+
+Maak een vector aan met (initieel) voor elk museum de waarde 4. En bekijk de inhoud van deze vector:
+
+```{r}
+pos.vector <- rep(4, length(ams.spdf))
+pos.vector
+```
+
+Ken nu een andere waarde toe aan het Stedelijk:
+
+```{r}
+pos.vector[ams.spdf$Name == "Stedelijk Museum"] <- 2
+pos.vector
+```
+
+Plot opnieuw - nu met labels op goede plaats
+
+```{r amsplot, fig.cap='een voorbeeld van een plot', fig.align='default', fig.show='asis'}
+plot(ams.spdf, pch = 19, col = "blue", axes = TRUE,
+     main = "Enkele bezienswaardigheden in Amsterdam")
+text(coordinates(ams.spdf), as.character(ams.spdf$Name),
+     cex = .6, pos = pos.vector, col = "blue")
+```
+
+
+## Het toekennen van een CRS (*Coordinate Reference System*)
+
+
+\twocolumn
+
+### Het Nederlandse coördinaatsysteem: het stelsel van de Rijksdriehoeksmeting
+
+In Nederland worden de meeste geografische data uitgewisseld in RD-coördinaten. De EPSG code voor het RD-stelsel is 28992.
+
+Het Rijksdriehoeksstelsel is het nationale geodetische triangulatiesysteem van Nederland. De basis van dit systeem is een stereografische kaartprojectie gecentreerd op de spits van de Onze Lieve Vrouwetoren in Amersfoort. Op het zo verkregen projectievlak is een cartesiaans assenstelsel geconstrueerd. De voor het RD-stelsel gebruikte stereografische projectie is gebaseerd op de ellipsoïde van Bessel (1841). Een belangrijk voordeel van de projectie is, dat deze *conform* (hoekgetrouw) is: een hoek gemeten in de kaart is gelijk aan de werkelijke hoek. Voor een klein gebied als Nederland kan men gebruik maken van een dergelijke projectie, al nemen de afstandsfouten wel toe, naarmate men verder van de oorsprong verwijderd raakt.
+
+De oorsprong van het systeem ligt in Amersfoort. Aanvankelijk was deze oorsprong ook het nulpunt (X=Y=0) van het systeem. Dit betekende dat men in het noordoosten van Nederland met positieve X- en Y-coördinaten kon werken, maar dat men in de andere delen van het land rekening moest houden met een negatieve X- en/of een negatieve Y-coördinaat. Om dit probleem op te lossen heeft men in het begin van de jaren zeventig van de twintigste eeuw het nulpunt verschoven, en wel 155 kilometer naar het westen en 463 kilometer naar het zuiden. Nederland ligt nu in zijn geheel in het eerste kwadrant van het assenstelsel, en door de extreem grote Y-verschuiving is de grootst voorkomende X-waarde nog altijd kleiner dan de kleinst mogelijke Y-waarde. Daardoor zijn alle voorkomende coördinaten nu positief, en de X- en Y-waarden zijn goed uit elkaar te houden (zie figuur \ref{RD}).
+
+Het geldigheidsgebied voor de RD-coördinaten is nauwkeurig gedefinieerd. Globaal mogen deze coördinaten alleen gebruikt worden op het Nederlandse vasteland en in een kleine band daaromheen. Daar valt niet het gehele Nederlandse Continentaal Plat (het Nederlandse deel van de Noordzee) binnen. In België en Duitsland maakt men gebruik van andere coördinaatsystemen.
+
+Voor meer achtergrondinformatie over de geodetische referentiestelsels van Nederland, zie: [De Bruijne et al. (2005)](http://www.ncgeo.nl/phocadownload/43Referentie.pdf).
+
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De belangrijkste kenmerken van het RD-stelsel zijn:]
+\begin{itemize}
+\item stereografische projectie
+\item conform (hoekgetrouw)
+\item alleen bruikbaar voor het Nederlandse Grondgebied
+\item alle coördinaatgetallen zijn positief
+\item Y-coördinaat is altijd groter dan X-coördinaat
+\item meeteenheid: meters
+\item EPSG:28992
+\end{itemize}
+\end{tcolorbox}       
+
+
+\onecolumn
+
+\begin{figure}[!htb]
+\includegraphics{images/RD.png}
+\caption{De coördinaten van het Rijksdriehoeksstelsel}
+\label{RD}
+\end{figure}
 
 
 \newpage
 
-# Het inlezen van geografische gegevens in R 
+# Het inlezen van geografische gegevens in R
 
 ## De bibliotheek `rgdal`
 
@@ -228,9 +398,10 @@ Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownlo
 # Literatuurlijst {-}
 \markboth{Literatuurlijst}{}
 
++ De Bruijne, Arnoud, Van Buren, Joop, Kösters, Anton & Van der Marel, Hans (2005). *De geodetische referentiestelsels van Nederland; Definitie en vastlegging van ETRS89, RD en NAP en hun onderlinge relaties*.Nederlandse Commissie voor Geodesie (NCG), Delft, maart 2005. URL: <http://www.ncgeo.nl/phocadownload/43Referentie.pdf>
 
-+ Ihaka, Ross (2009), *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
++ Ihaka, Ross (2009). *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
 
-+ Pebesma, Edzer en Bivand, Roger S. (2005), *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
++ Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
 
 
