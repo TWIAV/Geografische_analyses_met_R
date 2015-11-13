@@ -172,7 +172,7 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 \newpage
 
-# Het werken met geografische gegevens in R
+# Het werken met geografische gegevens in R \label{chsp}
 
 ## De bibliotheek `sp`
 
@@ -203,7 +203,7 @@ Zie voor meer informatie over de bibliotheek `sp`
 
 \newpage
 
-## Het aanmaken van een `SpatialPointsDataFrame`
+## Het aanmaken van een `SpatialPointsDataFrame` \label{spdf}
 
 In deze paragraaf gaan we kennismaken met één van de hiervoor genoemde ruimtelijke datastructuren. We gaan zelf een SpatialPointsDataFrame aanmaken, op basis van gegevens in een data.frame.
 
@@ -290,7 +290,7 @@ text(coordinates(ams.spdf), as.character(ams.spdf$Name),
 
 Doordat alle tekstlabels rechts van het museum staan ontstaat op het Museumplein enige overlap.
 
-Dit kunnen we oplossen door niet één generieke positie (`pos = 4`) voor alle labels op te geven, maar door een vector aan te maken waarin ieder museum een eigen labelpositie krijgt.
+Dit kunnen we oplossen door niet één generieke positie (`pos = 4`) voor alle labels op te geven, maar door een vector aan te maken waarin ieder museum een eigen labelpositie krijgt, zodat we kunnen variëren.
 
 Maak een vector aan met (initieel) voor elk museum de waarde 4. En bekijk de inhoud van deze vector:
 
@@ -299,14 +299,14 @@ pos.vector <- rep(4, length(ams.spdf))
 pos.vector
 ```
 
-Ken nu een andere waarde toe aan het Stedelijk:
+Ken nu een andere waarde toe voor het Stedelijk:
 
 ```{r}
 pos.vector[ams.spdf$Name == "Stedelijk Museum"] <- 2
 pos.vector
 ```
 
-Plot opnieuw - nu met labels op goede plaats
+Plot opnieuw - nu met labels op goede plaats:
 
 ```{r amsplot, fig.cap='een voorbeeld van een plot', fig.align='default', fig.show='asis'}
 plot(ams.spdf, pch = 19, col = "blue", axes = TRUE,
@@ -315,13 +315,27 @@ text(coordinates(ams.spdf), as.character(ams.spdf$Name),
      cex = .6, pos = pos.vector, col = "blue")
 ```
 
-
 ## Het toekennen van een CRS (*Coordinate Reference System*)
 
+Het SpatialPointsDataFrame dat we in de vorige paragraaf (\ref{spdf}) hebben aangemaakt, is nog niet helemaal compleet, omdat we er nog geen coördinaatreferentiesysteem (CRS) aan hebben toegekend. Het Frame heeft weliswaar coördinaten, maar we hebben nog niet vastgelegd hoe deze aan de aarde te relateren zijn.
+
+Er zijn twee soorten coördinaatsystemen:
+
++ ongeprojecteerd/geografisch: in een dergelijk systeem wordt dor middel van lengte- en breedtegraden een positie op de aarde weergegeven,
++ geprojecteerd: in een projectie wordt een gedeelte van het aardoppervlak weergegeven in een 2-dimensionaal vlak.
+
+Een bekend, en tegenwoordig alom gebruikt systeem van het eerste soort is WGS84. Het officiële Nederlandse systeem - het Rijksdriehoeksstelsel (zie paragraaf \ref{RDM}) - is een voorbeeld van het tweede type.
+
+Het toekennen van een CRS gaat door middel van een `proj4string`, een lange ingewikkelde string met geodetische parameters. Gelukkig hebben veel projecties een zogeheten *EPSG* code, waardoor het makkelijker wordt om een `proj4string` toe te kennen.  
+
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=EPSG?]
+Het was de \textbf{European Petroleum Survey Group} die het initiatief heeft genomen de vele wereldwijd gebruikte coördinaatsystemen elk van een eigen, unieke code te voorzien, om de communicatie over locaties te vergemakkelijken. Het moge duidelijk zijn dat de (financiële) belangen van de olieindustrie hier groot zijn; men kan het zich simpelweg niet permitteren om op een verkeerde plek te gaan boren.\par
+Hoewel de EPSG als organisatie al niet meer bestaat, wordt de EPSG Dataset nog steeds onderhouden door de  International Association of Oil \& Gas Producers (IOGP), tot voordeel van ons allen. Zie \url{http://www.epsg.org/}
+\end{tcolorbox} 
 
 \twocolumn
 
-### Het Nederlandse coördinaatsysteem: het stelsel van de Rijksdriehoeksmeting
+### Het Nederlandse coördinaatsysteem: het stelsel van de Rijksdriehoeksmeting \label{RDM}
 
 In Nederland worden de meeste geografische data uitgewisseld in RD-coördinaten. De EPSG code voor het RD-stelsel is 28992.
 
@@ -395,10 +409,138 @@ Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownlo
 
 \newpage
 
+# Interactieve kaartvensters in R
+
+## De bibliotheek `leaflet`
+
+Leaflet (<http://leafletjs.com/>) is een open-source JavaScript bibliotheek voor het maken van interactieve kaarten. De functionaliteit van Leaflet wordt in **R** beschikbaar gemaakt via het package `leaflet`.  
+
+Deze bibliotheek wordt onderhouden door [Joe Cheng](https://github.com/jcheng5) van RStudio, Inc.
+
+In de oefeningen hieronder zullen we eerst stap voor stap een Leafletkaart maken. Daarna zullen we de *pipe operator* (`%>%`) introduceren, waarmee de code vereenvoudigd kan worden.
+
+Zie voor meer informatie over de bibliotheek `leaflet`
+
+* de handleiding op het CRAN: <https://cran.r-project.org/web/packages/leaflet/leaflet.pdf>.
+
+## Een interactieve kaart - 1: stap voor stap
+
+Ter voorbereiding laden we onze Amsterdamse musea weer (zie hoofdstuk \ref{chsp}):
+
+```{r}
+library(sp)
+URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
+mus <- read.csv(URL)
+coordinates(mus) <- ~x+y
+proj4string(mus) <- CRS("+init=epsg:28992")
+```
+
+Stap 1: het aanmaken van een Leaflet map widget:
+
+```{r echo=FALSE}
+library(leaflet)
+ikaart <- leaflet()
+```
+
+
+```{r eval=FALSE}
+ikaart <- leaflet()
+ikaart
+```
+Dit geeft een leeg kaartvenster in de **Viewer** tab.
+
+Stap 2: het toevoegen van de OpenStreetMap kaartlaag:
+
+```{r echo=FALSE}
+ikaart <- addTiles(ikaart)
+```
+
+
+```{r eval=FALSE}
+ikaart <- addTiles(ikaart)
+ikaart
+```
+
+Stap 3: het toevoegen van onze eigen laag (let op: de gegevens worden *on the fly* geconverteerd van epsg:28992 naar epsg:4326):
+
+```{r echo=FALSE}
+ikaart <- addMarkers(ikaart, data = spTransform(mus, CRS("+init=epsg:4326")), popup = mus$Name)
+```
+
+
+```{r eval=FALSE}
+ikaart <- addMarkers(ikaart,
+                     data = spTransform(mus, CRS("+init=epsg:4326")), popup = mus$Name)
+ikaart
+```
+
+*Et voilà!* De afbeelding in deze bundel is zo statisch als wat. Maar de kaart in de **Viewer** tab is echt interactief: je kunt inzoomen, uitzoomen en pannen. Vergeet ook niet op de markers te klikken om de tooltip te controleren. 
+
+![](images/Leafletmap.png)
+
+
+## Een interactieve kaart - 2: met de *pipe operator* (`%>%`)
+
+In de vorige paragraaf hebben we in 3 stappen een kaart - `ikaart` - gemaakt:
+
+```{r eval=FALSE}
+ikaart <- leaflet()
+ikaart <- addTiles(ikaart)
+ikaart <- addMarkers(ikaart,
+                     data = spTransform(mus, CRS("+init=epsg:4326")), popup = mus$Name)
+```
+
+Hierbij diende telkens de uitvoer van een functie als invoer voor de volgende stap: eerst wordt `ikaart` gevuld met een lege htmlwidget, vervolgens dient `ikaart` als invoer voor de functie `addTiles()` om de OSM laag toe te voegen, en dan wordt `ikaart` nog een keer ingevoerd in de functie `addMarkers`...
+
+Deze 3 stappen kunnen worden teruggebracht tot één met behulp van de *pipe operator*, het symbool: `%>%`
+
+Met deze operator kun je de uitvoer van een functie doorgeven aan de volgende, zodat je functies als het ware aan elkaar kunt reigen. En dat ziet er dan zo uit:
+
+```{r eval=FALSE}
+ikaart2 <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = spTransform(mus, CRS("+init=epsg:4326")), popup = mus$Name)
+ikaart2
+```
+
+Dit geeft dezelfde kaart als net.
+
+Daarmee leidt het gebruik van de deze operator tot code die èn beter leesbaar is, en makkelijker te onderhouden.
+
+De pipe operator is een relatief nieuw fenomeen in **R**; hij bestaat pas sinds 2014 en is ontwikkeld door Stefan Milton in zijn `magrittr` package. (Nee, inderdaad: je hebt dit `magrittr` package niet zelf geïnstalleerd - maar het is geïmporteerd door `leaflet`, een bibliotheek die je wel hebt draaien.)
+
+Zie voor meer informatie over de bibliotheek `magrittr`
+
+* de handleiding op het CRAN: <https://cran.r-project.org/web/packages/magrittr/magrittr.pdf>,
+* deze vignette: <https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html>
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics{images/logo.png}
+\caption{het 'officiële' logo van het magrittr package}
+\label{RD}
+\end{figure}
+
+
+## Een interactieve kaart - 3: een uitgebreid script
+
+Voor de oefening in deze paragraaf verwijzen we naar het volgende blog:
+[Maak een interactief kaartvenster in R/RStudio met leaflet](http://www.twiav.nl/nl/blog0005.php).
+
+Hier vind je een uitgebreid script - [InteractiefKaartvensterInRStudio.R](http://www.twiav.nl/nl/InteractiefKaartvensterInRStudio.R) - waarmee meerdere lagen aan een kaart worden toegevoegd, inclusief een bijbehorende *LayersControl*.
+
+
+
+\newpage
+
 # Literatuurlijst {-}
 \markboth{Literatuurlijst}{}
 
 + De Bruijne, Arnoud, Van Buren, Joop, Kösters, Anton & Van der Marel, Hans (2005). *De geodetische referentiestelsels van Nederland; Definitie en vastlegging van ETRS89, RD en NAP en hun onderlinge relaties*.Nederlandse Commissie voor Geodesie (NCG), Delft, maart 2005. URL: <http://www.ncgeo.nl/phocadownload/43Referentie.pdf>
+
++ Frazier, Melanie (z.d.). *Overview of Coordinate Reference Systems (CRS) in R*. Geraadpleegd op 12 november 2015. URL: <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf> 
+
 
 + Ihaka, Ross (2009). *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
 
