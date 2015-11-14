@@ -1,7 +1,7 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "12 november 2015"
+date: "14 november 2015"
 header-includes:
    - \providecommand{\versionnumber}{0.1.0}
    - \providecommand{\titletxt}{Geografische analyses met R}
@@ -203,7 +203,7 @@ Zie voor meer informatie over de bibliotheek `sp`
 
 \newpage
 
-## Het aanmaken van een `SpatialPointsDataFrame` \label{spdf}
+## Het aanmaken van een `SpatialPointsDataFrame` - 1 \label{spdf}
 
 In deze paragraaf gaan we kennismaken met één van de hiervoor genoemde ruimtelijke datastructuren. We gaan zelf een SpatialPointsDataFrame aanmaken, op basis van gegevens in een data.frame.
 
@@ -317,21 +317,36 @@ text(coordinates(ams.spdf), as.character(ams.spdf$Name),
 
 ## Het toekennen van een CRS (*Coordinate Reference System*)
 
-Het SpatialPointsDataFrame dat we in de vorige paragraaf (\ref{spdf}) hebben aangemaakt, is nog niet helemaal compleet, omdat we er nog geen coördinaatreferentiesysteem (CRS) aan hebben toegekend. Het Frame heeft weliswaar coördinaten, maar we hebben nog niet vastgelegd hoe deze aan de aarde te relateren zijn.
+Het SpatialPointsDataFrame dat we in de vorige paragraaf (\ref{spdf}) hebben aangemaakt, is nog niet helemaal compleet, omdat we er nog geen coördinaatreferentiesysteem (CRS) aan hebben toegekend. Het Frame heeft weliswaar coördinaten, maar we hebben nog niet vastgelegd hoe deze aan een plek op aarde te relateren zijn.
 
 Er zijn twee soorten coördinaatsystemen:
 
-+ ongeprojecteerd/geografisch: in een dergelijk systeem wordt dor middel van lengte- en breedtegraden een positie op de aarde weergegeven,
-+ geprojecteerd: in een projectie wordt een gedeelte van het aardoppervlak weergegeven in een 2-dimensionaal vlak.
++ **ongeprojecteerd/geografisch**: in een dergelijk systeem wordt dor middel van lengte- en breedtegraden een positie op de aarde weergegeven,
++ **geprojecteerd**: in een projectie wordt een gedeelte van het aardoppervlak weergegeven in een 2-dimensionaal vlak.
 
 Een bekend, en tegenwoordig alom gebruikt systeem van het eerste soort is WGS84. Het officiële Nederlandse systeem - het Rijksdriehoeksstelsel (zie paragraaf \ref{RDM}) - is een voorbeeld van het tweede type.
 
-Het toekennen van een CRS gaat door middel van een `proj4string`, een lange ingewikkelde string met geodetische parameters. Gelukkig hebben veel projecties een zogeheten *EPSG* code, waardoor het makkelijker wordt om een `proj4string` toe te kennen.  
+Het toekennen van een CRS gaat door middel van een `proj4string`, een lange ingewikkelde string met geodetische parameters. In de samenvatting die we eerder hebben opgevraagd - met `summary(ams.spdf)` - zagen we al dat er aan onze data nog geen CRS was toegekend: `proj4string : [NA]`.
+
+Gelukkig hebben veel projecties tegenwoorig een zogeheten *EPSG* code, waardoor het makkelijker wordt om een `proj4string` toe te kennen.
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=EPSG?]
 Het was de \textbf{European Petroleum Survey Group} die het initiatief heeft genomen de vele wereldwijd gebruikte coördinaatsystemen elk van een eigen, unieke code te voorzien, om de communicatie over locaties te vergemakkelijken. Het moge duidelijk zijn dat de (financiële) belangen van de olieindustrie hier groot zijn; men kan het zich simpelweg niet permitteren om op een verkeerde plek te gaan boren.\par
 Hoewel de EPSG als organisatie al niet meer bestaat, wordt de EPSG Dataset nog steeds onderhouden door de  International Association of Oil \& Gas Producers (IOGP), tot voordeel van ons allen. Zie \url{http://www.epsg.org/}
 \end{tcolorbox} 
+
+Nu is natuurlijk de vraag: welk coördinaatsysteem gaan we aan onze data koppelen? Op die vraag is maar één antwoord mogelijk, namelijk: het juiste CRS. Je kunt immers niet zomaar een willekeurige referentie aan de gegevens hangen.
+
+Dit betekent dat er altijd duidelijk moet zijn welk CRS bij geografische data hoort. Dit kan in de metadata staan, of het moet worden aangegeven door de dataleverancier.
+
+De `x` en `y` van onze Amsterdamse museumdataset zijn gegeven in Nederlandse RD-coördinaten. De *EPSG* code van dit systeem is 28992.
+
+Nu we dit weten kunnen we het CRS toekennen:
+
+```{r}
+proj4string(ams.spdf) <- CRS("+init=epsg:28992")
+summary(ams.spdf)
+```
 
 \twocolumn
 
@@ -367,6 +382,49 @@ Voor meer achtergrondinformatie over de geodetische referentiestelsels van Neder
 \caption{De coördinaten van het Rijksdriehoeksstelsel}
 \label{RD}
 \end{figure}
+
+\newpage
+
+## Het aanmaken van een `SpatialPointsDataFrame` -2
+
+### direct met `CRS`
+
+**Let op:** het toekennen van het CRS hoeft niet in een aparte stap te gebeuren.Je kunt dit ook direct doen bij het aanmaken van het SpatialPointsDataFrame:
+
+```{r}
+ams.spdf <- SpatialPointsDataFrame(coords = ams.df[3:4],
+                          data = ams.df[1:2], proj4string = CRS("+init=epsg:28992"))
+```
+
+### alternatieve syntaxis
+
+In de voorgaande paragrafen hebben op de volgende manier een SpatialPointsDataFrame gecreëerd:
+
+```{r}
+URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
+ams.df <- read.csv(URL)
+ams.spdf <- SpatialPointsDataFrame(coords = ams.df[3:4],
+                          data = ams.df[1:2], proj4string = CRS("+init=epsg:28992"))
+```
+
+In deze paragraaf gaan we het op een iets andere manier doen.
+
+1. Het is niet noodzakelijk om twee verschillende objecten - in het voorbeeld `ams.df` en `ams.spdf` - te gebruiken. Je kunt ook een object zelf omzetten van data.frame naar SpatialPointsDataFrame,
+2. We gaan een alternatieve syntaxis gebruiken voor het aanwijzen van de coördinaten.
+
+
+```{r}
+URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
+mus <- read.csv(URL)
+class(mus)
+coordinates(mus) <- ~x+y
+class(mus)
+proj4string(mus) <- CRS("+init=epsg:28992")
+```
+
+Het object `mus` is identiek aan het object `ams.spdf`. Dit kun je controleren door de samenvatting op te vragen: `summary(mus)`.
+
+Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur; een kwestie van smaak. En, zoals de oude Romeinen zeiden: *De gustibus non est disputandum*.
 
 
 \newpage
