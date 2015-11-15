@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "14 november 2015"
+date: "15 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.1.0}
+   - \providecommand{\versionnumber}{0.1.2}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -172,6 +172,44 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 \newpage
 
+## Packages, packages, packages... (ook wel: bibliotheken)
+
+**R** is modulair opgebouwd. Er is het basissysteem, zoals we dat in de vorige paragrafen hebben geïnstalleerd. Maar daar bovenop zijn er vele aanvullende bibliotheken, zogeheten *packages*, beschikbaar.
+
+Door middel van een *package* wordt extra functionaliteit toegevoegd aan **R**. Er zijn in de loop der jaren veel van dergelijke bibliotheken aan het **Comprehensive R Archive Network** toegevoegd, met bijdragen van wetenschappers en programmeurs van over de hele wereld. Ook vanuit Nederland. 
+
+Tijdens een presentatie in oktober 2009 kon Ross Ihaka nog 'opscheppen' dat er al meer dan 1.700 *packages* aan het **CRAN** waren toegevoegd ([Ihaka, 2009](https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf)), maar nu - november 2015, dus zes jaar later - staat de teller al op het aantal van 7.488 bijdragen (Zie: <https://cran.r-project.org/web/packages/>).     
+
+Ook voor het uitvoeren van geografische analyses met  **R** zijn vele bibliotheken beschikbaar. Voor een overzicht, zie: [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html).
+
+In de volgende hoofdstukken zullen we telkens één of meer van deze bibliotheken introduceren. De rode draad in de rest van het boek is dan ook: *Packages, packages, packages...* (Overigens heeft deze handleiding niet de pretentie om alle 'geografische' bibliotheken te behandelen. Er is altijd meer dan men in één boek kan samenvatten.)
+
+Als je op zoek bent naar bepaalde functionaliteit die niet beschikbaar is in basis-**R**, dan is de kans groot dat een aanvullende bibliotheek uitkomst biedt. En anders wordt je van harte uitgenodigd om zelf een *package* te schrijven en met de gemeenschap te delen.
+
+### `install.packages()`
+
+Om een bibliotheek te kunnen gebruiken, moet je hem eerst - éénmalig - installeren. Dit kan heel eenvoudig vanuit **RStudio** zelf. Bijvoorbeeld:
+
+```{r eval=FALSE}
+install.packages("rgdal") # met aanhalingstekens
+```
+
+Zoals je ziet wordt de benodigde software automatisch gedownload en geïnstalleerd.
+
+### `library()`
+
+Om een funcite uit een bepaalde bibliotheek te kunnen gebruiken, moet je deze bibliotheek eerst laden. En dit moet elke keer dat je **R** gebruikt opnieuw gebeuren. Bijvoorbeeld:
+
+```{r eval=FALSE}
+library(tmap) # zonder aanhalingstekens
+```
+
+Als je een (fout)melding krijgt dat een bepaalde functie onbekend is, dan kan dat komen doordat je de benodigde bibliotheek niet geladen hebt.
+
+In **R** scripts zie je vaak bovenaan één of meerdere `library()` statements staan, zodat de benodigde bibliotheken geladen worden voordat de rest van het script wordt uitgevoerd.
+
+\newpage
+
 # Het werken met geografische gegevens in R \label{chsp}
 
 ## De bibliotheek `sp`
@@ -183,7 +221,7 @@ De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aan
 **R** is oorspronkelijk ontwikkeld als programmeertaal voor èn door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van **R** was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken éénduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De bocht in de Maas]
-    \begin{minipage}[t]{0.20\linewidth}
+    \begin{minipage}[t]{0.25\linewidth}
     \vspace*{0pt}
         \includegraphics[height=6.03cm,width=2.61cm]{images/Meuse.png}
     \end{minipage}
@@ -194,12 +232,13 @@ De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aan
         Deze data zijn door Edzer Pebesma - ook Fysisch Geograaf, in 1996 gepromoveerd aan dezelfde universiteit in Utrecht - toegevoegd aan 'zijn'  {\small\ttfamily{sp}} bibliotheek.\par
         Tegenwoordig is Pebesma hoogleraar aan de \textbf{Westfälische Wilhelms-Universität (WWU)} in Münster (Duitsland), waar hij directeur is van het \textbf{Institut für Geoinformatik}.
     \end{minipage}\hfill%
+    Zie voor voorbeelden waarin deze Maasdata worden gebruikt:\par
+    \url{http://rspatial.r-forge.r-project.org/gallery/}
 \end{tcolorbox}
 
-Zie voor meer informatie over de bibliotheek `sp`
+Zie voor meer informatie over de bibliotheek `sp` de handleiding op het CRAN:
 
-* de handleiding op het CRAN: <https://cran.r-project.org/web/packages/sp/sp.pdf>.
-* de voorbeelden op deze pagina: <http://rspatial.r-forge.r-project.org/gallery/>
+<https://cran.r-project.org/web/packages/sp/sp.pdf>.
 
 \newpage
 
@@ -356,7 +395,7 @@ In Nederland worden de meeste geografische data uitgewisseld in RD-coördinaten. 
 
 Het Rijksdriehoeksstelsel is het nationale geodetische triangulatiesysteem van Nederland. De basis van dit systeem is een stereografische kaartprojectie gecentreerd op de spits van de Onze Lieve Vrouwetoren in Amersfoort. Op het zo verkregen projectievlak is een cartesiaans assenstelsel geconstrueerd. De voor het RD-stelsel gebruikte stereografische projectie is gebaseerd op de ellipsoïde van Bessel (1841). Een belangrijk voordeel van de projectie is, dat deze *conform* (hoekgetrouw) is: een hoek gemeten in de kaart is gelijk aan de werkelijke hoek. Voor een klein gebied als Nederland kan men gebruik maken van een dergelijke projectie, al nemen de afstandsfouten wel toe, naarmate men verder van de oorsprong verwijderd raakt.
 
-De oorsprong van het systeem ligt in Amersfoort. Aanvankelijk was deze oorsprong ook het nulpunt (X=Y=0) van het systeem. Dit betekende dat men in het noordoosten van Nederland met positieve X- en Y-coördinaten kon werken, maar dat men in de andere delen van het land rekening moest houden met een negatieve X- en/of een negatieve Y-coördinaat. Om dit probleem op te lossen heeft men in het begin van de jaren zeventig van de twintigste eeuw het nulpunt verschoven, en wel 155 kilometer naar het westen en 463 kilometer naar het zuiden. Nederland ligt nu in zijn geheel in het eerste kwadrant van het assenstelsel, en door de extreem grote Y-verschuiving is de grootst voorkomende X-waarde nog altijd kleiner dan de kleinst mogelijke Y-waarde. Daardoor zijn alle voorkomende coördinaten nu positief, en de X- en Y-waarden zijn goed uit elkaar te houden (zie figuur \ref{RD}).
+De oorsprong van het systeem ligt in Amersfoort. Aanvankelijk was deze oorsprong ook het nulpunt (X=Y=0) van het systeem. Dit betekende dat men in het noordoosten van Nederland met positieve X- en Y-coördinaten kon werken, maar dat men in de andere delen van het land rekening moest houden met een negatieve X- en/of een negatieve Y-coördinaat. Om dit probleem op te lossen heeft men in het begin van de jaren zeventig van de twintigste eeuw het nulpunt verschoven, en wel 155 kilometer naar het westen en 463 kilometer naar het zuiden. Nederland ligt nu in zijn geheel in het eerste kwadrant van het assenstelsel, en door de extreem grote Y-verschuiving is de grootst voorkomende X-waarde nog altijd kleiner dan de kleinst mogelijke Y-waarde. Daardoor zijn alle voorkomende coördinaten nu positief, en de X- en Y-waarden zijn goed uit elkaar te houden (zie figuur \ref{afbRD}).
 
 Het geldigheidsgebied voor de RD-coördinaten is nauwkeurig gedefinieerd. Globaal mogen deze coördinaten alleen gebruikt worden op het Nederlandse vasteland en in een kleine band daaromheen. Daar valt niet het gehele Nederlandse Continentaal Plat (het Nederlandse deel van de Noordzee) binnen. In België en Duitsland maakt men gebruik van andere coördinaatsystemen.
 
@@ -380,7 +419,7 @@ Voor meer achtergrondinformatie over de geodetische referentiestelsels van Neder
 \begin{figure}[!htb]
 \includegraphics{images/RD.png}
 \caption{De coördinaten van het Rijksdriehoeksstelsel}
-\label{RD}
+\label{afbRD}
 \end{figure}
 
 \newpage
@@ -426,6 +465,20 @@ Het object `mus` is identiek aan het object `ams.spdf`. Dit kun je controleren d
 
 Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur; een kwestie van smaak. En, zoals de oude Romeinen zeiden: *De gustibus non est disputandum*.
 
+\newpage
+
+## Een dataset herprojecteren met `spTransform()`
+
+Het zal regelmatig voorkomen dat je een dataset met een bepaald CRS hetbt, terwijl voor de actie die je wilt uitvoeren een ander CRS noodzakelijk is. Gelukkig is het vrij eenvoudig om data te transformeren van het ene naar het andere CRS, op voorwaarde natuurlijk dat je de definitie van het doel-CRS kent.
+
+Bijvoorbeeld: wij willen later in deze handleiding onze Amsterdamse musea op een OpenStreetMap kaart tonen (zie hoofdstuk \ref{chLflt}). Hiervoor is het noodzakelijk dat de coördinaten worden getransformeerd naar WGS84. Gelukkig kennen wij de *EPSG* code van dit CRS, namelijk EPSG:4326.
+
+In het voorbeeld hieronder maken we een nieuw object aan, waarbij de coördinaten uit `ams.spdf` worden overgezet naar WGS84. Bekijk de `coordinates` van `ams.spdf.wgs84`: dit zijn nu geen meters meer, maar decimale graden.
+
+```{r}
+ams.spdf.wgs84 = spTransform(ams.spdf, CRS("+init=epsg:4326"))
+summary(ams.spdf.wgs84)
+```
 
 \newpage
 
@@ -433,7 +486,7 @@ Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur;
 
 ## De bibliotheek `rgdal`
 
-Voordat we geografische data kunnen laden in **R**, moeten we eerst een aanvullende *package* (bibliotheek) installeren, namelijk `rgdal`.
+In dit hoofdstuk gaan we gegevens vanuit externe GIS bestanden inlezen in **R**. Dit doen we met de functie `readOGR` uit het *package* `rgdal`.
 
 De bibliotheek `rgdal` biedt toegang vanuit **R** tot de functionaliteit van **GDAL**. Voordat we deze installatie gaan uitvoeren, geven we eerst wat informatie over de kracht van **GDAL**.
 
@@ -442,7 +495,7 @@ De bibliotheek `rgdal` biedt toegang vanuit **R** tot de functionaliteit van **G
 **GDAL** staat voor *Geospatial Data Abstraction Library*. Deze bibliotheek biedt abstracte gegevensmodellen voor geografische gegevens, één voor het raster- en één voor het vectorformaat. Daarnaast bevat **GDAL** een hoeveelheid programma's, zoals bijvoorbeeld `ogr2ogr`, `ogrinfo`, `gdaldem` en `gdal_contour`, voor het bewerken van geografische data. Deze programma's zijn zogeheten *command line utilities* (dat wil zeggen: ze moeten via de commandoregel worden aangesproken) en bieden vele opties voor onder andere:
 
 * het inlezen en wegschrijven van geografische bestanden;
-* het converteren van bestanden van het ene naar het ene naar het andere geografische formaat (bijvoorbeeld van ESRI SHP naar GeoJSON);
+* het converteren van bestanden van het ene naar het andere geografische formaat (bijvoorbeeld van ESRI SHP naar GeoJSON);
 * het herprojecteren van geografische bestanden (bijvoorbeeld van het Nederlandse RD-stelsel, EPSG:28992, naar WGS84, EPSG:4326);
 * het analyseren en visualiseren van digitale hoogtemodellen en het genereren van contourlijnen;
 * etc., etc.
@@ -467,7 +520,7 @@ Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownlo
 
 \newpage
 
-# Interactieve kaartvensters in R
+# Interactieve kaartvensters in R \label{chLflt}
 
 ## De bibliotheek `leaflet`
 
@@ -577,7 +630,7 @@ Zie voor meer informatie over de bibliotheek `magrittr`
 \centering
 \includegraphics{images/logo.png}
 \caption{het 'officiële' logo van het magrittr package}
-\label{RD}
+\label{MagrittrLogo}
 \end{figure}
 
 
