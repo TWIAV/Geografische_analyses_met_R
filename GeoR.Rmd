@@ -3,7 +3,7 @@ title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
 date: "15 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.1.2}
+   - \providecommand{\versionnumber}{0.3.0}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -31,6 +31,8 @@ mainfont: Calibri
 \newpage
 \pdfbookmark{\contentsname}{toc}
 \hypersetup{linkcolor=black}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
 \tableofcontents
 \hypersetup{linkcolor=blue}
 \newpage
@@ -38,12 +40,133 @@ mainfont: Calibri
 \mbox{}
 \newpage
 
+\twocolumn
+
 # Voorwoord {-}
 \markboth{Voorwoord}{}
 
-Deze handleiding is speciaal samengesteld voor een presentatie over **R** op de 4e jaarlijkse OSGeo.nl dag (op de GeoBuzz) op woensdag 25 november 2015 in Den Bosch.
+Deze handleiding is speciaal samengesteld voor de Hands-on workshop **Geografische analyses met R** op de 4^e^ jaarlijkse OSGeo.nl Dag, op de GeoBuzz, op woensdag 25 november 2015 in Den Bosch.
+
+Het was in de zomer van 2015, in Como (Noord-Italië), in de wandelgangen van de [FOSS4G-Europe 2015](http://europe.foss4g.org/2015/). Daar werd ik benaderd door Gert-Jan van der Weijden, de voorzitter van [de stichting OSGeo.nl](http://osgeo.nl/). Eerder die week had ik in Como de workshp **R for spatial data** van Robin Lovelace (University of Leeds) gevolgd. En nu kwam Gert-Jan met het verzoek of ik een soortgelijke workshop zou willen geven in Den Bosch. Daarop heb ik maar *ja* gezegd.
+
+De afgelopen weken heb ik veel met **R** gespeeld. Een opdracht intypen op de commandoregel, en dan kijken wat er gebeurt. Want ja, om ergens een workshop over te kunnen geven, moet je er wel iets van weten. Dit document is het voorlopige resultaat van mijn speurtocht: laat ik maar meteen opschrijven wat ik geleerd heb, want anders vergeet ik het weer.
+
+**R** heeft - als geografisch informatiesysteem - beslist voordelen ten opzichte van traditionle GIS desktop applicaties, met al die knopjes waarop je kunt klikken. Waar je in een gewoon GIS systeem de knoppenbalken en menu's op een gegeven moment wel zat bent ('*Kan dit niet sneller? kan ik dit niet automatiseren?*'), moet je in **R** al vanaf het allereerste commando goed nadenken over de syntaxis van je opdracht.
+
+Ik hoop dan ook van harte dat mijn aantekeningen nuttig zijn voor anderen die kennis willen maken met de geografische kracht van **R**.
+
+Overigens is dit een '*werk in uitvoering*'. Er zullen de komende tijd nog enkele nieuwe versies van deze cursushandleiding verschijnen. De meest recente versie staat altijdd [hier](http://www.twiav.nl/nl/cursusR/Geografische_analyses_met_R.pdf).
+
+
+
+
+
+
+\href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografische analyses met R}{Egge-Jan Pollé}
+
+Asperen - November 2015
 
 \newpage
+
+\newpage
+
+\twocolumn
+
+# Inleiding
+
+## De paden op, de lanen in, vooruit met flinke pas...
+
+In dit boek gaan we op reis. Op reis door de werled van **R**, ja, je kunt wel zeggen de *wondere* wereld van **R**.
+
+Ter voorbereiding op dit avontuur volgen hieronder enkele op- en aanmerkingen, handige tips en nuttige trucs.
+
+
+## Over dit boek
+
+### Voor wie?
+
+Voor wie is dit boek bedoeld? Gewoon: voor iedereen die meer wil weten over het uitvoeren van geografische analyses met **R**. Is er specifieke voorkennis vereist? Nee (en ja), of: Ja (en nee)! Nou, toch meer 'nee' dan 'ja'. Dit document is geschreven om je te helpen iets te leren. Dus hoe minder voorkennis je hebt, hoe meer je hiervan kan leren.
+
+**R** is een statistische programmeertaal, en wij gaan specifiek kijken naar geografische functionaliteit. Dus dan komen er veel terreinen bijelkaar: statistiek, informatica, GIS, geodesie, kartografie, etc., etc.. Een beetje voorkennis in één of meerdere van deze disciplines is nuttig, maar niet strikt noodzakelijk. Het belangrijkste is eigenlijk: een gezonde dosis nieuwsgierigheid, en creativiteit en doorzettingsvermogen.
+
+*Maar ik ben helemaal geen programmeur!* Dat is niet erg, want dat geldt voor de meeste van ons. **R** is leuk omdat je snel mooie kaartjes en grafieken op het scherm kan toveren, en dat je dat zelf moet programmeren, dat ga je op den duur ook leuk vinden.
+
+In elk hoofdstuk vind je codevoorbeelden met uitgebreide toelichting. Je moet deze voorbeelden niet alleen lezen, maar vooral gewoon doen: ga achter **R** zitten en probeer het zelf uit. Met de data die bij de oefeningen wordt meegeleverd of, beter nog, met je eigen geografische bestanden.
+
+Dit cursusmateriaal leent zich voor zelfstudie, maar kan ook gebruikt worden in een klassikale omgeving, als onderdeel van een opleiding of workshop.
+
+### *Werk in uitvoering*
+
+Deze bundel is een "work in progress". Dit is versie \versionnumber. De komende tijd zal de het aantal hoofdstukken nog worden uitgebreid. Het advies is dan ook om, voor je verder leest, [via deze link](http://www.twiav.nl/nl/cursusR/Geografische_analyses_met_R.pdf) te controleren of je [de meest recente versie](http://www.twiav.nl/nl/cursusR/Geografische_analyses_met_R.pdf) hebt.
+
+En o ja, op- en aanmerkingen zijn meer dan welkom. Heb je
+
++ een alternatieve oplossing gevonden voor een probleem,
++ suggesties voor aanvullende oefeningen,
++ schrijf- en spelfouten ontdekt (???),
++ of is er een *package* waarvan je vindt dat er beslist een hoofdstuk aan moet worden gewijd,
+
+neem dan contact op met de \href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografische analyses met R}{auteur}.
+
+### Broncode openbaar 
+
+Dit document heeft *open source*. De broncode is geschreven in een mengeling van [R Markdown](http://rmarkdown.rstudio.com/) en pure  [\LaTeX](https://www.latex-project.org/). Het PDF document is gecompileerd met **RStudio** (zie verderop in dit boek).
+
+Het bronbestand (GeoR.Rmd) is te vinden in deze GitHub repository:
+
+<https://github.com/TWIAV/Geografische_analyses_met_R>.
+
+Dus als je wijzigingsvoorstellen direct wil doorvoeren in de bron: *Fork me on GitHub*.
+
+## Benodigdheden
+
+### Computer
+
+Om deze cursus te volgen heb je een machine nodig. Ja, hè, hè. Maar wacht, dat hoeft niet per se je eigen computer te zijn, dat kan ook een virtuele machine zijn.
+
+#### Virtuele machine van OSGeo-Live
+
+
+Wij raden je aan om eens te kijken naar de *Virtual Machine* van [OSGeo-Live](http://live.osgeo.org/en/index.html). Dit is een machine waarop een grote verscheidenheid aan *open source* (en dus gratis) geografische applicaties geïnstalleerd staat. Het is, zeg maar, de reclame-DVD van [The Open Source Geospatial Foundation](http://www.osgeo.org/).
+
+En ook het besturingssysteem van deze machine is *open source*, dat is namelijk [Lubuntu](http://lubuntu.net/), een Linux distributie. (Let op: de desktop omgeving van Lubuntu is redelijk gebruikersvriendelijk, dus ook een verstokte MS Windows gebruiker kan daarin de weg wel vinden.)
+
+Je kunt de virtuele machine van **OSGeo-Live** gebruiken met behulp van [VirtualBox](https://www.virtualbox.org/), de virtualisatieoplossing van Oracle. Ook **VirtualBox** is gratis te downloaden.
+
+Als deze optie aantrekkelijk klinkt, kijk dan hier voor [installatieinstructies](http://live.osgeo.org/en/quickstart/virtualization_quickstart.html). 
+
+(**R** staat al geïnstalleerd op **OSGeo-Live**; **RStudio** moet je zelf even toevoegen.)
+
+## Cursusbestanden
+
+De gegevensbestanden die je tijdens deze cursus nodig hebt worden aangeboden op de website [www.twiav.nl](http://www.twiav.nl/nl/geodata.php) of via andere, openbare bronnen, zoals de site van het [Centraal Bureau voor de Statistiek](http://www.cbs.nl/nl-NL/menu/home/default.htm).
+
+Overigens is het downloaden van de benodigde data onderdeel van het script dat je bij elke oefening gaat schrijven. Dus je hoeft de bestanden niet zelf op te halen, dat gaat **R** voor je doen. 
+
+## Meer informatie over het gebruik van R
+
+Dit boek is geschreven voor een breed publiek, ook voor gebruikers die nog weinig of geen ervaring hebben met **R**. Maar dit is geen beginnershandleiding. De focus ligt op de geografische functionaliteit van **R**. Dit betekent dat - in de volgende hoofdstukken - sommige regels code uitvoerig worden toegelicht, terwijl andere commando's zonder verder commentaar of uitleg worden doorgegeven.
+
+Het kan daardoor gebeuren dat je een regel code intikt, zonder dat je alle functies en parameters volledig begrijpt. Maar dat is niet erg, want om **R** te leren moet je kilometers maken, veel achter het systeem zitten, zaken uitproberen en vervolgens uitzoeken waarom iets wel (of juist niet) werkt.
+
+Het wordt ten sterkste aangeraden om de **R** scripts in deze cursus regel voor regel uit te voeren (en niet meteen in één keer in zijn geheel). Probeer vooraf te bedenken wat er volgens jou gaat gebeuren, en controleer na elke regel of dat ook inderdaad zo is. 
+
+Door het hele boek heen vind je links naar externe bronnen voor aanvullende informatie (ja, de blauwe letters, ja). Hieronder wijzen we nog even op een aantal specifieke startpunten voor een zoektocht naar informatie over **R**.
+
+### *The R Manuals*
+
+Een goed begin is de pagina met handleidingen die door leden van het *R Development Core Team* zelf wordt bijgehouden: <https://cran.r-project.org/manuals.html>. Hier vind je bijvoorbeeld [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf).
+
+### Discussiegroepen op internet
+
+Tip: zoek - voordat je een vraag stelt in een discussiegroep - uit of deze niet al eens gesteld en beantwoord is. Die kans is namelijk groot. Als je met heel specifieke zoektermen googlet dan vind je het antwoord misschien wel in de archieven van één van de de onderstaande mailinglijsten: 
+
++ R Mailing Lists: er zijn verschillende discussiegroepen met betrekking tot **R** (zie overzicht: <https://www.r-project.org/mail.html>), waaronder een aantal **Special Interest Groups (SIG)**, zoals de [R-sig-Geo -- R Special Interest Group on using Geographical data and Mapping](https://stat.ethz.ch/mailman/listinfo/r-sig-geo).
++ [Stack Overflow](http://stackoverflow.com/): een vraag- en antwoordsite voor programmeurs, die elkaar helpen, met bijna 5 miljoen deelnemers wereldwijd. Ook veel vragen, en nuttige antwoorden, over **R**.
+
+\newpage
+
+\onecolumn
 
 # Het Project R
 
@@ -186,22 +309,22 @@ In de volgende hoofdstukken zullen we telkens één of meer van deze bibliotheken 
 
 Als je op zoek bent naar bepaalde functionaliteit die niet beschikbaar is in basis-**R**, dan is de kans groot dat een aanvullende bibliotheek uitkomst biedt. En anders wordt je van harte uitgenodigd om zelf een *package* te schrijven en met de gemeenschap te delen.
 
-### `install.packages()`
+### Een bibliotheek installeren: `install.packages()`
 
 Om een bibliotheek te kunnen gebruiken, moet je hem eerst - éénmalig - installeren. Dit kan heel eenvoudig vanuit **RStudio** zelf. Bijvoorbeeld:
 
 ```{r eval=FALSE}
-install.packages("rgdal") # met aanhalingstekens
+install.packages("rgdal") # bibliotheeknaame met aanhalingstekens
 ```
 
 Zoals je ziet wordt de benodigde software automatisch gedownload en geïnstalleerd.
 
-### `library()`
+### Een bibliotheek laden: `library()`
 
 Om een funcite uit een bepaalde bibliotheek te kunnen gebruiken, moet je deze bibliotheek eerst laden. En dit moet elke keer dat je **R** gebruikt opnieuw gebeuren. Bijvoorbeeld:
 
 ```{r eval=FALSE}
-library(tmap) # zonder aanhalingstekens
+library(tmap) # bibliotheeknaame zonder aanhalingstekens
 ```
 
 Als je een (fout)melding krijgt dat een bepaalde functie onbekend is, dan kan dat komen doordat je de benodigde bibliotheek niet geladen hebt.
@@ -259,7 +382,7 @@ library(sp)
 
 Het [invoerbestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is een lijstje met enkele bezienswaardigheden in Amsterdam, met bijbehorende x- en y-coördinaten. Dit [bestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is online beschikbaar en staat op [deze lokatie](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv). 
 
-Overigens hoef je dit bestand niet te downloaden en op te slaan. Je kan het direct inlezen vanaf de huidige lokatie.
+Je hoeft dit bestand niet te downloaden en op te slaan. Je kan het direct inlezen vanaf de huidige lokatie.
 
 ```{r}
 URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
@@ -463,7 +586,7 @@ proj4string(mus) <- CRS("+init=epsg:28992")
 
 Het object `mus` is identiek aan het object `ams.spdf`. Dit kun je controleren door de samenvatting op te vragen: `summary(mus)`.
 
-Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur; een kwestie van smaak. En, zoals de oude Romeinen zeiden: *De gustibus non est disputandum*.
+Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur, een kwestie van smaak. En, zoals de oude Romeinen pleegden te zeggen: *De gustibus non est disputandum*.
 
 \newpage
 
@@ -657,4 +780,5 @@ Hier vind je een uitgebreid script - [InteractiefKaartvensterInRStudio.R](http:/
 
 + Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
 
++ Venables, W. N.,  Smith, D. M. en het R Core Team (2015). *An Introduction to R. Notes on R: A Programming Environment for Data Analysis and Graphics*. Version 3.2.2 (2015-08-14). URL: <https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf>
 
