@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "15 november 2015"
+date: "18 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.0}
+   - \providecommand{\versionnumber}{0.3.1}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -51,7 +51,9 @@ Het was in de zomer van 2015, in Como (Noord-Italië), in de wandelgangen van de 
 
 De afgelopen weken heb ik veel met **R** gespeeld. Een opdracht intypen op de commandoregel, en dan kijken wat er gebeurt. Want ja, om ergens een workshop over te kunnen geven, moet je er wel iets van weten. Dit document is het voorlopige resultaat van mijn speurtocht: laat ik maar meteen opschrijven wat ik geleerd heb, want anders vergeet ik het weer.
 
-**R** heeft - als geografisch informatiesysteem - beslist voordelen ten opzichte van traditionle GIS desktop applicaties, met al die knopjes waarop je kunt klikken. Waar je in een gewoon GIS systeem de knoppenbalken en menu's op een gegeven moment wel zat bent ('*Kan dit niet sneller? kan ik dit niet automatiseren?*'), moet je in **R** al vanaf het allereerste commando goed nadenken over de syntaxis van je opdracht.
+Dit is ook de plek om de Friese Woudloper, [Willy Bakker](https://twitter.com/friesewoudloper) te bedanken voor haar inbreng. Met haar technische adviezen heeft ze een grote bijdrage geleverd aan de totstandkoming van deze handleiding.
+
+**R** heeft - als geografisch informatiesysteem - beslist voordelen ten opzichte van traditionele GIS desktop applicaties, met al die knopjes waarop je kunt klikken. Waar je in een gewoon GIS systeem de knoppenbalken en menu's op een gegeven moment wel zat bent ('*Kan dit niet sneller? kan ik dit niet automatiseren?*'), moet je in **R** al vanaf het allereerste commando goed nadenken over de syntaxis van je opdracht.
 
 Ik hoop dan ook van harte dat mijn aantekeningen nuttig zijn voor anderen die kennis willen maken met de geografische kracht van **R**.
 
@@ -110,9 +112,9 @@ neem dan contact op met de \href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografisc
 
 ### Broncode openbaar 
 
-Dit document heeft *open source*. De broncode is geschreven in een mengeling van [R Markdown](http://rmarkdown.rstudio.com/) en pure  [\LaTeX](https://www.latex-project.org/). Het PDF document is gecompileerd met **RStudio** (zie verderop in dit boek).
+Dit document is *open source*. De broncode is geschreven in een mengeling van [R Markdown](http://rmarkdown.rstudio.com/) en pure  [\LaTeX](https://www.latex-project.org/). Het PDF document is gecompileerd met **RStudio** (zie verderop in dit boek).
 
-Het bronbestand (GeoR.Rmd) is te vinden in deze GitHub repository:
+Het bronbestand (Geografische_analyses_met_R.Rmd) is te vinden in deze GitHub repository:
 
 <https://github.com/TWIAV/Geografische_analyses_met_R>.
 
@@ -330,6 +332,89 @@ library(tmap) # bibliotheeknaame zonder aanhalingstekens
 Als je een (fout)melding krijgt dat een bepaalde functie onbekend is, dan kan dat komen doordat je de benodigde bibliotheek niet geladen hebt.
 
 In **R** scripts zie je vaak bovenaan één of meerdere `library()` statements staan, zodat de benodigde bibliotheken geladen worden voordat de rest van het script wordt uitgevoerd.
+
+\newpage
+
+# Aan de slag
+
+## Kennismaking met de ontwikkelomgeving
+
+Voordat we in de volgende hoofdstukken met geografische data gaan werken volgt hier een eerste kennismaking met de IDE, *Integrated development environment* die RStudio is.
+
+### De werkmap (*Working Directory*): `getwd()` en `setwd()`
+
+De *Working Directory* is de map waar **R** invoerbestanden zoekt en uitvoerbestanden wegschrijft.
+
+Dus als je de opdracht geeft om een CSV bestand in te lezen met het commando `read.csv("test.csv")`, dan verwacht **R** dat het bestand in de werkmap staat. Met `getwd()` kun je opvragen wat de werkmap is:
+
+```{r eval=FALSE}
+getwd()
+```
+
+Dit is nu waarschijnlijk de standaard documentenmap.
+
+Het wordt aangeraden om (per project) een speciale werkmap in te stellen. Dit doe je met `setwd()`. Bijvoorbeeld:
+
+```{r}
+setwd("C:/CursusR") # Let op: gebruiek / of \\ (in plaats van \)
+```
+
+Tip: blader op de **Files** tab (in de rechteronderhoek van **RStudio**) naar de door jou ingestelde werkmap, zodat je in de gaten kunt houden welke bestanden **R** daar allemaal neerzet.
+
+### Oefening: een CSV bestand aanmaken met `write.table`
+
+Voer het onderstaande script uit (regel voor regel!) en bekijk de inhoud van het uitvoerbestand `maanden.csv` dat in de werkmap staat. 
+
+```{r}
+nummer <- c(1:12)
+en_lang <- month.name
+en_kort <- month.abb
+# months in your current locale
+nl_lang <- format(ISOdate(2000, 1:12, 1), "%B")
+nl_kort <- format(ISOdate(2000, 1:12, 1), "%b")
+maanden <- data.frame(nummer, en_lang, nl_lang, en_kort, nl_kort)
+write.table(maanden, file="maanden.csv", sep=",", row.names=FALSE)
+```
+
+\newpage
+
+## Oefening: bestanden downloaden en uitpakken met **R**
+
+Voor veel oefeningen in dit boek worden datasets gebruikt die als zip bestand op de website [www.twiav.nl](http://www.twiav.nl/nl/geodata.php) staan. Het is niet nodig om deze bestanden zelf handmatig te downloaden en uit te pakken. Met een paar regels code in het **R** script kun je dit automatisch laten doen.
+
+Hieronder staat een voorbeeld van de 'downloadprocedure' die in veel scripts in deze cursus wordt gebruikt.
+
+Doorloop deze procedure één of meerdere keren (en lees de commentaarregels, die beinnen met een *#*), en kijk na elke stap wat er gebeurd is. Gebruik `?` voor uitleg over een functie. Bijvoorbeeld: `?unzip`, `?unlink` of `?rm`.
+
+```{r}
+# Sla de URL van het te downloaden bestand op in een variabele
+URL <- "http://www.twiav.nl/files/NL_Gemeenten2014.zip"
+ # Extraheer de bestandsnaam uit de URL
+bestand <- file.path(basename(URL))
+ # Maak een submap in de werkmap (voor het opslaan van de invoerdata)
+dir.create("./Data", showWarnings = FALSE)
+ # Sla het huidige pad van de werkmap op in een variabele
+werkmap <- getwd()
+# Switch tijdelijk naar de Datamap
+setwd("./Data")
+# Download het bestand
+download.file(URL, destfile = bestand, mode = "wb")
+# Pak het bestand uit
+unzip(bestand)
+# Ruim een beetje op:
+ # Na het uitpakken kan het zip bestand verwijderd worden
+unlink(bestand)
+# De variabelen 'URL' en 'bestand' zijn niet meer nodig na de download
+rm(URL, bestand)
+# Keer terug naar de oorspronkelijke werkmap
+setwd(werkmap)
+# De variabele 'werkmap' is niet meer nodig na terugkeer naar de oorspronkelijke werkmap
+rm(werkmap)
+```
+
+Hoeveel bestanden staan er na deze actie in de map 'Data'?
+
+
 
 \newpage
 
@@ -603,6 +688,24 @@ ams.spdf.wgs84 = spTransform(ams.spdf, CRS("+init=epsg:4326"))
 summary(ams.spdf.wgs84)
 ```
 
+## Handmatig een data.frame aanmaken
+
+In de oefeningen hiervoor hebben we een data.frame verkregen door het inlezen van een bestand met `read.csv()`. In deze paragraaf maak je handmatig een data.frame aan met de functie `data.frame`.
+
+```{r}
+toren <- "Onze lieve Vrouwetoren"
+X <- 155000
+Y <- 463000
+torens <- data.frame(toren, X, Y)
+class(torens)
+coordinates(torens) <- ~X+Y
+proj4string(torens) <- CRS("+init=epsg:28992")
+summary(torens)
+plot(torens, pch = 19, col = "red", axes = TRUE, main = "De oorsprong van het RD-stelsel")
+text(coordinates(torens), as.character(torens$toren), cex = .7, pos = 4, col = "red")
+```
+
+
 \newpage
 
 # Het inlezen van geografische gegevens in R
@@ -631,15 +734,41 @@ Meer informatie over **GDAL** is te vinden op de website <http://www.gdal.org/>.
 
 ### `install.packages("rgdal")`
 
-`rgdal` maakt geen onderdeel uit van de basisinstallatie van **R**, dus we zullen dit *package* zelf moeten toevoegen. Gelukkig is het installeren van *packages* in **R** kinderlijk eenvoudig. Dit doe je met de functie `install.packages()`.
-
+`rgdal` maakt geen onderdeel uit van de basisinstallatie van **R**, dus we zullen dit *package* zelf moeten toevoegen. 
 Typ achter de prompt het volgende commando:
 
 ```{r eval=FALSE}
 install.packages("rgdal")
 ```
 
-Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownload en geïnstalleerd. Overigens maakt `rgdal` gebruik van ruimtelijke klassen die in een andere *package*, namelijk `sp`, zijn gedefiniëerd. Deze afhankelijkheid wordt automatisch gedetecteerd. Vandaar dat je in de console ziet staan dat `sp` ook is opgehaald en geïnstalleerd: `also installing the dependency 'sp'`.
+Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownload en geïnstalleerd. Overigens maakt `rgdal` gebruik van ruimtelijke klassen die in de *package* `sp` zijn gedefiniëerd. Deze afhankelijkheid wordt automatisch gedetecteerd. Dus mocht je `sp` nog niet hebben geïnstalleerd, dan verschijnt in de console de melding: `also installing the dependency 'sp'`.
+
+\newpage
+
+## De gebruikte bestandsformaten: MapInfo TAB en ESRI SHP
+
+We gaan in dit hoofdstuk aan de slag met de volgende populaire bestandsformaten: de MapInfo tabel (*table*) en de ESRI Shapefile, twee bekende GIS formaten voor het opslaan van vectorgegevens (punten, lijnen, vlakken) met bijbehorende attribuutgegevens.
+
+Zowel het Mapinfo TAB als het ESRI SHP formaat bestaan al redelijk lang: ze zijn ontwikkeld in de pioniersjaren van de geografische informatietechnologie, de jaren negentig van de vorige eeuw. Toen was het opslaan van geometrie nog een kunst. Tegenwoordig kan elk zichzelf respecterend databasesysteem geometrie bevatten.
+
+Ook in een ander opzicht zijn er overeenkomsten: we spreken wel over een ESRI Shapefile, maar feitelijk bestaat deze uit een aantal deelbestanden (minimaal een \*.SHP, \*.DBF en een \*.SHX bestand, maar vaak nog meer). En een MapInfo TAB bestand bestaat minimaal uit een \*.TAB, \*.DAT, \*.MAP en een \*.ID bestand. In beide gevallen geldt dat alle deelbestanden dezelfde naam moeten hebben en in dezelfde map moeten staan.
+
+Beide bestandstypen kunnen op precies dezlfde manier worden ingelezen met `readOGR()` in een spatial data frame.
+
+Stel dat de tabel NL_Gemeenten2014.TAB in de submap `Data` in onze werkmap staat, en dat we deze in willen lezen in een object met de naam `gem2014`, dan is de syntax als volgt:
+
+```{r eval=FALSE}
+gem2014 <- readOGR(dsn = "Data", layer = "NL_Gemeenten2014")
+```
+De twee verplichte argumenten zijn:
+
++ `dsn` (data source name): dit is de map (in het Engels *folder* of *directory*) waarin het bestand - met de bijbehorende deelbestanden - staat. Voor deze map kun je zowel een relatieve als een absolute padverwijzing gebruiken,
++ `layer`: de naam van het bestand, zonder de extensie.
+
+En voor een ESRI Shapefile is het precies hetzelfde...
+
+Let op: het argument `dsn` is verplicht. Als het in te lezen bestand direct in de *working directory* staat (en dus niet in een submap), gebruik dan de volgende syntaxis: `dsn="."`
+
 
 \newpage
 
@@ -764,6 +893,38 @@ Voor de oefening in deze paragraaf verwijzen we naar het volgende blog:
 
 Hier vind je een uitgebreid script - [InteractiefKaartvensterInRStudio.R](http://www.twiav.nl/nl/InteractiefKaartvensterInRStudio.R) - waarmee meerdere lagen aan een kaart worden toegevoegd, inclusief een bijbehorende *LayersControl*.
 
+\newpage
+
+# Ruimtelijke analyses
+
+## Overlapanalyse (punt in polygoon)
+
+Tel het aantal stations per provincie:
+```{r eval=FALSE}
+s <- table(over(stations2015, gem2014["Provincie_naam"]))
+```
+```{r include=FALSE}
+library(sp)
+library(rgdal)
+dir.create("./Data")
+URL <- "http://www.twiav.nl/files/NL_Gemeenten2014.zip"
+download.file(URL, destfile ="./Data/NL_Gemeenten2014.zip", mode = "wb")
+unzip("./Data/NL_Gemeenten2014.zip", exdir = "./Data")
+unlink("./Data/NL_Gemeenten2014.zip") # gooi het zip bestand weg
+URL <- "http://www.twiav.nl/files/Spoorwegen2015.zip"
+download.file(URL, destfile ="./Data/Spoorwegen2015.zip", mode = "wb")
+unzip("./Data/Spoorwegen2015.zip", exdir = "./Data")
+unlink("./Data/Spoorwegen2015.zip") # gooi het zip bestand weg
+rm(URL)
+gem2014 <- readOGR("Data", "NL_Gemeenten2014")
+stations2015 <- readOGR("Data", "NL_Stations2015")
+s <- table(over(stations2015, gem2014["Provincie_naam"]))
+s
+```
+Toon het resultaat van de telling:
+```{r}
+s
+```
 
 
 \newpage
