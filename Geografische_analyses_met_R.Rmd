@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "18 november 2015"
+date: "19 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.1}
+   - \providecommand{\versionnumber}{0.3.6 - "New Morning"}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -355,7 +355,7 @@ Dit is nu waarschijnlijk de standaard documentenmap.
 
 Het wordt aangeraden om (per project) een speciale werkmap in te stellen. Dit doe je met `setwd()`. Bijvoorbeeld:
 
-```{r}
+```{r eval=FALSE}
 setwd("C:/CursusR") # Let op: gebruiek / of \\ (in plaats van \)
 ```
 
@@ -378,7 +378,7 @@ write.table(maanden, file="maanden.csv", sep=",", row.names=FALSE)
 
 \newpage
 
-## Oefening: bestanden downloaden en uitpakken met **R**
+## Oefening: bestanden downloaden en uitpakken met **R** \label{dwnld}
 
 Voor veel oefeningen in dit boek worden datasets gebruikt die als zip bestand op de website [www.twiav.nl](http://www.twiav.nl/nl/geodata.php) staan. Het is niet nodig om deze bestanden zelf handmatig te downloaden en uit te pakken. Met een paar regels code in het **R** script kun je dit automatisch laten doen.
 
@@ -769,6 +769,190 @@ En voor een ESRI Shapefile is het precies hetzelfde...
 
 Let op: het argument `dsn` is verplicht. Als het in te lezen bestand direct in de *working directory* staat (en dus niet in een submap), gebruik dan de volgende syntaxis: `dsn="."`
 
+## Het inlezen van geografische data: `readOGR()` \label{readogr}
+
+In deze oefening gebruiken we het bestand **NL_Gemeenten2014.TAB**. Achtergrondinformatie (metadata) over dit bestand staat in dit document: <http://www.twiav.nl/files/NL_Gemeenten2014_Leesmij.pdf>.
+
+### Stap 1: het klaarzetten van de invoerbestanden
+
+Om het bestand te downloaden, uit te pakken en klaar te zetten in de submap 'Data' van onze werkmap gebruiken we de regels code hieronder. (Deze 'downloadprocedure' wordt toegelicht in paragraaf \ref{dwnld}.)
+
+```{r}
+URL <- "http://www.twiav.nl/files/NL_Gemeenten2014.zip"
+bestand <- file.path(basename(URL))
+dir.create("./Data", showWarnings = FALSE)
+werkmap <- getwd()
+setwd("./Data")
+download.file(URL, destfile = bestand, mode = "wb")
+unzip(bestand)
+unlink(bestand)
+rm(URL, bestand)
+setwd(werkmap)
+rm(werkmap)
+```
+
+Controleer nu of de Mapinfo tabel (bestaande uit meerdere deelbestanden) op de juiste plek staat.
+
+### Stap 2: het inlezen
+
+De functie `readOGR` is onderdeel van de *package* `rgdal`, dus om de functie te kunnen gebruiken moet deze bibliotheek geladen zijn:
+
+```{r}
+library(rgdal)
+```
+
+En dan is het inlezen zelf een fluitje van een cent:
+
+```{r}
+gem2014 <- readOGR(dsn = "Data", layer = "NL_Gemeenten2014")
+```
+
+In de **Environment** tab (in de rechterbovenhoek van **RStudio**) zie je nu het object `gem2014` verschijnen, als **Large SpatialPolygonsDataFrame (403 elements, 2 Mb)**
+
+OK - de gegevens zijn geladen. In dit hoofdstuk gaan we nog even verder met het laden van andere datasets. Verderop in dit boek gaan we de attribuutgegevens van de dataset `gem2014` inhoudelijk verkennen (zie hoofdstuk \ref{EDA}).
+
+Toon de geometrie in de **Plots** tab:
+```{r}
+plot(gem2014, col = "darkgreen", border = "lightgray")
+```
+
+Vraag de klasse op:
+```{r}
+class(gem2014)
+```
+Kijk ook naar de samenvatting (niet afgedrukt in dit boek, omdat deze bijna twee pagina's zou beslaan):
+```{r eval=FALSE}
+summary(gem2014)
+```
+We zien hier dat er al een CRS aan de dataset is toegekend. Ja, nogal wiedes, deze coördinaatreferentiegegevens zijn overgenomen van het invoerbestand.
+
+Als je de `proj4string` opvraagt, dan zie je dat de dataset geprojecteerd is in RD-coördinaten (en waarom de string in dit boek van de pagina loopt, dat weet ik nog niet...):
+
+```{r}
+proj4string(gem2014)
+```
+
+## Meer gegevens inlezen: nog twee MapInfo tabellen
+
+In deze paragraaf lezen we de  tabellen **NL_Spoorwegen2015.TAB** en **NL_Stations2015.TAB** in, omdat we deze gaan gebruiken in allerlei oefeningen in de komende hoofdstukken. Achtergrondinformatie (metadata) over deze bestanden staat in dit document: <http://www.twiav.nl/files/SpoorwegenEnStations_Leesmij.pdf>.
+
+### Opnieuw stap 1: het klaarzetten van de invoerbestanden
+
+De twee tabellen zitten samen in één zipbestand, dat we willen downloaden en uitpakken in de submap 'Data' van onze werkmap.
+
+En daarvoor hoeven we alleen de URL te wijzigen in de eerder gebruikte 'downloadprocedure':
+
+```{r}
+URL <- "http://www.twiav.nl/files/Spoorwegen2015.zip"
+bestand <- file.path(basename(URL))
+dir.create("./Data", showWarnings = FALSE)
+werkmap <- getwd()
+setwd("./Data")
+download.file(URL, destfile = bestand, mode = "wb")
+unzip(bestand)
+unlink(bestand)
+rm(URL, bestand)
+setwd(werkmap)
+rm(werkmap)
+```
+
++ *Hé, het valt op dat we telkens het commando `dir.create("./Data", showWarnings = FALSE)` meegeven. Waarom is dat?*
+
++ *Nou, dat doen we om zeker te weten dat deze map bestaat. Als de map nog niet aanwezig is dan wordt-ie aangemaakt, en anders wordt de bestaande map gebruikt. Het is dus niet zo dat er telkens data verloren gaan omdat er opnieuw een lege map wordt aangemaakt... En o ja, we willen voorkomen dat **R** ons steeds lastigvalt met de meedeling dat de map al bestaat, vandaar `showWarnings = FALSE`*
+
+Controleer of beide tabellen in de submap 'Data' staan.
+
+### Opnieuw stap 2: het inlezen
+
+We gaan twee objecten aanmaken:
+
+```{r}
+stations2015 <- readOGR(dsn = "Data", layer = "NL_Stations2015")
+spoorwegen2015 <- readOGR(dsn = "Data", layer = "NL_Spoorwegen2015")
+```
+
+Toon de datasets in de **Plots** tab:
+
+```{r}
+plot(gem2014, col = "lightgray", border = "lightgray")
+plot(spoorwegen2015, add = TRUE)
+plot(stations2015, pch = 19, cex = .4, col = "purple", add = TRUE)
+```
+
+En vraag de klasse op:
+```{r}
+class(stations2015)
+class(spoorwegen2015)
+```
+
+Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de datasets hebben.  
+
+
+
+
+## En nog een keer gegevens inlezen: nu een ESRI Shapefile
+
+In deze paragraaf lezen we het bestand **bevolkingskern_2011.shp** in. Dit is een ESRI Shapefile die door het Centraal Bureau voor de Statistiek (CBS) wordt aangeboden op [deze pagina](http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/publicaties/geografische-data/archief/2014/2014-bevolkingskernen-in-nederland-2011.htm). Achtergrondinformatie (metadata) over deze bestanden staat in dit document: [2014BevolkingskerneninNederland2011pub.pdf](http://www.cbs.nl/NR/rdonlyres/13361B85-7FD0-4614-87F4-6625315E50FC/0/2014BevolkingskerneninNederland2011pub.pdf).
+
+### En weer stap 1: het klaarzetten van de invoerbestanden
+
+We moeten de eerder gebruikte 'downloadprocedure' hier even aanpassen, omdat de URL die naar het te downloaden zipbestand verwijst niett de naam van dit bestand bevat. Als je het bestand handmatig download, dan zul je ontdekken dat het de naam **2011-bevolkingskern-shape.zip** heeft. Maar wij gaan deze naam hier niet gebruiken. Omdat we het bestand toch direct na het uitpakken gaan weggooien, kunnen we het net zo goed een tijdelijke naam geven, bijvoorbeeld **tijdelijk.zip**:
+
+```{r eval=FALSE}
+URL <- "http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/links/
+                                      2014-bevolkingskernen-in-nederland-2011-el.htm"
+bestand <- "tijdelijk.zip"
+dir.create("./Data", showWarnings = FALSE)
+werkmap <- getwd()
+setwd("./Data")
+download.file(URL, destfile = bestand, mode = "wb")
+unzip(bestand)
+unlink(bestand)
+rm(URL, bestand)
+setwd(werkmap)
+rm(werkmap)
+```
+
+Controleer of het bestand met de bevolkingskernen in de submap 'Data' staat.
+
+### En ook nog een keer stap 2: het inlezen
+
+We maken een object aan:
+
+```{r eval=FALSE}
+bevkern <- readOGR(dsn = "Data", layer = "bevolkingskern_2011")
+```
+
+Toon de dataset in de **Plots** tab (dit geeft de afbeelding zoals die op de voorpagina van deze bundel staat):
+
+```{r eval=FALSE}
+plot(gem2014, col = "darkgreen", border = "darkgreen")
+plot(bevkern, col= "red", border = "red", add = TRUE)
+```
+
+En vraag de klasse op:
+```{r eval=FALSE}
+class(bevkern)
+```
+
+Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de dataset heeft.  
+
+
+\newpage
+
+# Verkennende gegevensanalyse: *Exploratory Data Analysis* (**EDA**) \label{EDA} 
+
+## Staafdiagram
+
+
+```{r}
+inw_prov <- aggregate(Inwoners ~ Provincie_naam, gem2014, sum)
+inw_prov
+par(mar = c(9,10,4,2) + 0.1,  mgp = c(5, 1, 0))
+barplot(inw_prov$Inwoners/1000, names = inw_prov$Provincie_naam, las = 2,
+        ylab = "Inwoners (* 1000)", space = 0, col = "lightblue",
+        main = "Aantal inwoners per provincie - 1 januari 2014")
+```
 
 \newpage
 
@@ -906,16 +1090,6 @@ s <- table(over(stations2015, gem2014["Provincie_naam"]))
 ```{r include=FALSE}
 library(sp)
 library(rgdal)
-dir.create("./Data")
-URL <- "http://www.twiav.nl/files/NL_Gemeenten2014.zip"
-download.file(URL, destfile ="./Data/NL_Gemeenten2014.zip", mode = "wb")
-unzip("./Data/NL_Gemeenten2014.zip", exdir = "./Data")
-unlink("./Data/NL_Gemeenten2014.zip") # gooi het zip bestand weg
-URL <- "http://www.twiav.nl/files/Spoorwegen2015.zip"
-download.file(URL, destfile ="./Data/Spoorwegen2015.zip", mode = "wb")
-unzip("./Data/Spoorwegen2015.zip", exdir = "./Data")
-unlink("./Data/Spoorwegen2015.zip") # gooi het zip bestand weg
-rm(URL)
 gem2014 <- readOGR("Data", "NL_Gemeenten2014")
 stations2015 <- readOGR("Data", "NL_Stations2015")
 s <- table(over(stations2015, gem2014["Provincie_naam"]))
@@ -940,6 +1114,8 @@ s
 + Ihaka, Ross (2009). *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
 
 + Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
+
++ Peng, Roger D. (2015). *Exploratory Data Analysis with R*. Gepubliceerd als e-book op Leanpub. Er is een versie gepubliceerd op 12 november 2015. URL: <http://leanpub.com/exdata>
 
 + Venables, W. N.,  Smith, D. M. en het R Core Team (2015). *An Introduction to R. Notes on R: A Programming Environment for Data Analysis and Graphics*. Version 3.2.2 (2015-08-14). URL: <https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf>
 
