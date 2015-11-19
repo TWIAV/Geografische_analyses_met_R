@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "19 november 2015"
+date: "20 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.6 - "New Morning"}
+   - \providecommand{\versionnumber}{0.3.7}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -942,16 +942,123 @@ Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de dataset 
 
 # Verkennende gegevensanalyse: *Exploratory Data Analysis* (**EDA**) \label{EDA} 
 
-## Staafdiagram
+## Diagrammen
 
+Gegevens hoeven niet *altijd* op een kaart gepresenteerd te worden. Soms kan een gewone staaf- of cirkeldiagram ook al heel informatief zijn.
+
+### Staafdiagram: `barplot()`
+
+We gebruiken de functie `aggregate` om het aantal inwoners per provincie te berekenen:
 
 ```{r}
 inw_prov <- aggregate(Inwoners ~ Provincie_naam, gem2014, sum)
 inw_prov
+```
+
+Voordat we deze gegevens in een staafdigram gaan verwerken, gebruiken we de functie `par()` om een aantal grafische parameters aan te passen, zodat onze plot er netjes uit komt te zien:
+
+```{r}
 par(mar = c(9,10,4,2) + 0.1,  mgp = c(5, 1, 0))
-barplot(inw_prov$Inwoners/1000, names = inw_prov$Provincie_naam, las = 2,
-        ylab = "Inwoners (* 1000)", space = 0, col = "lightblue",
-        main = "Aantal inwoners per provincie - 1 januari 2014")
+```
+
++ `mar`: Een numerieke vector van de vorm `c(onder, links, boven, rechts)`, die het aantal lijnen van de marge geeft voor de vier zijden van de afdruk. De standaardinstelling is C (5, 4, 4, 2) + 0,1.
++ `mgp`: De marge lijn (in mex eenheden) voor de astitel, aslabels en aslijn. De standaardinstelling is c (3, 1, 0).
+
+\newpage
+
+Nu zijn we klaar om ons staafdiagram te produceren.
+
+Gebruik de help om een idee te krijgen waar de verschillende parameters voor dienen. Je kunt natuurlijk ook gewoon een beetje expereimenteren met deze instellingen, om te kijken wat voor effect dat heeft.
+
+Wij zijn tot het volgende barplot statement gekomen:
+
+```{r}
+barplot(inw_prov$Inwoners/1000000, names = inw_prov$Provincie_naam, las = 2,
+        cex.axis = .8, cex.names = .8, ylab = "Inwoners (* 1.000.000)", space = 0,
+        col = "lightblue", main = "Aantal inwoners per provincie - 1 januari 2014")
+```
+
+\newpage
+
+### Cirkeldiagram: `pie()`
+
+We gebruiken de functie `aggregate` om het aantal inwoners per landsdeel te berekenen:
+
+```{r}
+inw_landsdeel <- aggregate(Inwoners ~ Landsdeel_naam, gem2014, sum)
+inw_landsdeel
+```
+
+Als je snel even een indruk wil krijgen van de verhouding tussen de verschillende landsdelen, dan kun je het volgende simpele statement gebruiken:
+```{r}
+pie(inw_landsdeel$Inwoners, labels = inw_landsdeel$Landsdeel_naam)
+```
+
+Dit resultaat is misschien niet visueel aantrekkelijk, maar helder en duidelijk genoeg voor een eerste verkennende dataanalyse.
+
+\newpage
+
+In de onderstaande regels code berekenen we eerst een percentage dat we in de labels verwerken.
+
+**Vraag:** Wat is het verschil tussen de functies `paste()` en `paste0()`?
+
+Hiermee plotten wij een meer publicabel cirkeldiagram:
+```{r}
+pct <- round(inw_landsdeel$Inwoners/sum(inw_landsdeel$Inwoners)*100, 1)
+pct <- paste0(pct, "%")
+lbls <- paste(inw_landsdeel$Landsdeel_naam, "\n", pct)
+pie(inw_landsdeel$Inwoners, labels = lbls,
+    cex = .8, col = c("blue", "red", "darkgreen", "yellow"),
+    main = "Aandeel inwoners per landsdeel - 1 januari 2014")
+```
+
+**Uitdaging:** Pas de labels zo aan, dat ze niet alleen het percentage, maar ook het absolute aantal inwoners per landsdeel weergeven. En zorg er daarbij voor dat deze inwoneraantallen netjes geformatteerd zijn, met een '.' tussen de duizendtallen. (**Tip:** Gebruik hiervoor de functie `format()`, met `big.mark = "."`.)  
+
+\newpage
+
+### Driedimensionaal cirkeldiagram: `pie3D()`
+
+Tijdens het googlen kwamen wij nog het *package* `[plotrix](http://cran.r-project.org/web/packages/plotrix/index.html) tegen.
+
+Daarmee kun je leuk dit 'driedimensionale' cirkeldiagram maken:
+
+```{r}
+library(plotrix)
+pie3D(inw_landsdeel$Inwoners, labels = inw_landsdeel$Landsdeel_naam,
+      cex = .8, explode = .2, main = "Aandeel inwoners per landsdeel - 1 januari 2014")
+```
+\newpage
+
+### Waaierdiagram: `fan.plot()`
+
+Ook met behulp van `plotrix`:
+
+```{r}
+fan.plot(inw_landsdeel$Inwoners,labels=as.character(inw_landsdeel$Landsdeel_naam),
+         align="left", max.span=pi,
+         main = "Aandeel inwoners per landsdeel - 1 januari 2014")
+```
+
+\newpage
+
+# Thematisch presenteren
+
+## De bibliotheek `tmap`
+
+
+## Choropleet
+
+```{r}
+library(tmap)
+ qtm(shp = gem2014, fill = "Bevolkingsdichtheid", fill.style = "kmeans",
+     fill.title = "Aantal inwoners per vierkante kilometer\n1 januari 2014")
+```
+
+## Chorochromaat
+
+```{r}
+library(tmap)
+ qtm(shp = gem2014, fill = "Provincie_naam", fill.title = "Provincie")
 ```
 
 \newpage
