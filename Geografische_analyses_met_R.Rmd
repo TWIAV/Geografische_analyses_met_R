@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "20 november 2015"
+date: "21 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.7}
+   - \providecommand{\versionnumber}{0.3.8}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -1045,14 +1045,24 @@ fan.plot(inw_landsdeel$Inwoners,labels=as.character(inw_landsdeel$Landsdeel_naam
 
 ## De bibliotheek `tmap`
 
+Als je graag mooie thematische kaartjes wilt gaan maken met **R**, dan moet je beslist eens kijken naar de nieuwe *package* `tmap`. Deze bibliotheek is ontwikkeld door [Martijn Tennekes](http://www.von-tijn.nl/tijn), werkzaam bij het Nederlandse Centraal Bureau voor de Statistiek.
+
+Tennekes is in 2013 begonnen met de ontwikkeling van deze package - de *Initial commit* in de [GitHub repository](https://github.com/mtennekes/tmap) dateert van 25 november 2013 - en op 28 mei 2015 is versie 1.0 van `tmap` vrijgegeven.
+
+En in de zomer van 2015 heeft hij een [presentatie](http://user2015.math.aau.dk/presentations/20.pdf) gegeven, over `tmap`, op de [useR! Conference  2015](http://user2015.math.aau.dk/) in Aalborg, Denemarken.
+
+\newpage
 
 ## Choropleet
 
 ```{r}
 library(tmap)
- qtm(shp = gem2014, fill = "Bevolkingsdichtheid", fill.style = "kmeans",
-     fill.title = "Aantal inwoners per vierkante kilometer\n1 januari 2014")
+ qtm(shp = gem2014, fill = "Bevolkingsdichtheid",
+     fill.style = "kmeans", title = "Bevolkingsdichtheid",
+     fill.title = "inwoners/vierkante kilometer\n1 januari 2014")
 ```
+
+\newpage
 
 ## Chorochromaat
 
@@ -1188,23 +1198,79 @@ Hier vind je een uitgebreid script - [InteractiefKaartvensterInRStudio.R](http:/
 
 # Ruimtelijke analyses
 
-## Overlapanalyse (punt in polygoon)
+## Overlapanalyse (punt in polygoon): `over()`
 
-Tel het aantal stations per provincie:
+Met de functie `over()` uit de `sp` bibliotheek kun je overlapanalyses doen. In deze paragraaf doen we wat eenvoudige oefeningen met punten in polygonen, namelijk stations in gemeenten.
+
+De functie `over()` kijkt naar de locatie van *object x* (het station) en haalt de attribuutgegevens op van *object y* (de gemeente).
+
+Bij de vergelijking van twee ruimtelijke objecten - een `SpatialPointsDataFrame` en een `SpatialPolygonsDataFrame` - komt de functie terug met een `data.frame` (een object zonder geometrie).
+
+Probeer het volgende maar eens uit:
+
 ```{r eval=FALSE}
-s <- table(over(stations2015, gem2014["Provincie_naam"]))
+Gem_met_stations <- over(stations2015, gem2014)
+class(Gem_met_stations)
+View(Gem_met_stations)
+```
+
+Het data.frame `Gem_met_stations` bevat 398 observaties met 34 variabelen. Er zijn immers 398 stations, en voor elk station zijn alle 34 attribuutgegevens van de betreffende gemeente opgehaald. Sommige gemeenten komen meerdere keren voor, omdat er meer dan één station is.
+
+OK - dit was om te laten zien hoe de functie werkt. Hieronder volgen twee praktische toepassingen.
+
+### Verrijken van een tabel met gegevens over de locatie - met `spCbind()`
+
+We willen graag `stations2015` uitbreiden met een attribuutkolom **Gemeentenaam**.
+
+**Stap 1:** genereer de attribuutkolom:
+
+```{r eval=FALSE}
+Gem_per_station <- over(stations2015, gem2014["Gemeentenaam"])
+class(Gem_per_station)
+View(Gem_per_station)
+```
+
+Nu willen we deze ene kolom toevoegen aan `stations2015`. Dit kan met `spCbind()` uit de bibliotheek `[maptools](https://cran.r-project.org/web/packages/maptools/maptools.pdf)`. (`spCbind` verschaft *cbind-achtige* methoden voor Spatial*DataFrame objecten.)
+
+**Stap 2:** voeg de kolom toe:
+
+```{r eval=FALSE}
+library(maptools)
+stations2015 <- spCbind(stations2015, Gem_per_station)
+View(stations2015)
+```
+
+En nu willen we ook graag een attribuutkolom **Provincie_naam** toevoegen.
+
+Deze keer hebben we **beide stappen gecombineerd:**
+
+```{r eval=FALSE}
+stations2015 <- spCbind(stations2015, over(stations2015, gem2014["Provincie_naam"]))
+View(stations2015)
+```
+
+\newpage
+
+### Telling per gebiedseenheid - met `table()`
+
+We willen graag weten hoeveel stations er in elke provincie liggen.
+
+Met `over()` halen we de provincienaam bij elk station op, en met `table()` zetten we in één moeite door een telling van de voorkomens in een tabelletje:
+
+```{r eval=FALSE}
+stations_per_provincie <- table(over(stations2015, gem2014["Provincie_naam"]))
 ```
 ```{r include=FALSE}
 library(sp)
 library(rgdal)
 gem2014 <- readOGR("Data", "NL_Gemeenten2014")
 stations2015 <- readOGR("Data", "NL_Stations2015")
-s <- table(over(stations2015, gem2014["Provincie_naam"]))
-s
+stations_per_provincie <- table(over(stations2015, gem2014["Provincie_naam"]))
 ```
 Toon het resultaat van de telling:
 ```{r}
-s
+stations_per_provincie
+View(stations_per_provincie) # in de Data Viewer
 ```
 
 
