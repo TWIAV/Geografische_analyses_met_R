@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "21 november 2015"
+date: "22 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.8}
+   - \providecommand{\versionnumber}{0.3.9}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -27,17 +27,23 @@ mainfont: Calibri
 ![Frontpage](images/Frontpage.png)
 \newpage
 \thispagestyle{empty}
-\mbox{}
-\newpage
-\pdfbookmark{\contentsname}{toc}
-\hypersetup{linkcolor=black}
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
-\tableofcontents
-\hypersetup{linkcolor=blue}
-\newpage
-\thispagestyle{empty}
-\mbox{}
+
+\tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Dit is eigenlijk een \textbf{e-boek}...]
+Dit PDF document is zo opgemaakt dat het dubbelzijdig kan worden afgedrukt op A4 formaat.\par
+Maar bedenk - voordat je gaat printen - eerst welke nadelen een gedrukte versie allemaal heeft:
+\begin{itemize}
+\item \textbf{Geen Ctrl+F:} op papier kun je veel minder makkelijk zoeken dan in een electronisch document. (Er is wel een inhoudsopgave, maar er staat geen index achter in het boek...)
+\item \textbf{Geen Ctrl+C/Ctrl+V:} vanaf papier kun je geen codevoorbeelden knippen en plakken; je zal alle code zelf in moeten typen. (Maar of dat nou echt een nadeel is...?)
+\item \textbf{Hyperlinks werken niet op papier:} dit document staat vol verwijzingen - zowel interne als externe - die in de electronische versie wel met één klik te volgen zijn.
+\item \textbf{Letters hebben een vaste grootte:} op papier kun je de lettergrootte niet aanpassen - en dat kan vooral voor de oudere lezertjes onder ons best een probleem zijn.
+\end{itemize}
+Kortom: het welgemeende advies is om dit boek te lezen met een PDF reader op je favoriete \textit{device}. En op het moment dat je echt aan de slag gaat: gewwon op de computer waarop je ook \textbf{R} en \textbf{RStudio} hebt draaien.\par
+(En als je dan toch gaat afdrukken, overweeg dan om dat wel in zwart-wit te doen.)
+\end{tcolorbox}
+
+Dit is een uitgave van [TWIAV - Onderzoek & Advies](http://www.twiav.nl/).
+
 \newpage
 
 \twocolumn
@@ -60,14 +66,30 @@ Ik hoop dan ook van harte dat mijn aantekeningen nuttig zijn voor anderen die ke
 Overigens is dit een '*werk in uitvoering*'. Er zullen de komende tijd nog enkele nieuwe versies van deze cursushandleiding verschijnen. De meest recente versie staat altijdd [hier](http://www.twiav.nl/nl/cursusR/Geografische_analyses_met_R.pdf).
 
 
-
-
-
-
 \href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografische analyses met R}{Egge-Jan Pollé}
 
 Asperen - November 2015
 
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Oproep: beoordelaars gezocht]
+Geen enkel goed boek kan zonder meelezers. Dus als je je geroepen voelt om (een deel van) het boek grondig te beoordelen en van commentaar voorzien - zowel tekstueel als codetechnisch - dan houdt de auteur zich van harte aanbevolen.\par
+De beloning? Een vermelding in het voorwoord van een volgende editie van deze bundel.
+\end{tcolorbox}
+
+\onecolumn
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+\pdfbookmark{\contentsname}{toc}
+\hypersetup{linkcolor=black}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\tableofcontents
+\hypersetup{linkcolor=blue}
+\newpage
+\thispagestyle{empty}
+\mbox{}
 \newpage
 
 \newpage
@@ -207,7 +229,6 @@ Op het moment van schrijven is versie 3.2.2 van 14 augustus 2015 de meest recent
 
 Dubbelklik na het downloaden op het bestand **R-X.X.X-win.exe** om de installatie te starten. (Op dit moment is dat *R-3.2.2-win.exe*.) 
 
-\tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Codenaam]
 Elke nieuwe versie van \textbf{R} krijgt naast een nummer ook een codenaam. Zo heet versie 3.2.2  \textbf{Fire Safety}. Voorbeelden van enkele codenamen uit het verleden zijn:  \textbf{Spring Dance} (3.0.3),  \textbf{Security Blanket} (2.15.3),  \textbf{Trick or Treat} (2.15.2) en  \textbf{December Snowflakes} (2.14.1).\par
 En ook de release die jij hebt geïnstalleerd  heeft een bijzonder codenaam. Deze verschijnt in de console als je \textbf{R} opstart.
@@ -303,7 +324,7 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 Door middel van een *package* wordt extra functionaliteit toegevoegd aan **R**. Er zijn in de loop der jaren veel van dergelijke bibliotheken aan het **Comprehensive R Archive Network** toegevoegd, met bijdragen van wetenschappers en programmeurs van over de hele wereld. Ook vanuit Nederland. 
 
-Tijdens een presentatie in oktober 2009 kon Ross Ihaka nog 'opscheppen' dat er al meer dan 1.700 *packages* aan het **CRAN** waren toegevoegd ([Ihaka, 2009](https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf)), maar nu - november 2015, dus zes jaar later - staat de teller al op het aantal van 7.488 bijdragen (Zie: <https://cran.r-project.org/web/packages/>).     
+Tijdens een presentatie in oktober 2009 kon Ross Ihaka nog 'opscheppen' dat er al meer dan 1.700 *packages* aan het **CRAN** waren toegevoegd ([Ihaka, 2009](https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf)), maar nu - op 22 november 2015, dus zes jaar later - staat de teller al op het aantal van 7.512 bijdragen (Zie: <https://cran.r-project.org/web/packages/>), en de teller loopt door.     
 
 Ook voor het uitvoeren van geografische analyses met  **R** zijn vele bibliotheken beschikbaar. Voor een overzicht, zie: [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html).
 
@@ -332,6 +353,16 @@ library(tmap) # bibliotheeknaame zonder aanhalingstekens
 Als je een (fout)melding krijgt dat een bepaalde functie onbekend is, dan kan dat komen doordat je de benodigde bibliotheek niet geladen hebt.
 
 In **R** scripts zie je vaak bovenaan één of meerdere `library()` statements staan, zodat de benodigde bibliotheken geladen worden voordat de rest van het script wordt uitgevoerd.
+
+### Zelf een bibliotheek bouwen: `devtools` \label{dvtls}
+
+Het is mogelijk om zelf een **R** *package* te bouwen en dit via het **CRAN** met de weredwijde gemeenschap te delen. Misschien dat je nu denkt: 'Wat? Ik ben nog nauwelijks met **R** begonnen, en nu wil je al direct dat ik een bibliotheek ga bouwen?!' Nee, nee, nee: ik wil niks. Maar wellicht krijg je de smaak te pakken, en heb je op een dag wel de behoefte om een eigen *package* te creëren.
+
+Overigens hebben we gezien dat er al heel veel *packages* zijn. Dus als je iets wil dat met **base R** niet lijkt te kunnen, kijk dan - voordaat je zelf iets bouwt - zeker even rond of er niet al een bibliotheek is die de gevraagde functionaliteit wel biedt. 
+
+Het *package* [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) biedt gereedschap om het bouwen van een **R** bibliotheek gemakkelijker te maken.
+
+Verderop in deze handleiding zul je nog een andere reden vinden om `devtools` te installeren. Want naast de *packages* die al op het **CRAN** staan zijn er nog veel andere in ontwikkeling. En als je zo'n 'experimentele' bibliotheek wilt installeren, dan heb je daar vaak `devtools` voor nodig. 
 
 \newpage
 
@@ -669,9 +700,9 @@ class(mus)
 proj4string(mus) <- CRS("+init=epsg:28992")
 ```
 
-Het object `mus` is identiek aan het object `ams.spdf`. Dit kun je controleren door de samenvatting op te vragen: `summary(mus)`.
+Doordat het object `mus` op een andere manier is aangemaakt dan `ams.spdf`, is er 'diep onder water' een klein technisch veschil tussen de beide dataframes\footnote{Nieuwsgierig naar dit verschil? Ga op onderzoek uit met {\small\ttfamily{all.equal(ams.spdf, mus)}}}. Maar voor praktische toepassingen zijn de objecten gelijkwaardig: het betreft in beide gevallen een geldig **SpatialPointsDataFrame**. Dit kun je controleren door de samenvatting op te vragen: `summary(ams.spdf)` en `summary(mus)`.
 
-Welke code beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur, een kwestie van smaak. En, zoals de oude Romeinen pleegden te zeggen: *De gustibus non est disputandum*.
+Welke manier beter is? Ach, dat is vaak een persoonlijke keuze van de programmeur, een kwestie van smaak. En, zoals de oude Romeinen pleegden te zeggen: *De gustibus non est disputandum*.
 
 \newpage
 
@@ -705,7 +736,8 @@ plot(torens, pch = 19, col = "red", axes = TRUE, main = "De oorsprong van het RD
 text(coordinates(torens), as.character(torens$toren), cex = .7, pos = 4, col = "red")
 ```
 
-
+\newpage
+\mbox{}
 \newpage
 
 # Het inlezen van geografische gegevens in R
@@ -902,9 +934,9 @@ We moeten de eerder gebruikte 'downloadprocedure' hier even aanpassen, omdat de 
 URL <- "http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/links/
                                       2014-bevolkingskernen-in-nederland-2011-el.htm"
 bestand <- "tijdelijk.zip"
-dir.create("./Data", showWarnings = FALSE)
+dir.create("./CBS", showWarnings = FALSE)
 werkmap <- getwd()
-setwd("./Data")
+setwd("./CBS")
 download.file(URL, destfile = bestand, mode = "wb")
 unzip(bestand)
 unlink(bestand)
@@ -913,21 +945,22 @@ setwd(werkmap)
 rm(werkmap)
 ```
 
-Controleer of het bestand met de bevolkingskernen in de submap 'Data' staat.
+Controleer of het bestand met de bevolkingskernen in de submap 'CBS' staat.
 
 ### En ook nog een keer stap 2: het inlezen
 
 We maken een object aan:
 
 ```{r eval=FALSE}
-bevkern <- readOGR(dsn = "Data", layer = "bevolkingskern_2011")
+bevkern <- readOGR(dsn = "CBS", layer = "bevolkingskern_2011")
 ```
 
-Toon de dataset in de **Plots** tab (dit geeft de afbeelding zoals die op de voorpagina van deze bundel staat):
+Toon de dataset in de **Plots** tab:
 
 ```{r eval=FALSE}
 plot(gem2014, col = "darkgreen", border = "darkgreen")
 plot(bevkern, col= "red", border = "red", add = TRUE)
+# dit geeft de afbeelding zoals die op de voorpagina van deze bundel staat
 ```
 
 En vraag de klasse op:
@@ -937,7 +970,8 @@ class(bevkern)
 
 Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de dataset heeft.  
 
-
+\newpage
+\mbox{}
 \newpage
 
 # Verkennende gegevensanalyse: *Exploratory Data Analysis* (**EDA**) \label{EDA} 
@@ -1047,9 +1081,23 @@ fan.plot(inw_landsdeel$Inwoners,labels=as.character(inw_landsdeel$Landsdeel_naam
 
 Als je graag mooie thematische kaartjes wilt gaan maken met **R**, dan moet je beslist eens kijken naar de nieuwe *package* `tmap`. Deze bibliotheek is ontwikkeld door [Martijn Tennekes](http://www.von-tijn.nl/tijn), werkzaam bij het Nederlandse Centraal Bureau voor de Statistiek.
 
-Tennekes is in 2013 begonnen met de ontwikkeling van deze package - de *Initial commit* in de [GitHub repository](https://github.com/mtennekes/tmap) dateert van 25 november 2013 - en op 28 mei 2015 is versie 1.0 van `tmap` vrijgegeven.
+De ontwikkeling van deze package is begonnen in 2013 - de *Initial commit* in de [GitHub repository](https://github.com/mtennekes/tmap) dateert van 25 november van dat jaar - en op 28 mei 2015 is versie 1.0 van `tmap` vrijgegeven.
 
-En in de zomer van 2015 heeft hij een [presentatie](http://user2015.math.aau.dk/presentations/20.pdf) gegeven, over `tmap`, op de [useR! Conference  2015](http://user2015.math.aau.dk/) in Aalborg, Denemarken.
+In de zomer van 2015 heeft Tennekes een [presentatie](http://user2015.math.aau.dk/presentations/20.pdf) gegeven, over `tmap`, op de [useR! Conference 2015](http://user2015.math.aau.dk/) in Aalborg, Denemarken.
+
+
+
+\tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
+\begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Een 'concurrerende' \textit{package}? {\small\ttfamily{cartography}}]
+\begin{itemize}
+\item \textbf{1} een
+\item \textbf{2} twee
+\item \textbf{3} drie
+\end{itemize}
+\end{tcolorbox}
+
+
+
 
 \newpage
 
@@ -1071,6 +1119,8 @@ library(tmap)
  qtm(shp = gem2014, fill = "Provincie_naam", fill.title = "Provincie")
 ```
 
+\newpage
+\mbox{}
 \newpage
 
 # Interactieve kaartvensters in R \label{chLflt}
@@ -1195,6 +1245,8 @@ Voor de oefening in deze paragraaf verwijzen we naar het volgende blog:
 Hier vind je een uitgebreid script - [InteractiefKaartvensterInRStudio.R](http://www.twiav.nl/nl/InteractiefKaartvensterInRStudio.R) - waarmee meerdere lagen aan een kaart worden toegevoegd, inclusief een bijbehorende *LayersControl*.
 
 \newpage
+\mbox{}
+\newpage
 
 # Ruimtelijke analyses
 
@@ -1273,7 +1325,62 @@ stations_per_provincie
 View(stations_per_provincie) # in de Data Viewer
 ```
 
+\newpage
 
+# Geocoderen
+
+## De bibliotheek `photon`
+
+Er bestaan verschillende oplossingen voor het geocoderen van adressen en plaatsnamen met R. Vaak zijn deze oplossingen gebaseerd op commerciële diensten (bijvoorbeeld Google) en maken ze gebruik van niet-vrije data.
+
+In deze paragraaf kijken we naar een oplossing die gebruik maakt van - vrij beschikbare - OpenStreetMap gegegevens, namelijk `photon`. Wij zijn deze bibliotheek op het spoor gekomen via deze blog: [Géocoder en masse avec R et sans Google Maps](http://rgeomatic.hypotheses.org/622).
+
+Het *package* `phothon` biedt een **R** Interface naar de Photon API.
+
+Photon is een open source geocoder gebouwd voor OpenStreetMap data en is gebaseerd op elasticsearch. Met deze bibliotheek kun je een Photon API bevragen. Het resultaat wordt gegeven in het formaat van een data frame.
+
+`photon` is nog in ontwikkeling, en daarom nog niet beschikbaar op het **CRAN**, maar wel op GitHub: <https://github.com/rCarto/photon>.
+
+Om `photon` te kunnen installeren heb je `devtools` nodig (zie paragraaf \ref{dvtls}):
+
+```{r eval=FALSE}
+install.packages("devtools")
+```
+
+Nu kun je `photon` installeren en laden:
+
+```{r eval=FALSE}
+require(devtools)  
+devtools::install_github(repo = 'rCarto/photon')
+library(photon)
+```
+```{r echo=FALSE}
+library(photon)
+```
+En nu kun je gaan geocoderen:
+
+```{r}
+loc <- c("Wierdijk 12 - 22,1601 LA Enkhuizen", # Zuiderzeemuseum, Enkhuizen
+         "Avenue Ceramique 250, 6221 KX Maastricht") # Bonnefantenmuseum, Maastricht
+geocode(loc, limit = 1, key = "place")
+```
+
+\newpage
+\mbox{}
+\newpage
+
+# Rasteranalyse
+
+## De bibliotheek `raster`
+
+Met **R** kun je ook uitgebreide rasteranalyses uitvoeren.
+
+Voor dit hoofdstuk moeten we nog een aantal eenvoudige oefeningen bedenken.
+
+De auteur van dit boek heeft al wel deze blog geschreven: [raster(): het samenvoegen van rasterbestanden in R](http://www.twiav.nl/nl/blog0002.php)
+
+\newpage
+\mbox{}
 \newpage
 
 # Literatuurlijst {-}
