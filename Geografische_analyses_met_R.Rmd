@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "22 november 2015"
+date: "23 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.3.9}
+   - \providecommand{\versionnumber}{0.4.0 - "Geobuzz"}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -89,7 +89,7 @@ De beloning? Een vermelding in het voorwoord van een volgende editie van deze bu
 \hypersetup{linkcolor=blue}
 \newpage
 \thispagestyle{empty}
-\mbox{}
+*Voor Sacha*
 \newpage
 
 \newpage
@@ -740,7 +740,7 @@ text(coordinates(torens), as.character(torens$toren), cex = .7, pos = 4, col = "
 \mbox{}
 \newpage
 
-# Het inlezen van geografische gegevens in R
+# Het inlezen van geografische gegevens in R \label{inlzn}
 
 ## De bibliotheek `rgdal`
 
@@ -920,7 +920,7 @@ class(spoorwegen2015)
 Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de datasets hebben.  
 
 
-
+\newpage
 
 ## En nog een keer gegevens inlezen: nu een ESRI Shapefile
 
@@ -928,7 +928,13 @@ In deze paragraaf lezen we het bestand **bevolkingskern_2011.shp** in. Dit is ee
 
 ### En weer stap 1: het klaarzetten van de invoerbestanden
 
-We moeten de eerder gebruikte 'downloadprocedure' hier even aanpassen, omdat de URL die naar het te downloaden zipbestand verwijst niett de naam van dit bestand bevat. Als je het bestand handmatig download, dan zul je ontdekken dat het de naam **2011-bevolkingskern-shape.zip** heeft. Maar wij gaan deze naam hier niet gebruiken. Omdat we het bestand toch direct na het uitpakken gaan weggooien, kunnen we het net zo goed een tijdelijke naam geven, bijvoorbeeld **tijdelijk.zip**:
+We moeten de eerder gebruikte 'downloadprocedure' hier op twee punten aanpassen:
+
++ De ESRI en de Mapinfo bestanden mogen niet in dezelfde map staan (want dan geeft `readOGR()` foutmeldingen). We moeten dus een nieuwe submap aanmaken, die tevens als `dsn` zal dienen bij het inlezen. Wij hebben voor de mapnaam 'CBS' gekozen.
+
++ De naam van het te downloaden bestand staat niet in de URL die naar dit bestand verwijst. Dus de eerder gebruikte syntaxis om de bestandsnaam te verkrijgen - `bestand <- file.path(basename(URL))` - zal hier niet werken. We moeten iets anders bedenken voor deze naam,  bijvoorbeeld **tijdelijk.zip**. (Als je het bestand handmatig download, dan zul je ontdekken dat het de naam **2011-bevolkingskern-shape.zip** heeft. Maar wij gaan deze naam hier niet gebruiken. Omdat we het bestand toch direct na het uitpakken weer weggooien, kunnen we het net zo goed een tijdelijke naam geven.)
+
+En dan kun je de shapefile als volgt downloaden en uitpakken:
 
 ```{r eval=FALSE}
 URL <- "http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/links/
@@ -971,10 +977,222 @@ class(bevkern)
 Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de dataset heeft.  
 
 \newpage
-\mbox{}
-\newpage
 
-# Verkennende gegevensanalyse: *Exploratory Data Analysis* (**EDA**) \label{EDA} 
+# Verkennende gegevensanalyse: *Exploratory Data Analysis* (**EDA**) \label{EDA}
+
+## Bekijken
+
+Om een eerste inzicht te krijgen in een verzameling gegevens, kun je er naar kijken.
+
+Hiervoor biedt **RStudio** een goede mogelijkheid met de [Data Viewer](https://support.rstudio.com/hc/en-us/articles/205175388-Using-the-Data-Viewer). Dit is een venster waarin je gegevens kan filteren, sorteren en doorzoeken. 
+
+Om de attribuutgegevens van onze eerder ingelezen dataset `gem2014` te bekijken, moet je het volgende commando geven:
+
+```{r}
+View(gem2014)
+```
+(Let op: View met een hoofdletter V.)
+
+Het venster van de **Data Viewer** verschijnt nu in de linkerbovenhoek van de grafische gebruikersinterface van RStudio (zie Figuur \ref{RStudioGUI}).
+
+Experimenteer met de mogelijkheden van de **Data Viewer** door de volgende vragen te beantwoorden:
+
++ Welke gemeente had op 1 januari 2014 de meeste inwoners? Hoeveel?
++ En welke de minste?
++ Hoeveel gemeenten hadden op die datum minder dan 5.000 inwoners? Welke gemeenten zijn dat?
++ En hoeveel inwoners had de gemeente Súdwest-Fryslân op die dag?
++ Hoeveel gemeenten liggen er in de Veiligheidsregio Haaglanden?
+
+## Selecteren
+
+In een eerder hoofdstuk (zie hoofdstuk \ref{inlzn}) hebben we een dataset met gemeenten ingelezen - `gem2014`. In deze paragraaf gaan we bekijken hoe we een gedeelte van deze data kunnen selecteren.
+
+### Selecteren met de functie `subset()`
+
+#### Rijen selecteren
+
+Stel dat je alleen de gemeenten in de provincie Limburg wilt selecteren. Dat kan met de functie `subset()` als volgt (let op het dubbele isgelijkteken):
+
+```{r}
+limburg <- subset(gem2014, Provincie_naam == "Limburg")
+```
+
+Bekijk het resultaat (niet in het boek afgedrukt):
+```{r eval=FALSE}
+plot(limburg, col = "darkgreen", border = "lightgray")
+View(limburg)
+```
+Nu gaan we een selectie uitvoeren op een numerieke kolom. We willen namelijk een overzicht van alle grote gemeenten (hier gedefiniëerd als gemeenten met meer dan 200.000 inwoners):
+
+```{r}
+grote_gemeenten <- subset(gem2014, Inwoners > 200000)
+```
+
+Bekijk het resultaat (niet in het boek afgedrukt):
+```{r eval=FALSE}
+plot(gem2014, col = "lightgray", border = "lightgray") # plot eerst heel nederland
+plot(grote_gemeenten, col = "red", border = "red", add = TRUE) # voeg de grote gemeenten toe
+View(grote_gemeenten)
+```
+En een selectie van middelgrote gemeenten (met niet minder dan 50.000 en niet meer dan 200.000 inwoners) ziet er dan zo uit:
+
+```{r}
+middelgrote_gemeenten <- subset(gem2014, Inwoners >= 50000 & Inwoners <= 200000)
+```
+
+#### Kolommen selecteren
+
+De dataset met gemeenten heeft een groot aantal kolommen met attribuutgegevens, namelijk wel 34. Met de functie `subset()` kun je een de selectie van deze kolommen inperken.
+
+Stel dat je alleen de gemeentenaam en de bevolkingsgegevens (de kolommen `Inwoners` tot en met `inw_80j_en_ouder`) wil hebben. Omdat dit een reeks met opeenvolgende kolommen is, kun die op de volgende twee manieren selecteren:
+
++ met **kolomnummers**:
+
+```{r}
+gem2014_bevolking_1 <- subset(gem2014, select = 2:14)
+```
+
++ met **kolomnamen**:
+
+```{r}
+gem2014_bevolking_2 <- subset(gem2014, select = Gemeentenaam:inw_80j_en_ouder)
+```
+
+Bekijk het resultaat in de Data Viewer:
+
+```{r eval=FALSE}
+View(gem2014_bevolking_1)
+```
+
+en/of
+
+```{r eval=FALSE}
+View(gem2014_bevolking_2)
+```
+
+Er zijn nu nog maar 13 kolommen met attribuutgegevens.
+
+**Nota bene:**
+
+Als je op deze manier een aantal kolommen selecteert uit een  `Spatial*DataFrame` object, dan wordt de geometrie meegeselecteerd. Dus het resultaat is ook een `Spatial*DataFrame` object.
+
+Kijk maar:
+
+```{r}
+class(gem2014_bevolking_1)
+```
+
+Je kunt natuurljk ook een selectie maken van niet-opeenvolgende kolommen (bijvoorbeeld naam, provincie en aantal 
+inwoners). En ook dat kan op twee manieren:
+
++ met **kolomnummers**:
+
+```{r}
+gem2014_3kolommen_1 <- subset(gem2014, select = c(2,26,3))
+```
+
++ met **kolomnamen**:
+
+```{r}
+gem2014_3kolommen_2 <- subset(gem2014, select = c(Gemeentenaam,Provincie_naam,Inwoners))
+```
+
+Bekijk het resultaat in de Data Viewer:
+
+```{r eval=FALSE}
+View(gem2014_3kolommen_1)
+```
+
+en/of
+
+```{r eval=FALSE}
+View(gem2014_3kolommen_2)
+```
+
+Er zijn nu nog maar 3 kolommen met attribuutgegevens.
+
+#### Rijen èn Kolommen selecteren
+
+Natuurlijk kun je ook een selctie maken van rijen èn kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de grote gemeenten:
+
+```{r}
+grote_gemeenten_2 <- subset(gem2014, Inwoners > 200000,
+                            select = c(Gemeentenaam,Provincie_naam,Inwoners))
+View(grote_gemeenten_2)
+```
+
+### Selecteren met indices (*bracket notation*) \label{indsel}
+
+Naast de hierboven gebruikte functie `subset()` bestaat er in **R** nog een manier om een selectie te maken, namelijk op basis van de indices van de dataset. De eerste index betreft de rijen en de tweede index betreft de kolommen. Bij deze selectiemethode wordt gebruik gemaakt van een notatie met vierkante haken (*square brackets*).
+
+#### Rijen selecteren
+
+Stel dat je alleen de gemeenten in de provincie Groningen wilt selecteren. Dat kan met vierkenate haken
+op de volgende manier:
+
+```{r}
+groningen <- gem2014[gem2014$Provincie_naam == "Groningen", ]
+```
+
+Let op de komma aan het eind! We geven in dit voorbeeld alleen een index op voor de rijen, en die voor de kolommen laten we leeg. Dat wil zeggen dat we alle attribuutgegevens (34 kolommen) willen hebben voor onze dataset `groningen`. (Als je de komma weglaat, dan krijg je een foutmelding.)
+
+Bekijk het resultaat (niet in het boek afgedrukt):
+
+```{r eval=FALSE}
+plot(groningen, col = "darkgreen", border = "lightgray")
+View(groningen)
+```
+Nog een aantal voorbeelden om zelf uit te proberen:
+
+```{r}
+twee_provincies <- gem2014[gem2014$Provincie_naam %in% c("Drenthe","Friesland"), ]
+```
+```{r}
+kleine_gemeenten <- gem2014[gem2014$Inwoners >= 10000 & gem2014$Inwoners <= 200000, ]
+```
+```{r}
+superkleine_gemeenten <- gem2014[gem2014$Inwoners < 10000, ]
+```
+
+#### Kolommen selecteren
+
+Stel dat je alleen de eerste vijf kolommen van de dataset wil selecteren:
+
+```{r}
+gem2014_beperkt <- gem2014[ , 1:5]
+View(gem2014_beperkt)
+```
+Let op de komma aan het begin. We geven in dit voorbeeld alleen een index op voor de kolommen, en die voor de rijen laten we leeg. Dat wil zeggen dat we alle rijen (403 records) willen hebben voor onze dataset `gem2014_beperkt`.
+
+Overigens is de komma in dit geval - anders dan bij het selecteren van rijen - niet verplicht. Als je de komma weglaat, dan krijg je hetzelfde resultaat:
+
+```{r}
+gem2014_beperkt2 <- gem2014[1:5]
+View(gem2014_beperkt2)
+```
+Dit kun je als volgt testen:
+
+```{r}
+all.equal(gem2014_beperkt,gem2014_beperkt2)
+```
+
+Je kunt ook een aantal niet-opeenvolgende kolommen selecteren, naar keuze met kolomnummers of (in het voorbeeld hieronder) met kolomnamen:
+
+```{r}
+gem2014_drie_kolommen <- gem2014[ , c("Gemeentenaam", "Provincie_naam", "Inwoners")]
+View(gem2014_drie_kolommen)
+```
+
+#### Rijen èn Kolommen selecteren
+
+Natuurlijk kun je op deze wijze ook een selctie maken van rijen èn kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de wel héééél erg kleine gemeenten:
+
+```{r}
+super_super_kleine_gemeenten <- gem2014[gem2014$Inwoners < 2000, c(2,26,3)]
+View(super_super_kleine_gemeenten)
+```
+
+\newpage
 
 ## Diagrammen
 
@@ -1085,18 +1303,29 @@ De ontwikkeling van deze package is begonnen in 2013 - de *Initial commit* in de
 
 In de zomer van 2015 heeft Tennekes een [presentatie](http://user2015.math.aau.dk/presentations/20.pdf) gegeven, over `tmap`, op de [useR! Conference 2015](http://user2015.math.aau.dk/) in Aalborg, Denemarken.
 
+In de volgende paragrafen gaan we theamtische kaarten maken op basis van de gemeenten (`gem2014`) en (`spoorwegen2015`) die we in een eerder hoofdstuk hebben ingelezen (zie hoofdstuk \ref{inlzn}).
 
+Zie voor meer informatie over de bibliotheek `tmap` de handleiding op het CRAN:
+
+<https://cran.r-project.org/web/packages/tmap/tmap.pdf>
+
+Er is ook een vignette *tmap in a nutshell*:
+
+<https://cran.r-project.org/web/packages/tmap/vignettes/tmap-nutshell.html>
 
 \tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Een 'concurrerende' \textit{package}? {\small\ttfamily{cartography}}]
+Eind oktober 2015 verscheen er een \href{https://stat.ethz.ch/pipermail/r-sig-geo/2015-October/023604.html}{berichtje} in de mailinglijst **R-sig-Geo**, waarin aandacht werd gevraagd voor een nieuwe bibliotheek: {\small\ttfamily{cartography}}.\par
+Deze is ontwikkeld door Timothée Giraud en Nicolas Lambert van de \href{http://elementr.hypotheses.org/}{Groupe ElementR}. Let op de Franse uitspraak: \textbf{ElementR} - \textit{R pour les sciences humaines et sociales}.\par
+Wij hebben nog niet de tijd en de moeite genomen om deze bibliotheek grondig te bekijken, maar gaan dat in de toekomst zeker doen.
 \begin{itemize}
-\item \textbf{1} een
-\item \textbf{2} twee
-\item \textbf{3} drie
+\item \textbf{Vingette} met voorbeelden: \url{https://cran.r-project.org/web/packages/cartography/vignettes/cartography.html}
+\item \textbf{Handleiding op het CRAN:}  \url{https://cran.r-project.org/web/packages/cartography/cartography.pdf}
+\item \textbf{Broncode op GitHub:} \url{https://github.com/Groupe-ElementR/cartography/}
 \end{itemize}
 \end{tcolorbox}
 
-
+Nu snel verder met `tmap`, waarover dit hoofdstuk eigenlijk ging.
 
 
 \newpage
@@ -1112,7 +1341,7 @@ library(tmap)
 
 \newpage
 
-## Chorochromaat
+## Inkleuring naar individuele waarden (vlakken)
 
 ```{r}
 library(tmap)
@@ -1120,7 +1349,16 @@ library(tmap)
 ```
 
 \newpage
-\mbox{}
+
+## Inkleuring naar individuele waarden (lijnen)
+
+```{r}
+tm_shape(gem2014) +
+  tm_fill("lightgray") +
+  tm_shape(spoorwegen2015) +
+  tm_lines(col = "Treindienst", lwd = 3)
+``` 
+
 \newpage
 
 # Interactieve kaartvensters in R \label{chLflt}
@@ -1325,6 +1563,43 @@ stations_per_provincie
 View(stations_per_provincie) # in de Data Viewer
 ```
 
+## Een geografische subset (met vierkante haken)
+
+In **R** kun met behulp van vierkante haken selecties maken van een dataset (zie voor een uitleg van de syntaxis paragraaf \ref{indsel}).
+
+Deze syntaxis kan ook gebruikt worden voor geografische selecties.
+
+In het voorbeeld hieonder maken we eerst een subset `brabant` aan, en vervolgens selecteren we alle stations in die provincie:
+
+```{r}
+brabant <- gem2014[gem2014$Provincie_naam == "Noord-Brabant", ]
+stations_brabant <- stations2015[brabant, ]
+```
+De dataset `stations_brabant` bevat nu alle 35 stations stations die gelegen zijn in de Nederlandse provincie Noord-Brabant. En de dataset bevat ook de puntgeometrie van deze stations.
+
+Kijk maar:
+
+```{r eval=FALSE}
+View(stations_brabant)
+plot(stations_brabant)
+class(stations_brabant)
+```
+```{r echo=FALSE}
+class(stations_brabant)
+```
+\newpage
+
+We kunnen dit tonen in een kaartje:
+
+```{r}
+plot(brabant, col = "lightgrey", border= "white")
+plot(spoorwegen2015, add = TRUE)
+plot(stations_brabant, pch = 15, col = "red", add = TRUE )
+```
+
+
+\newpage
+\mbox{}
 \newpage
 
 # Geocoderen
