@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "23 november 2015"
+date: "26 november 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.4.0 - "Geobuzz"}
+   - \providecommand{\versionnumber}{0.4.1}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -38,7 +38,7 @@ Maar bedenk - voordat je gaat printen - eerst welke nadelen een gedrukte versie 
 \item \textbf{Hyperlinks werken niet op papier:} dit document staat vol verwijzingen - zowel interne als externe - die in de electronische versie wel met één klik te volgen zijn.
 \item \textbf{Letters hebben een vaste grootte:} op papier kun je de lettergrootte niet aanpassen - en dat kan vooral voor de oudere lezertjes onder ons best een probleem zijn.
 \end{itemize}
-Kortom: het welgemeende advies is om dit boek te lezen met een PDF reader op je favoriete \textit{device}. En op het moment dat je echt aan de slag gaat: gewwon op de computer waarop je ook \textbf{R} en \textbf{RStudio} hebt draaien.\par
+Kortom: het welgemeende advies is om dit boek te lezen met een PDF reader op je favoriete \textit{device}. En op het moment dat je echt aan de slag gaat: gewoon op de computer waarop je ook \textbf{R} en \textbf{RStudio} hebt draaien.\par
 (En als je dan toch gaat afdrukken, overweeg dan om dat wel in zwart-wit te doen.)
 \end{tcolorbox}
 
