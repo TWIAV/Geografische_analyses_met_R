@@ -748,7 +748,7 @@ In dit hoofdstuk gaan we gegevens vanuit externe GIS bestanden inlezen in **R**.
 
 De bibliotheek `rgdal` biedt toegang vanuit **R** tot de functionaliteit van **GDAL**. Voordat we deze installatie gaan uitvoeren, geven we eerst wat informatie over de kracht van **GDAL**.
 
-### GDAL
+### GDAL: *Geospatial Data Abstraction Library*
 
 **GDAL** staat voor *Geospatial Data Abstraction Library*. Deze bibliotheek biedt abstracte gegevensmodellen voor geografische gegevens, één voor het raster- en één voor het vectorformaat. Daarnaast bevat **GDAL** een hoeveelheid programma's, zoals bijvoorbeeld `ogr2ogr`, `ogrinfo`, `gdaldem` en `gdal_contour`, voor het bewerken van geografische data. Deze programma's zijn zogeheten *command line utilities* (dat wil zeggen: ze moeten via de commandoregel worden aangesproken) en bieden vele opties voor onder andere:
 
@@ -1330,7 +1330,7 @@ Nu snel verder met `tmap`, waarover dit hoofdstuk eigenlijk ging.
 
 \newpage
 
-## Choropleet
+### Choropleet
 
 ```{r}
 library(tmap)
@@ -1341,7 +1341,7 @@ library(tmap)
 
 \newpage
 
-## Inkleuring naar individuele waarden (vlakken)
+### Inkleuring naar individuele waarden (vlakken)
 
 ```{r}
 library(tmap)
@@ -1350,7 +1350,7 @@ library(tmap)
 
 \newpage
 
-## Inkleuring naar individuele waarden (lijnen)
+### Inkleuring naar individuele waarden (lijnen)
 
 ```{r}
 tm_shape(gem2014) +
@@ -1358,6 +1358,40 @@ tm_shape(gem2014) +
   tm_shape(spoorwegen2015) +
   tm_lines(col = "Treindienst", lwd = 3)
 ``` 
+
+\newpage
+
+## De bibliotheek `mapplots`
+
+
+### Cirkeldiagrammen op de kaart
+
+```{r}
+library(tidyr)
+library(rgeos)
+library(mapplots)
+gem2014 <- readOGR(dsn = "Data", layer = "NL_Gemeenten2014")
+gem2014@data$jongeren <- gem2014@data$inw_jonger_dan_5j + gem2014@data$inw_5_9j + gem2014@data$inw_10_14j + gem2014@data$inw_15_19j + gem2014@data$inw_20_24j
+gem2014@data$beroepsbevolking <- gem2014@data$inw_25_44j + gem2014@data$inw_45_64j
+gem2014@data$ouderen <- gem2014@data$inw_65_79j + gem2014@data$inw_80j_en_ouder
+bevsam.flevoland <- gather(as.data.frame(gem2014[gem2014@data$Provincie_naam == "Flevoland", c(2, 35:37)]), key = categorie, value = aantal, jongeren, beroepsbevolking, ouderen, -Gemeentenaam)
+bevsam.flevoland
+flevoland <- gem2014[gem2014@data$Provincie_naam == "Flevoland",]
+centroiden.flevoland <- gCentroid(flevoland, byid = TRUE, id = flevoland@data$Gemeentenaam)
+centroiden.flevoland
+invoer.flevoland <- as.data.frame(c(centroiden.flevoland,bevsam.flevoland))
+invoer.flevoland
+xyz.flevoland <- make.xyz(invoer.flevoland$x, invoer.flevoland$y, invoer.flevoland$aantal, invoer.flevoland$categorie)
+par(mar = c(1, 1, 2, 1) + 0.1, mgp = c(5, 1, 0))
+plot(flevoland, col = "lightgray", border = "white", main = paste("Bevolkingssamenstelling per gemeente","\nProvincie Flevoland, 1 januari 2014"))
+kleuren <- c("darkolivegreen4","firebrick3","lightgoldenrod1")
+radius.waarde <- 10000
+draw.pie(xyz.flevoland$x,xyz.flevoland$y, xyz.flevoland$z, radius.waarde, border = "gray", col = kleuren)
+usr <- par( "usr" )
+text(usr[1]+11000, usr[4] - 3000, "Aantal inwoners * 1000", cex = .7)
+legend.bubble(usr[1]+11000, usr[4] - 16000, z=max(rowSums(xyz.flevoland$z))/1000, maxradius = radius.waarde, inset=0.02, txt.cex=0.7, pch=21, col="darkgrey", bty = "n")
+legend.pie(usr[1]+11000, usr[4] - 34000,labels=c("jongeren", "beroepsbevolking", "ouderen"), radius = radius.waarde/2, bty = "n", cex = .7, label.dist = 1.2, col = kleuren, border = "gray")
+```
 
 \newpage
 
@@ -1520,7 +1554,7 @@ class(Gem_per_station)
 View(Gem_per_station)
 ```
 
-Nu willen we deze ene kolom toevoegen aan `stations2015`. Dit kan met `spCbind()` uit de bibliotheek `[maptools](https://cran.r-project.org/web/packages/maptools/maptools.pdf)`. (`spCbind` verschaft *cbind-achtige* methoden voor Spatial*DataFrame objecten.)
+Nu willen we deze ene kolom toevoegen aan `stations2015`. Dit kan met `spCbind()` uit de bibliotheek [`maptools`](https://cran.r-project.org/web/packages/maptools/maptools.pdf). (`spCbind` verschaft *cbind-achtige* methoden voor Spatial*DataFrame objecten.)
 
 **Stap 2:** voeg de kolom toe:
 
@@ -1596,6 +1630,98 @@ plot(brabant, col = "lightgrey", border= "white")
 plot(spoorwegen2015, add = TRUE)
 plot(stations_brabant, pch = 15, col = "red", add = TRUE )
 ```
+
+\newpage
+
+## De bibliotheek `rgeos`
+
+In deze paragraaf gaan we gebruik maken van functies uit het *package* `rgeos`. Deze bibliotheek biedt toegang vanuit **R** tot de functionaliteit van de krachtige 'geometrie motor' **GEOS**. Voordat we de *package* gaan installeren, geven we eerst wat achtergrondinformatie over **GEOS**.
+
+### GEOS: *Geometry Engine - Open Source*
+
+**GEOS** staat voor *Geometry Engine - Open Source*. Het is een **API** (*application programming interface*) met functies voor het vergelijken en bewerken van geometrische objecten, zoals deze gedefiniëerd zijn in de [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 2: SQL option](http://www.opengeospatial.org/standards/sfs) (de opvolger van een de eerdere **OpenGIS Simple Features Implementation Specification for SQL**) van het [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/). 
+
+Meer informatie over **GEOS** is te vinden op de website <http://trac.osgeo.org/geos/>.
+
+### *Spatial predicates* (Ruimtelijke kenmerken) 
+
+Met behulp van zogeheten *Spatial predicates* gaan we de ruimtelijke relatie tussen objecten onderzoeken. Voorbeelden hiervan zijn `gTouches()`,  `gOverlaps()` en `gIntersects()`. Deze functies geven TRUE als twee objecten elkaar overlappen/raken/snijden, en FALSE als dat niet het geval is.
+
+### gTouches()
+
+De vraag die we in deze paragraaf gaan beantwoorden is: *'Kun je een lijstje maken van alle gemeenten die aan de gemeente Utrecht grenzen?'* Natuurlijk is het antwoord hierop: *'Ja, dat kan ik.'*
+
+Hieronder laten we zien hoe je dat met **R** kunt doen.
+
+Maak eerst een object `utrecht` aan:
+
+```{r}
+utrecht <- gem2014[gem2014@data$Gemeentenaam == "Utrecht",]
+```
+
+Test nu voor elke gemeente of deze `utrecht` raakt, dat wil zegen: aan `utrecht` grenst. Let op: zet om elke gemeente afzonderlijk te testen `byid = TRUE`, anders wordt `gem2014` tot één geometrie - heel Nederland - samengevoegd. 
+
+```{r}
+raakt_utrecht <- gTouches(utrecht, gem2014, byid = TRUE)
+class(raakt_utrecht)
+head(raakt_utrecht)
+```
+
+Het resultaat van deze test is een matrix met voor elk van de 403 gemeenten een waarde *FALSE* of een waarde *TRUE*.
+
+Met `which()` kun je opvragen welke indices WAAR (TRUE) zijn:
+
+```{r}
+which(raakt_utrecht)
+```
+
+Aan alleen een lijstje met WAAR en ONWAAR hebben we natuurlijk niks, en daarom gaan we de functie `which()` gebruiken om een subset van aangrenzende gemeenten aan te maken:
+
+```{r}
+buurgemeenten_utrecht <- gem2014[which(raakt_utrecht),]
+View(buurgemeenten_utrecht)
+```
+
+En ja, je kunt de subset ook in één stap aanmaken, en wel als volgt:
+
+```{r}
+buurgemeenten_utrecht2 <- gem2014[which(gTouches(utrecht, gem2014, byid = TRUE)),]
+```
+
+En laat maar zien op de kaart:
+
+```{r}
+plot(buurgemeenten_utrecht, col = "#FFCC66", border = "White",
+     main = "gTouches(): Utrecht met buurgementen, 1 januari 2014")
+plot(utrecht, col = "#FF6600", border = "White", add = TRUE)
+text(coordinates(buurgemeenten_utrecht),
+     as.character(buurgemeenten_utrecht@data$Gemeentenaam), cex = .3)
+text(coordinates(utrecht), as.character(utrecht@data$Gemeentenaam),
+     cex = .4, col = "white")
+```
+
+### gOverlaps()
+
+```{r}
+bevkern <- readOGR(dsn = "CBS", layer =  "bevolkingskern_2011")
+groot_amsterdam <- bevkern[bevkern@data$KERN_NAAM == "Groot - Amsterdam",]
+overlap_gr_ams <- gOverlaps(groot_amsterdam,gem2014, byid = TRUE)
+gem_gr_ams <- gem2014[which(overlap_gr_ams),]
+```
+
+Of - als je dat liever wilt - in één stap:
+
+```{r eval=FALSE}
+gem_gr_ams2 <- gem2014[which(gOverlaps(groot_amsterdam,gem2014, byid = TRUE)),]
+```
+
+```{r}
+plot(gem_gr_ams, col = "steelblue", border = "white")
+plot(groot_amsterdam, col = rgb(1,0,0,.15), border = "red", add = TRUE)
+text(coordinates(gem_gr_ams), as.character(gem_gr_ams@data$Gemeentenaam), cex = .3)
+```
+
+### gIntersects()
 
 
 \newpage
