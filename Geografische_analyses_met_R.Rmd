@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "26 november 2015"
+date: "10 december 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.4.1}
+   - \providecommand{\versionnumber}{0.4.2}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -922,7 +922,7 @@ Bekijk - met behulp van `summary()` en/of `proj4string()` - welk CRS de datasets
 
 \newpage
 
-## En nog een keer gegevens inlezen: nu een ESRI Shapefile
+## En nog een keer gegevens inlezen: nu een ESRI Shapefile \label{shp}
 
 In deze paragraaf lezen we het bestand **bevolkingskern_2011.shp** in. Dit is een ESRI Shapefile die door het Centraal Bureau voor de Statistiek (CBS) wordt aangeboden op [deze pagina](http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/publicaties/geografische-data/archief/2014/2014-bevolkingskernen-in-nederland-2011.htm). Achtergrondinformatie (metadata) over deze bestanden staat in dit document: [2014BevolkingskerneninNederland2011pub.pdf](http://www.cbs.nl/NR/rdonlyres/13361B85-7FD0-4614-87F4-6625315E50FC/0/2014BevolkingskerneninNederland2011pub.pdf).
 
@@ -1647,7 +1647,7 @@ Meer informatie over **GEOS** is te vinden op de website <http://trac.osgeo.org/
 
 Met behulp van zogeheten *Spatial predicates* gaan we de ruimtelijke relatie tussen objecten onderzoeken. Voorbeelden hiervan zijn `gTouches()`,  `gOverlaps()` en `gIntersects()`. Deze functies geven TRUE als twee objecten elkaar overlappen/raken/snijden, en FALSE als dat niet het geval is.
 
-### gTouches()
+#### gTouches() \label{gtouches}
 
 De vraag die we in deze paragraaf gaan beantwoorden is: *'Kun je een lijstje maken van alle gemeenten die aan de gemeente Utrecht grenzen?'* Natuurlijk is het antwoord hierop: *'Ja, dat kan ik.'*
 
@@ -1659,7 +1659,7 @@ Maak eerst een object `utrecht` aan:
 utrecht <- gem2014[gem2014@data$Gemeentenaam == "Utrecht",]
 ```
 
-Test nu voor elke gemeente of deze `utrecht` raakt, dat wil zegen: aan `utrecht` grenst. Let op: zet om elke gemeente afzonderlijk te testen `byid = TRUE`, anders wordt `gem2014` tot één geometrie - heel Nederland - samengevoegd. 
+Test nu voor elke gemeente of deze `utrecht` raakt, dat wil zegen: aan `utrecht` grenst. Let op: zet om elke gemeente afzonderlijk te testen `byid = TRUE`, anders wordt `gem2014` voor de vergelijking tot één geometrie - heel Nederland - samengevoegd.
 
 ```{r}
 raakt_utrecht <- gTouches(utrecht, gem2014, byid = TRUE)
@@ -1700,28 +1700,97 @@ text(coordinates(utrecht), as.character(utrecht@data$Gemeentenaam),
      cex = .4, col = "white")
 ```
 
-### gOverlaps()
+#### gOverlaps() \label{goverlaps}
+
+De vraag in deze paragraaf is: *'Over welke gemeenten strekt de bevolkingskern Groot - Arnhem zich uit?'*
+
+Voor het beantwoorden van deze vraag maken we gebruik van het bestand **bevolkingskern_2011** dat we eerder hebben gedownload (zie paragraaf \ref{shp}).
+
+De tabel `gem2014` die we al in veel oefeningen hebben gebruikt, heeft betrekking op administratief afgebakende   gebieden. Deze administratieve eenheden houden echter geen of nauwelijks rekening met de fysiek ruimtelijke structuur van het Nederlands grondgebied. Sinds 2001 levert het CBS - als gevolg van eisen van Eurostat - weer statistieken voor fysiek afgebakende *urban areas*. Deze bevolkingskernen beslaan niet per definitie het gehele grondgebied van een gemeente, en ze kunnen zich over meerdere gemeenten uitstrekken. Voor meer achtergrondinformatie over de methodologie die door het CBS is gehanteerd bij het afbakenen van deze bevolkingsconcentraties, zie: [Vliegen et al. (2006)](http://www.cbs.nl/NR/rdonlyres/61D32380-5CFC-4CDC-8800-072EDEBAFCC1/0/2006bevolkingskerneninnederlandart.pdf).
+
+Lees - indien nodig - het bestand **bevolkingskern_2011** in:
 
 ```{r}
 bevkern <- readOGR(dsn = "CBS", layer =  "bevolkingskern_2011")
-groot_amsterdam <- bevkern[bevkern@data$KERN_NAAM == "Groot - Amsterdam",]
-overlap_gr_ams <- gOverlaps(groot_amsterdam,gem2014, byid = TRUE)
-gem_gr_ams <- gem2014[which(overlap_gr_ams),]
 ```
 
-Of - als je dat liever wilt - in één stap:
+De werkwijze hieronder lijkt sterk op de procedure die we voor `gTouches()` (zie paragraaf \ref{gtouches}) hebben gevolgd. 
 
-```{r eval=FALSE}
-gem_gr_ams2 <- gem2014[which(gOverlaps(groot_amsterdam,gem2014, byid = TRUE)),]
-```
+Maak een object `groot_arnhem` aan:
 
 ```{r}
-plot(gem_gr_ams, col = "steelblue", border = "white")
-plot(groot_amsterdam, col = rgb(1,0,0,.15), border = "red", add = TRUE)
-text(coordinates(gem_gr_ams), as.character(gem_gr_ams@data$Gemeentenaam), cex = .3)
+groot_arnhem <- bevkern[bevkern@data$KERN_NAAM == "Groot - Arnhem",]
 ```
 
-### gIntersects()
+Test nu voor elke gemeente of deze gedeeltelijk - of geheel - met `groot_arnhem` samenvalt:
+
+```{r}
+overlap_gr_ahm <- gOverlaps(groot_arnhem,gem2014, byid = TRUE)
+```
+
+Het systeem geeft aan dat de beide geometrieën een verschillende `proj4string` hebben. Dit is geen foutmelding, maar slechts een *warning* (waarschuwing). Vraag: is dit een probleem dat opgelost moet worden of zijn er goede redenen om de waarschuwing alleen voor kennisgeving aan te nemen?
+
+Gebruik vervolgens de functie `which()` om een subset van overlappende gemeenten aan te maken:
+
+```{r}
+gem_gr_ahm <- gem2014[which(overlap_gr_ahm),]
+```
+
+Desgewenst kun je de twee voorafgaande regels code samenvoegen in één stap:
+
+```{r eval=FALSE}
+gem_gr_ahm2 <- gem2014[which(gOverlaps(groot_arnhem,gem2014, byid = TRUE)),]
+```
+
+Toon het resultaat op de kaart:
+
+```{r}
+plot(gem_gr_ahm, col = "steelblue", border = "white",
+     main = paste("gOverlaps(): De bevolkingskern Groot-Arnhem","\nbeslaat meerdere gemeenten"))
+plot(groot_arnhem, col = rgb(1,0,0,.15), border = "red", add = TRUE)
+text(coordinates(gem_gr_ahm), as.character(gem_gr_ahm@data$Gemeentenaam), cex = .3)
+```
+
+#### gIntersects()
+
+We willen graag weten: *'Welke gemeenten liggen er aan de spoorlijn van Nijmegen naar venlo?'*
+
+Als je de oefeningen met `gTouches()` (paragraaf \ref{gtouches}) en met `gOverlaps()` (paragraaf \ref{goverlaps}) hebt gedaan, dan zie je veel overeenkomsten met de stappen die we hieronder gaan zetten.
+
+Maak een object `spoorlijn_nijmegen_venlo` aan:
+
+```{r}
+spoorlijn_nijmegen_venlo <- spoorwegen2015[spoorwegen2015@data$Traject == "Nijmegen - Venlo",]
+```
+
+Test nu voor elke gemeente of deze door de genoemde spoorlijn doorsneden wordt:
+
+```{r}
+intersect_nijm_ven <- gIntersects(spoorlijn_nijmegen_venlo, gem2014, byid = TRUE)
+```
+
+Gebruik de functie `which()` om een subset van doorsneden gemeenten aan te maken:
+
+```{r}
+gem_sp_nijm_ven <- gem2014[which(intersect_nijm_ven),]
+```
+
+En natuurlijk kun je de twee voorafgaande regels code samenvoegen in één stap:
+
+```{r eval=FALSE}
+gem_sp_nijm_ven2 <- gem2014[which(gIntersects(spoorlijn_nijmegen_venlo, gem2014, byid = TRUE)),]
+```
+
+Laat maar zien:
+
+```{r}
+plot(gem_sp_nijm_ven, col = "khaki2", border = "white",
+     main = paste("gIntersects(): De spoorlijn van Nijmegen naar Venlo",
+                  "\nloopt door meerdere gemeenten"))
+plot(spoorlijn_nijmegen_venlo, col = "red", add = TRUE)
+text(coordinates(gem_sp_nijm_ven),
+     as.character(gem_sp_nijm_ven@data$Gemeentenaam), cex = .3)
+```
 
 
 \newpage
@@ -1791,7 +1860,6 @@ De auteur van dit boek heeft al wel deze blog geschreven: [raster(): het samenvo
 
 + Frazier, Melanie (z.d.). *Overview of Coordinate Reference Systems (CRS) in R*. Geraadpleegd op 12 november 2015. URL: <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf> 
 
-
 + Ihaka, Ross (2009). *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
 
 + Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
@@ -1799,4 +1867,6 @@ De auteur van dit boek heeft al wel deze blog geschreven: [raster(): het samenvo
 + Peng, Roger D. (2015). *Exploratory Data Analysis with R*. Gepubliceerd als e-book op Leanpub. Er is een versie gepubliceerd op 12 november 2015. URL: <http://leanpub.com/exdata>
 
 + Venables, W. N.,  Smith, D. M. en het R Core Team (2015). *An Introduction to R. Notes on R: A Programming Environment for Data Analysis and Graphics*. Version 3.2.2 (2015-08-14). URL: <https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf>
+
++ Vliegen, Mathieu, Van Leeuwen, Niek en Kerkvliet, Ferry (2006). *Bevolkingskernen in Nederland opnieuw afgebakend*. Centraal Bureau voor de Statistiek, Voorburg/Heerlen. Publicatiedatum CBS-website: 6 februari 2006. URL: <http://www.cbs.nl/NR/rdonlyres/61D32380-5CFC-4CDC-8800-072EDEBAFCC1/0/2006bevolkingskerneninnederlandart.pdf>
 
