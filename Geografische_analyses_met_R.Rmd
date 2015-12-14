@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
 author: "Egge-Jan Pollé"
-date: "10 december 2015"
+date: "14 december 2015"
 header-includes:
-   - \providecommand{\versionnumber}{0.4.2}
+   - \providecommand{\versionnumber}{0.4.3}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -87,6 +87,8 @@ De beloning? Een vermelding in het voorwoord van een volgende editie van deze bu
 \setcounter{tocdepth}{4}
 \tableofcontents
 \hypersetup{linkcolor=blue}
+\newpage
+\mbox{}
 \newpage
 \thispagestyle{empty}
 *Voor Sacha*
@@ -909,6 +911,12 @@ Toon de datasets in de **Plots** tab:
 plot(gem2014, col = "lightgray", border = "lightgray")
 plot(spoorwegen2015, add = TRUE)
 plot(stations2015, pch = 19, cex = .4, col = "purple", add = TRUE)
+# Voeg een titel en een legenda toe
+title("Het spoorwegnetwerk voor reizigersvervoer, Nederland, 2015")
+legend("bottomleft", legend=c("Spoorlijnen", "Stations"), cex = .7,
+title="Legenda", bty="o", inset=0.05,
+lty=c( 1,-1,-1), pch=c(-1,19),
+col=c("black", "purple"))
 ```
 
 En vraag de klasse op:
@@ -957,7 +965,7 @@ Controleer of het bestand met de bevolkingskernen in de submap 'CBS' staat.
 
 We maken een object aan:
 
-```{r eval=FALSE}
+```{r}
 bevkern <- readOGR(dsn = "CBS", layer = "bevolkingskern_2011")
 ```
 
@@ -970,7 +978,7 @@ plot(bevkern, col= "red", border = "red", add = TRUE)
 ```
 
 En vraag de klasse op:
-```{r eval=FALSE}
+```{r}
 class(bevkern)
 ```
 
@@ -1394,6 +1402,9 @@ legend.pie(usr[1]+11000, usr[4] - 34000,labels=c("jongeren", "beroepsbevolking",
 ```
 
 \newpage
+\mbox{}
+
+\newpage
 
 # Interactieve kaartvensters in R \label{chLflt}
 
@@ -1710,7 +1721,7 @@ De tabel `gem2014` die we al in veel oefeningen hebben gebruikt, heeft betrekkin
 
 Lees - indien nodig - het bestand **bevolkingskern_2011** in:
 
-```{r}
+```{r eval=FALSE}
 bevkern <- readOGR(dsn = "CBS", layer =  "bevolkingskern_2011")
 ```
 
@@ -1794,7 +1805,14 @@ text(coordinates(gem_sp_nijm_ven),
 
 
 \newpage
+
+# Het aanmaken van geografische objecten
+
+## Samenvoegen op basis van attribuutgegevens: `gUnaryUnion()`
+
+\newpage
 \mbox{}
+
 \newpage
 
 # Geocoderen
