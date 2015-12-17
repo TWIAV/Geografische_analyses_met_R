@@ -1806,9 +1806,17 @@ text(coordinates(gem_sp_nijm_ven),
 
 \newpage
 
-# Het aanmaken van geografische objecten
+# Geografische objecten creëren
 
-## Samenvoegen op basis van attribuutgegevens: `gUnaryUnion()`
+## Objecten samenvoegen op basis van attribuutgegevens: `gUnaryUnion()`
+
+```{r}
+prov2014 <- gUnaryUnion(gem2014, id = gem2014@data$Provincie_naam)
+class(prov2014)
+row.names(prov2014)
+plot(prov2014, col = "darkgreen", border = "white")
+text(coordinates(prov2014), row.names(prov2014), cex = .7, col = "red")
+```
 
 \newpage
 \mbox{}
