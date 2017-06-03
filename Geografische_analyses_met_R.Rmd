@@ -1,9 +1,9 @@
 ---
 title: "Geografische analyses met R"
-author: "Egge-Jan Pollé"
-date: "14 december 2015"
+author: "Egge-Jan PollÃ©"
+date: "3 juni 2017"
 header-includes:
-   - \providecommand{\versionnumber}{0.4.3}
+   - \providecommand{\versionnumber}{0.4.9}
    - \providecommand{\titletxt}{Geografische analyses met R}
    - \title{{\titletxt}\\\normalsize Versie \versionnumber}
    - \usepackage[dutch]{babel}
@@ -21,7 +21,7 @@ output:
   pdf_document:
     number_sections: true
     latex_engine: xelatex
-mainfont: Calibri
+mainfont: Ubuntu
 ---
 \thispagestyle{empty}
 ![Frontpage](images/Frontpage.png)
@@ -35,7 +35,7 @@ Maar bedenk - voordat je gaat printen - eerst welke nadelen een gedrukte versie 
 \begin{itemize}
 \item \textbf{Geen Ctrl+F:} op papier kun je veel minder makkelijk zoeken dan in een electronisch document. (Er is wel een inhoudsopgave, maar er staat geen index achter in het boek...)
 \item \textbf{Geen Ctrl+C/Ctrl+V:} vanaf papier kun je geen codevoorbeelden knippen en plakken; je zal alle code zelf in moeten typen. (Maar of dat nou echt een nadeel is...?)
-\item \textbf{Hyperlinks werken niet op papier:} dit document staat vol verwijzingen - zowel interne als externe - die in de electronische versie wel met één klik te volgen zijn.
+\item \textbf{Hyperlinks werken niet op papier:} dit document staat vol verwijzingen - zowel interne als externe - die in de electronische versie wel met ??n klik te volgen zijn.
 \item \textbf{Letters hebben een vaste grootte:} op papier kun je de lettergrootte niet aanpassen - en dat kan vooral voor de oudere lezertjes onder ons best een probleem zijn.
 \end{itemize}
 Kortom: het welgemeende advies is om dit boek te lezen met een PDF reader op je favoriete \textit{device}. En op het moment dat je echt aan de slag gaat: gewoon op de computer waarop je ook \textbf{R} en \textbf{RStudio} hebt draaien.\par
@@ -53,7 +53,7 @@ Dit is een uitgave van [TWIAV - Onderzoek & Advies](http://www.twiav.nl/).
 
 Deze handleiding is speciaal samengesteld voor de Hands-on workshop **Geografische analyses met R** op de 4^e^ jaarlijkse OSGeo.nl Dag, op de GeoBuzz, op woensdag 25 november 2015 in Den Bosch.
 
-Het was in de zomer van 2015, in Como (Noord-Italië), in de wandelgangen van de [FOSS4G-Europe 2015](http://europe.foss4g.org/2015/). Daar werd ik benaderd door Gert-Jan van der Weijden, de voorzitter van [de stichting OSGeo.nl](http://osgeo.nl/). Eerder die week had ik in Como de workshp **R for spatial data** van Robin Lovelace (University of Leeds) gevolgd. En nu kwam Gert-Jan met het verzoek of ik een soortgelijke workshop zou willen geven in Den Bosch. Daarop heb ik maar *ja* gezegd.
+Het was in de zomer van 2015, in Como (Noord-Itali?), in de wandelgangen van de [FOSS4G-Europe 2015](http://europe.foss4g.org/2015/). Daar werd ik benaderd door Gert-Jan van der Weijden, de voorzitter van [de stichting OSGeo.nl](http://osgeo.nl/). Eerder die week had ik in Como de workshp **R for spatial data** van Robin Lovelace (University of Leeds) gevolgd. En nu kwam Gert-Jan met het verzoek of ik een soortgelijke workshop zou willen geven in Den Bosch. Daarop heb ik maar *ja* gezegd.
 
 De afgelopen weken heb ik veel met **R** gespeeld. Een opdracht intypen op de commandoregel, en dan kijken wat er gebeurt. Want ja, om ergens een workshop over te kunnen geven, moet je er wel iets van weten. Dit document is het voorlopige resultaat van mijn speurtocht: laat ik maar meteen opschrijven wat ik geleerd heb, want anders vergeet ik het weer.
 
@@ -66,7 +66,7 @@ Ik hoop dan ook van harte dat mijn aantekeningen nuttig zijn voor anderen die ke
 Overigens is dit een '*werk in uitvoering*'. Er zullen de komende tijd nog enkele nieuwe versies van deze cursushandleiding verschijnen. De meest recente versie staat altijdd [hier](http://www.twiav.nl/nl/cursusR/Geografische_analyses_met_R.pdf).
 
 
-\href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografische analyses met R}{Egge-Jan Pollé}
+\href{mailto:e.j.h.polle@gmail.com?SUBJECT=Geografische analyses met R}{Egge-Jan PollÃ©}
 
 Asperen - November 2015
 
@@ -113,7 +113,7 @@ Ter voorbereiding op dit avontuur volgen hieronder enkele op- en aanmerkingen, h
 
 Voor wie is dit boek bedoeld? Gewoon: voor iedereen die meer wil weten over het uitvoeren van geografische analyses met **R**. Is er specifieke voorkennis vereist? Nee (en ja), of: Ja (en nee)! Nou, toch meer 'nee' dan 'ja'. Dit document is geschreven om je te helpen iets te leren. Dus hoe minder voorkennis je hebt, hoe meer je hiervan kan leren.
 
-**R** is een statistische programmeertaal, en wij gaan specifiek kijken naar geografische functionaliteit. Dus dan komen er veel terreinen bijelkaar: statistiek, informatica, GIS, geodesie, kartografie, etc., etc.. Een beetje voorkennis in één of meerdere van deze disciplines is nuttig, maar niet strikt noodzakelijk. Het belangrijkste is eigenlijk: een gezonde dosis nieuwsgierigheid, en creativiteit en doorzettingsvermogen.
+**R** is een statistische programmeertaal, en wij gaan specifiek kijken naar geografische functionaliteit. Dus dan komen er veel terreinen bijelkaar: statistiek, informatica, GIS, geodesie, kartografie, etc., etc.. Een beetje voorkennis in ??n of meerdere van deze disciplines is nuttig, maar niet strikt noodzakelijk. Het belangrijkste is eigenlijk: een gezonde dosis nieuwsgierigheid, en creativiteit en doorzettingsvermogen.
 
 *Maar ik ben helemaal geen programmeur!* Dat is niet erg, want dat geldt voor de meeste van ons. **R** is leuk omdat je snel mooie kaartjes en grafieken op het scherm kan toveren, en dat je dat zelf moet programmeren, dat ga je op den duur ook leuk vinden.
 
@@ -148,12 +148,12 @@ Dus als je wijzigingsvoorstellen direct wil doorvoeren in de bron: *Fork me on G
 
 ### Computer
 
-Om deze cursus te volgen heb je een machine nodig. Ja, hè, hè. Maar wacht, dat hoeft niet per se je eigen computer te zijn, dat kan ook een virtuele machine zijn.
+Om deze cursus te volgen heb je een machine nodig. Ja, h?, h?. Maar wacht, dat hoeft niet per se je eigen computer te zijn, dat kan ook een virtuele machine zijn.
 
 #### Virtuele machine van OSGeo-Live
 
 
-Wij raden je aan om eens te kijken naar de *Virtual Machine* van [OSGeo-Live](http://live.osgeo.org/en/index.html). Dit is een machine waarop een grote verscheidenheid aan *open source* (en dus gratis) geografische applicaties geïnstalleerd staat. Het is, zeg maar, de reclame-DVD van [The Open Source Geospatial Foundation](http://www.osgeo.org/).
+Wij raden je aan om eens te kijken naar de *Virtual Machine* van [OSGeo-Live](http://live.osgeo.org/en/index.html). Dit is een machine waarop een grote verscheidenheid aan *open source* (en dus gratis) geografische applicaties ge?nstalleerd staat. Het is, zeg maar, de reclame-DVD van [The Open Source Geospatial Foundation](http://www.osgeo.org/).
 
 En ook het besturingssysteem van deze machine is *open source*, dat is namelijk [Lubuntu](http://lubuntu.net/), een Linux distributie. (Let op: de desktop omgeving van Lubuntu is redelijk gebruikersvriendelijk, dus ook een verstokte MS Windows gebruiker kan daarin de weg wel vinden.)
 
@@ -161,7 +161,7 @@ Je kunt de virtuele machine van **OSGeo-Live** gebruiken met behulp van [Virtual
 
 Als deze optie aantrekkelijk klinkt, kijk dan hier voor [installatieinstructies](http://live.osgeo.org/en/quickstart/virtualization_quickstart.html). 
 
-(**R** staat al geïnstalleerd op **OSGeo-Live**; **RStudio** moet je zelf even toevoegen.)
+(**R** staat al ge?nstalleerd op **OSGeo-Live**; **RStudio** moet je zelf even toevoegen.)
 
 ## Cursusbestanden
 
@@ -175,7 +175,7 @@ Dit boek is geschreven voor een breed publiek, ook voor gebruikers die nog weini
 
 Het kan daardoor gebeuren dat je een regel code intikt, zonder dat je alle functies en parameters volledig begrijpt. Maar dat is niet erg, want om **R** te leren moet je kilometers maken, veel achter het systeem zitten, zaken uitproberen en vervolgens uitzoeken waarom iets wel (of juist niet) werkt.
 
-Het wordt ten sterkste aangeraden om de **R** scripts in deze cursus regel voor regel uit te voeren (en niet meteen in één keer in zijn geheel). Probeer vooraf te bedenken wat er volgens jou gaat gebeuren, en controleer na elke regel of dat ook inderdaad zo is. 
+Het wordt ten sterkste aangeraden om de **R** scripts in deze cursus regel voor regel uit te voeren (en niet meteen in ??n keer in zijn geheel). Probeer vooraf te bedenken wat er volgens jou gaat gebeuren, en controleer na elke regel of dat ook inderdaad zo is. 
 
 Door het hele boek heen vind je links naar externe bronnen voor aanvullende informatie (ja, de blauwe letters, ja). Hieronder wijzen we nog even op een aantal specifieke startpunten voor een zoektocht naar informatie over **R**.
 
@@ -185,7 +185,7 @@ Een goed begin is de pagina met handleidingen die door leden van het *R Developm
 
 ### Discussiegroepen op internet
 
-Tip: zoek - voordat je een vraag stelt in een discussiegroep - uit of deze niet al eens gesteld en beantwoord is. Die kans is namelijk groot. Als je met heel specifieke zoektermen googlet dan vind je het antwoord misschien wel in de archieven van één van de de onderstaande mailinglijsten: 
+Tip: zoek - voordat je een vraag stelt in een discussiegroep - uit of deze niet al eens gesteld en beantwoord is. Die kans is namelijk groot. Als je met heel specifieke zoektermen googlet dan vind je het antwoord misschien wel in de archieven van ??n van de de onderstaande mailinglijsten: 
 
 + R Mailing Lists: er zijn verschillende discussiegroepen met betrekking tot **R** (zie overzicht: <https://www.r-project.org/mail.html>), waaronder een aantal **Special Interest Groups (SIG)**, zoals de [R-sig-Geo -- R Special Interest Group on using Geographical data and Mapping](https://stat.ethz.ch/mailman/listinfo/r-sig-geo).
 + [Stack Overflow](http://stackoverflow.com/): een vraag- en antwoordsite voor programmeurs, die elkaar helpen, met bijna 5 miljoen deelnemers wereldwijd. Ook veel vragen, en nuttige antwoorden, over **R**.
@@ -208,7 +208,7 @@ In deze handleiding zullen we laten zien dat **R** ook heel goed overweg kan met
 
 De ontwikkeling van **R** begint in de vroege jaren negentig van de vorige eeuw. De ontwikkelaars van het eerste uur zijn Ross Ihaka en Robert Gentleman. Zij ontmoeten elkaar voor het eerst in 1990 op het *Department of Statistics* van de *University of Auckland* (Nieuw-Zeeland). Zij halen een deel van hun inspiratie uit **S**, een programmeertaal die ontwikkeld is in de laboratoria van Bell. Bij wijze van grap noemen Ihaka en Gentleman hun taal **R**. Dat is immers niet alleen de letter die in het alfabet precies voor de S komt, maar tevens de eerste letter van hun beider voornamen.
 
-Al kort na het uitbrengen van een vroege versie in 1994 sporen collega's van over zee hen aan om de broncode van deze nieuwe programmeertaal vrij te geven. Aangezien ze inschatten dat de vooruitzichten van **R** als commerciëel product slechts beperkt zijn, brengen ze hun geesteskind inderdaad uit als 'vrije software', onder de GPL licentie van de *Free Software Foundation*. Vanaf dat moment kan **R** gratis gedownload worden. Ook wordt er een discussielijst opgezet, waarop gebruikers over de verdere ontwikkeling van **R** mee kunnen praten.
+Al kort na het uitbrengen van een vroege versie in 1994 sporen collega's van over zee hen aan om de broncode van deze nieuwe programmeertaal vrij te geven. Aangezien ze inschatten dat de vooruitzichten van **R** als commerci?el product slechts beperkt zijn, brengen ze hun geesteskind inderdaad uit als 'vrije software', onder de GPL licentie van de *Free Software Foundation*. Vanaf dat moment kan **R** gratis gedownload worden. Ook wordt er een discussielijst opgezet, waarop gebruikers over de verdere ontwikkeling van **R** mee kunnen praten.
 
 En daarmee wordt een spectaculaire groei in gang gezet. Al snel kunnen Ihaka en Gentleman het niet meer samen aan en wordt het ontwikkelteam uitgebreid met een select gezelschap van programmeurs die direct toeganghebben tot de broncode - met schrijfrechten. In dit kernteam van ongeveer 20 man zitten een aantal bekende onderzoekers op het gebied van statistiek.
 
@@ -218,7 +218,7 @@ Op 29 februari 2000 besluit men dat de programmeertaal voldoende functionaliteit
 
 Het eerste dat je moet doen om met **R** te kunnen werken is natuurlijk: het downloaden en installeren van de software.
 
-**R** wordt niet op één centrale plaats aangeboden, maar is beschikbaar via een uitgebreid netwerk van zogeheten *mirror sites* onder de naam **CRAN**, het **Comprehensive R Archive Network**. Dit is een wereldwijd netwerk van servers - vaak van universiteiten - waarop identieke en actuele versies van de software staan opgeslagen.
+**R** wordt niet op ??n centrale plaats aangeboden, maar is beschikbaar via een uitgebreid netwerk van zogeheten *mirror sites* onder de naam **CRAN**, het **Comprehensive R Archive Network**. Dit is een wereldwijd netwerk van servers - vaak van universiteiten - waarop identieke en actuele versies van de software staan opgeslagen.
 
 Vanuit het **CRAN** wordt het vriendelijke verzoek gedaan om voor het downloaden een server in de buurt te gebruiken, om het netwerk niet te zwaar te belasten. Daarom hebben we gekozen voor de server van de Universiteit Utrecht:
 <http://cran-mirror.cs.uu.nl/>.
@@ -233,10 +233,10 @@ Dubbelklik na het downloaden op het bestand **R-X.X.X-win.exe** om de installati
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Codenaam]
 Elke nieuwe versie van \textbf{R} krijgt naast een nummer ook een codenaam. Zo heet versie 3.2.2  \textbf{Fire Safety}. Voorbeelden van enkele codenamen uit het verleden zijn:  \textbf{Spring Dance} (3.0.3),  \textbf{Security Blanket} (2.15.3),  \textbf{Trick or Treat} (2.15.2) en  \textbf{December Snowflakes} (2.14.1).\par
-En ook de release die jij hebt geïnstalleerd  heeft een bijzonder codenaam. Deze verschijnt in de console als je \textbf{R} opstart.
+En ook de release die jij hebt ge?nstalleerd  heeft een bijzonder codenaam. Deze verschijnt in de console als je \textbf{R} opstart.
 \end{tcolorbox}
 
-Tijdens het installatieproces kun je - afhankelijk van het besturingssysteem - kiezen of je de 32-bit of de 64-bit versie wilt installeren. Als je geen keuze maakt, dan worden beide versies geïnstalleerd.
+Tijdens het installatieproces kun je - afhankelijk van het besturingssysteem - kiezen of je de 32-bit of de 64-bit versie wilt installeren. Als je geen keuze maakt, dan worden beide versies ge?nstalleerd.
 
 \begin{figure}[!htb]
 \centering
@@ -264,7 +264,7 @@ q()
 
 In de vorige paragraaf hebben we **R** direct na het opstarten weer afgesloten. En niet zonder reden. Om goed met **R** te kunnen werken gaan we eerst nog **RStudio** installeren.
 
-**RStudio** is een **IDE**, een *integrated development environment* ofwel een geïntegreerde ontwikkelomgeving, die het werken met **R** op een aantal punten veel gemakkelijker maakt. Het is niet strikt noodzakelijk om **RStudio** te installeren. Je kan ook met **R** werken zonder deze toevoeging, maar zoals gezegd: het leven van een **R** programmeur wordt zoveel makkelijker met **RStudio**. Daarom zullen wij in deze handleiding gebruik maken van deze omgeving.       
+**RStudio** is een **IDE**, een *integrated development environment* ofwel een ge?ntegreerde ontwikkelomgeving, die het werken met **R** op een aantal punten veel gemakkelijker maakt. Het is niet strikt noodzakelijk om **RStudio** te installeren. Je kan ook met **R** werken zonder deze toevoeging, maar zoals gezegd: het leven van een **R** programmeur wordt zoveel makkelijker met **RStudio**. Daarom zullen wij in deze handleiding gebruik maken van deze omgeving.       
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Productiviteit]
 RStudio bied een grote hoeveelheid functionaliteiten om de productiviteit van een \textbf{R} programmeur te verhogen.\par
@@ -276,7 +276,7 @@ Twee belangrijke voorbeelden hiervan zijn:
 Na kennismaking met RStudio wil je nooit meer terug naar de RGui zoals we die in de vorige paragraaf hebben gezien.
 \end{tcolorbox}       
 
-Let op: **RStudio** is geen vervanging, maar draait bovenop **R**. Dus je moet er voor zorgen dat **R** eerst is geïnstalleerd voordat je de studio toevoegt.
+Let op: **RStudio** is geen vervanging, maar draait bovenop **R**. Dus je moet er voor zorgen dat **R** eerst is ge?nstalleerd voordat je de studio toevoegt.
 
 Ga naar de website <https://www.rstudio.com/> en klik op de button **Download RStudio**. We zijn op zoek naar de gratis desktop versie.
 
@@ -322,7 +322,7 @@ Na het voltooien van de installatie kun je **RStudio** opstarten. De interface v
 
 ## Packages, packages, packages... (ook wel: bibliotheken)
 
-**R** is modulair opgebouwd. Er is het basissysteem, zoals we dat in de vorige paragrafen hebben geïnstalleerd. Maar daar bovenop zijn er vele aanvullende bibliotheken, zogeheten *packages*, beschikbaar.
+**R** is modulair opgebouwd. Er is het basissysteem, zoals we dat in de vorige paragrafen hebben ge?nstalleerd. Maar daar bovenop zijn er vele aanvullende bibliotheken, zogeheten *packages*, beschikbaar.
 
 Door middel van een *package* wordt extra functionaliteit toegevoegd aan **R**. Er zijn in de loop der jaren veel van dergelijke bibliotheken aan het **Comprehensive R Archive Network** toegevoegd, met bijdragen van wetenschappers en programmeurs van over de hele wereld. Ook vanuit Nederland. 
 
@@ -330,19 +330,19 @@ Tijdens een presentatie in oktober 2009 kon Ross Ihaka nog 'opscheppen' dat er a
 
 Ook voor het uitvoeren van geografische analyses met  **R** zijn vele bibliotheken beschikbaar. Voor een overzicht, zie: [CRAN Task View: Analysis of Spatial Data](https://cran.r-project.org/web/views/Spatial.html).
 
-In de volgende hoofdstukken zullen we telkens één of meer van deze bibliotheken introduceren. De rode draad in de rest van het boek is dan ook: *Packages, packages, packages...* (Overigens heeft deze handleiding niet de pretentie om alle 'geografische' bibliotheken te behandelen. Er is altijd meer dan men in één boek kan samenvatten.)
+In de volgende hoofdstukken zullen we telkens ??n of meer van deze bibliotheken introduceren. De rode draad in de rest van het boek is dan ook: *Packages, packages, packages...* (Overigens heeft deze handleiding niet de pretentie om alle 'geografische' bibliotheken te behandelen. Er is altijd meer dan men in ??n boek kan samenvatten.)
 
 Als je op zoek bent naar bepaalde functionaliteit die niet beschikbaar is in basis-**R**, dan is de kans groot dat een aanvullende bibliotheek uitkomst biedt. En anders wordt je van harte uitgenodigd om zelf een *package* te schrijven en met de gemeenschap te delen.
 
 ### Een bibliotheek installeren: `install.packages()`
 
-Om een bibliotheek te kunnen gebruiken, moet je hem eerst - éénmalig - installeren. Dit kan heel eenvoudig vanuit **RStudio** zelf. Bijvoorbeeld:
+Om een bibliotheek te kunnen gebruiken, moet je hem eerst - ??nmalig - installeren. Dit kan heel eenvoudig vanuit **RStudio** zelf. Bijvoorbeeld:
 
 ```{r eval=FALSE}
 install.packages("rgdal") # bibliotheeknaame met aanhalingstekens
 ```
 
-Zoals je ziet wordt de benodigde software automatisch gedownload en geïnstalleerd.
+Zoals je ziet wordt de benodigde software automatisch gedownload en ge?nstalleerd.
 
 ### Een bibliotheek laden: `library()`
 
@@ -354,11 +354,11 @@ library(tmap) # bibliotheeknaame zonder aanhalingstekens
 
 Als je een (fout)melding krijgt dat een bepaalde functie onbekend is, dan kan dat komen doordat je de benodigde bibliotheek niet geladen hebt.
 
-In **R** scripts zie je vaak bovenaan één of meerdere `library()` statements staan, zodat de benodigde bibliotheken geladen worden voordat de rest van het script wordt uitgevoerd.
+In **R** scripts zie je vaak bovenaan ??n of meerdere `library()` statements staan, zodat de benodigde bibliotheken geladen worden voordat de rest van het script wordt uitgevoerd.
 
 ### Zelf een bibliotheek bouwen: `devtools` \label{dvtls}
 
-Het is mogelijk om zelf een **R** *package* te bouwen en dit via het **CRAN** met de weredwijde gemeenschap te delen. Misschien dat je nu denkt: 'Wat? Ik ben nog nauwelijks met **R** begonnen, en nu wil je al direct dat ik een bibliotheek ga bouwen?!' Nee, nee, nee: ik wil niks. Maar wellicht krijg je de smaak te pakken, en heb je op een dag wel de behoefte om een eigen *package* te creëren.
+Het is mogelijk om zelf een **R** *package* te bouwen en dit via het **CRAN** met de weredwijde gemeenschap te delen. Misschien dat je nu denkt: 'Wat? Ik ben nog nauwelijks met **R** begonnen, en nu wil je al direct dat ik een bibliotheek ga bouwen?!' Nee, nee, nee: ik wil niks. Maar wellicht krijg je de smaak te pakken, en heb je op een dag wel de behoefte om een eigen *package* te cre?ren.
 
 Overigens hebben we gezien dat er al heel veel *packages* zijn. Dus als je iets wil dat met **base R** niet lijkt te kunnen, kijk dan - voordaat je zelf iets bouwt - zeker even rond of er niet al een bibliotheek is die de gevraagde functionaliteit wel biedt. 
 
@@ -417,7 +417,7 @@ Voor veel oefeningen in dit boek worden datasets gebruikt die als zip bestand op
 
 Hieronder staat een voorbeeld van de 'downloadprocedure' die in veel scripts in deze cursus wordt gebruikt.
 
-Doorloop deze procedure één of meerdere keren (en lees de commentaarregels, die beinnen met een *#*), en kijk na elke stap wat er gebeurd is. Gebruik `?` voor uitleg over een functie. Bijvoorbeeld: `?unzip`, `?unlink` of `?rm`.
+Doorloop deze procedure ??n of meerdere keren (en lees de commentaarregels, die beinnen met een *#*), en kijk na elke stap wat er gebeurd is. Gebruik `?` voor uitleg over een functie. Bijvoorbeeld: `?unzip`, `?unlink` of `?rm`.
 
 ```{r}
 # Sla de URL van het te downloaden bestand op in een variabele
@@ -459,7 +459,7 @@ Het package `sp` is een belangrijk element voor het gebruik van geografische dat
 
 De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aanlevert, worden door vele andere geografische **R** packages gebruikt, zowel direct als indirect. En dat was precies de bedoeling van de auteurs, Edzer Pebesma en Roger Bivand, toen zij rond 2003 met de ontwikkeling van deze package begonnen.
 
-**R** is oorspronkelijk ontwikkeld als programmeertaal voor èn door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van **R** was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken éénduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
+**R** is oorspronkelijk ontwikkeld als programmeertaal voor ?n door statistici, maar omdat (bijna) elk gegeven ook een ruimtelijke component heeft (*"Waar?"*), was er al snel ook belangstelling voor deze taal vanuit geografische hoek. En door de modulaire opbouw van **R** was het mogelijk om GIS functionaliteit toe te voegen door middel van een zelf te bouwen package. Maar de ontwikkeling van deze geografische bibliotheken werd belemmerd doordat er geen gemeenschappelijk ruimtelijk raamwerk was; elke package had zijn eigen regels voor het opslaan en verwerken van geodata. Om aan deze wildgroei een einde te maken hebben Pebesma en Bivand de hadschoen opgepakt, en een aantal zaken ??nduidig vastgelegd in hun bibliotheek. Hiermee hebben ze het mogelijk gemaakt dat de analyse van geografische gegevens met **R** op een veel meer coherente wijze kan worden uitgevoerd ([Pebesma en Bivand, 2005](https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf)).
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=De bocht in de Maas]
     \begin{minipage}[t]{0.25\linewidth}
@@ -471,7 +471,7 @@ De bouwstenen - dat wil zeggen de klassen en methoden - die deze bibliotheek aan
         Met \textbf{R} worden een aantaal oefendatasets meegeleverd, handig voor onderwijs- en demonstratiedoeleinden. Zo zul je vaak \textbf{R} oefeningen tegenkomen, waarin bijvoorbeeld de {\small\ttfamily{mtcars}} of de {\small\ttfamily{iris}} dataset wordt gebruikt.\par
         En ook bij het {\small\ttfamily{sp}} package zit een dergelijk oefenbestand: de \textit{Meuse river data set}. Deze set bevat gegevens over de locatie van concentraties van zware metalen (cadmium, koper, lood en zink) in de bodem van een overstromingsvlakte in een bocht van de Maas, ten westen van het Limburgse plaatsje Stein.  Deze gegevens zijn in 1993 verzameld door Ruud van Rijn and Mathieu Rikken, in het kader van hun afstudeerproject Fysische Geografie aan de Universiteit Utrecht.\par
         Deze data zijn door Edzer Pebesma - ook Fysisch Geograaf, in 1996 gepromoveerd aan dezelfde universiteit in Utrecht - toegevoegd aan 'zijn'  {\small\ttfamily{sp}} bibliotheek.\par
-        Tegenwoordig is Pebesma hoogleraar aan de \textbf{Westfälische Wilhelms-Universität (WWU)} in Münster (Duitsland), waar hij directeur is van het \textbf{Institut für Geoinformatik}.
+        Tegenwoordig is Pebesma hoogleraar aan de \textbf{Westf?lische Wilhelms-Universit?t (WWU)} in M?nster (Duitsland), waar hij directeur is van het \textbf{Institut f?r Geoinformatik}.
     \end{minipage}\hfill%
     Zie voor voorbeelden waarin deze Maasdata worden gebruikt:\par
     \url{http://rspatial.r-forge.r-project.org/gallery/}
@@ -485,12 +485,12 @@ Zie voor meer informatie over de bibliotheek `sp` de handleiding op het CRAN:
 
 ## Het aanmaken van een `SpatialPointsDataFrame` - 1 \label{spdf}
 
-In deze paragraaf gaan we kennismaken met één van de hiervoor genoemde ruimtelijke datastructuren. We gaan zelf een SpatialPointsDataFrame aanmaken, op basis van gegevens in een data.frame.
+In deze paragraaf gaan we kennismaken met ??n van de hiervoor genoemde ruimtelijke datastructuren. We gaan zelf een SpatialPointsDataFrame aanmaken, op basis van gegevens in een data.frame.
 
 Begin met het installeren van de betreffende bibliotheek en laad deze in het geheugen:
 
 ```{r eval=FALSE}
-install.packages("sp") #éénmalig
+install.packages("sp") #??nmalig
 library(sp)
 ```
 
@@ -498,7 +498,7 @@ library(sp)
 library(sp)
 ```
 
-Het [invoerbestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is een lijstje met enkele bezienswaardigheden in Amsterdam, met bijbehorende x- en y-coördinaten. Dit [bestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is online beschikbaar en staat op [deze lokatie](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv). 
+Het [invoerbestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is een lijstje met enkele bezienswaardigheden in Amsterdam, met bijbehorende x- en y-co?rdinaten. Dit [bestand](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv) is online beschikbaar en staat op [deze lokatie](http://www.twiav.nl/files/NL_Museums_Amsterdam.csv). 
 
 Je hoeft dit bestand niet te downloaden en op te slaan. Je kan het direct inlezen vanaf de huidige lokatie.
 
@@ -570,7 +570,7 @@ text(coordinates(ams.spdf), as.character(ams.spdf$Name),
 
 Doordat alle tekstlabels rechts van het museum staan ontstaat op het Museumplein enige overlap.
 
-Dit kunnen we oplossen door niet één generieke positie (`pos = 4`) voor alle labels op te geven, maar door een vector aan te maken waarin ieder museum een eigen labelpositie krijgt, zodat we kunnen variëren.
+Dit kunnen we oplossen door niet ??n generieke positie (`pos = 4`) voor alle labels op te geven, maar door een vector aan te maken waarin ieder museum een eigen labelpositie krijgt, zodat we kunnen vari?ren.
 
 Maak een vector aan met (initieel) voor elk museum de waarde 4. En bekijk de inhoud van deze vector:
 
@@ -597,29 +597,29 @@ text(coordinates(ams.spdf), as.character(ams.spdf$Name),
 
 ## Het toekennen van een CRS (*Coordinate Reference System*)
 
-Het SpatialPointsDataFrame dat we in de vorige paragraaf (\ref{spdf}) hebben aangemaakt, is nog niet helemaal compleet, omdat we er nog geen coördinaatreferentiesysteem (CRS) aan hebben toegekend. Het Frame heeft weliswaar coördinaten, maar we hebben nog niet vastgelegd hoe deze aan een plek op aarde te relateren zijn.
+Het SpatialPointsDataFrame dat we in de vorige paragraaf (\ref{spdf}) hebben aangemaakt, is nog niet helemaal compleet, omdat we er nog geen co?rdinaatreferentiesysteem (CRS) aan hebben toegekend. Het Frame heeft weliswaar co?rdinaten, maar we hebben nog niet vastgelegd hoe deze aan een plek op aarde te relateren zijn.
 
-Er zijn twee soorten coördinaatsystemen:
+Er zijn twee soorten co?rdinaatsystemen:
 
 + **ongeprojecteerd/geografisch**: in een dergelijk systeem wordt dor middel van lengte- en breedtegraden een positie op de aarde weergegeven,
 + **geprojecteerd**: in een projectie wordt een gedeelte van het aardoppervlak weergegeven in een 2-dimensionaal vlak.
 
-Een bekend, en tegenwoordig alom gebruikt systeem van het eerste soort is WGS84. Het officiële Nederlandse systeem - het Rijksdriehoeksstelsel (zie paragraaf \ref{RDM}) - is een voorbeeld van het tweede type.
+Een bekend, en tegenwoordig alom gebruikt systeem van het eerste soort is WGS84. Het offici?le Nederlandse systeem - het Rijksdriehoeksstelsel (zie paragraaf \ref{RDM}) - is een voorbeeld van het tweede type.
 
 Het toekennen van een CRS gaat door middel van een `proj4string`, een lange ingewikkelde string met geodetische parameters. In de samenvatting die we eerder hebben opgevraagd - met `summary(ams.spdf)` - zagen we al dat er aan onze data nog geen CRS was toegekend: `proj4string : [NA]`.
 
 Gelukkig hebben veel projecties tegenwoorig een zogeheten *EPSG* code, waardoor het makkelijker wordt om een `proj4string` toe te kennen.
 
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=EPSG?]
-Het was de \textbf{European Petroleum Survey Group} die het initiatief heeft genomen de vele wereldwijd gebruikte coördinaatsystemen elk van een eigen, unieke code te voorzien, om de communicatie over locaties te vergemakkelijken. Het moge duidelijk zijn dat de (financiële) belangen van de olieindustrie hier groot zijn; men kan het zich simpelweg niet permitteren om op een verkeerde plek te gaan boren.\par
+Het was de \textbf{European Petroleum Survey Group} die het initiatief heeft genomen de vele wereldwijd gebruikte co?rdinaatsystemen elk van een eigen, unieke code te voorzien, om de communicatie over locaties te vergemakkelijken. Het moge duidelijk zijn dat de (financi?le) belangen van de olieindustrie hier groot zijn; men kan het zich simpelweg niet permitteren om op een verkeerde plek te gaan boren.\par
 Hoewel de EPSG als organisatie al niet meer bestaat, wordt de EPSG Dataset nog steeds onderhouden door de  International Association of Oil \& Gas Producers (IOGP), tot voordeel van ons allen. Zie \url{http://www.epsg.org/}
 \end{tcolorbox} 
 
-Nu is natuurlijk de vraag: welk coördinaatsysteem gaan we aan onze data koppelen? Op die vraag is maar één antwoord mogelijk, namelijk: het juiste CRS. Je kunt immers niet zomaar een willekeurige referentie aan de gegevens hangen.
+Nu is natuurlijk de vraag: welk co?rdinaatsysteem gaan we aan onze data koppelen? Op die vraag is maar ??n antwoord mogelijk, namelijk: het juiste CRS. Je kunt immers niet zomaar een willekeurige referentie aan de gegevens hangen.
 
 Dit betekent dat er altijd duidelijk moet zijn welk CRS bij geografische data hoort. Dit kan in de metadata staan, of het moet worden aangegeven door de dataleverancier.
 
-De `x` en `y` van onze Amsterdamse museumdataset zijn gegeven in Nederlandse RD-coördinaten. De *EPSG* code van dit systeem is 28992.
+De `x` en `y` van onze Amsterdamse museumdataset zijn gegeven in Nederlandse RD-co?rdinaten. De *EPSG* code van dit systeem is 28992.
 
 Nu we dit weten kunnen we het CRS toekennen:
 
@@ -630,15 +630,15 @@ summary(ams.spdf)
 
 \twocolumn
 
-### Het Nederlandse coördinaatsysteem: het stelsel van de Rijksdriehoeksmeting \label{RDM}
+### Het Nederlandse co?rdinaatsysteem: het stelsel van de Rijksdriehoeksmeting \label{RDM}
 
-In Nederland worden de meeste geografische data uitgewisseld in RD-coördinaten. De EPSG code voor het RD-stelsel is 28992.
+In Nederland worden de meeste geografische data uitgewisseld in RD-co?rdinaten. De EPSG code voor het RD-stelsel is 28992.
 
-Het Rijksdriehoeksstelsel is het nationale geodetische triangulatiesysteem van Nederland. De basis van dit systeem is een stereografische kaartprojectie gecentreerd op de spits van de Onze Lieve Vrouwetoren in Amersfoort. Op het zo verkregen projectievlak is een cartesiaans assenstelsel geconstrueerd. De voor het RD-stelsel gebruikte stereografische projectie is gebaseerd op de ellipsoïde van Bessel (1841). Een belangrijk voordeel van de projectie is, dat deze *conform* (hoekgetrouw) is: een hoek gemeten in de kaart is gelijk aan de werkelijke hoek. Voor een klein gebied als Nederland kan men gebruik maken van een dergelijke projectie, al nemen de afstandsfouten wel toe, naarmate men verder van de oorsprong verwijderd raakt.
+Het Rijksdriehoeksstelsel is het nationale geodetische triangulatiesysteem van Nederland. De basis van dit systeem is een stereografische kaartprojectie gecentreerd op de spits van de Onze Lieve Vrouwetoren in Amersfoort. Op het zo verkregen projectievlak is een cartesiaans assenstelsel geconstrueerd. De voor het RD-stelsel gebruikte stereografische projectie is gebaseerd op de ellipso?de van Bessel (1841). Een belangrijk voordeel van de projectie is, dat deze *conform* (hoekgetrouw) is: een hoek gemeten in de kaart is gelijk aan de werkelijke hoek. Voor een klein gebied als Nederland kan men gebruik maken van een dergelijke projectie, al nemen de afstandsfouten wel toe, naarmate men verder van de oorsprong verwijderd raakt.
 
-De oorsprong van het systeem ligt in Amersfoort. Aanvankelijk was deze oorsprong ook het nulpunt (X=Y=0) van het systeem. Dit betekende dat men in het noordoosten van Nederland met positieve X- en Y-coördinaten kon werken, maar dat men in de andere delen van het land rekening moest houden met een negatieve X- en/of een negatieve Y-coördinaat. Om dit probleem op te lossen heeft men in het begin van de jaren zeventig van de twintigste eeuw het nulpunt verschoven, en wel 155 kilometer naar het westen en 463 kilometer naar het zuiden. Nederland ligt nu in zijn geheel in het eerste kwadrant van het assenstelsel, en door de extreem grote Y-verschuiving is de grootst voorkomende X-waarde nog altijd kleiner dan de kleinst mogelijke Y-waarde. Daardoor zijn alle voorkomende coördinaten nu positief, en de X- en Y-waarden zijn goed uit elkaar te houden (zie figuur \ref{afbRD}).
+De oorsprong van het systeem ligt in Amersfoort. Aanvankelijk was deze oorsprong ook het nulpunt (X=Y=0) van het systeem. Dit betekende dat men in het noordoosten van Nederland met positieve X- en Y-co?rdinaten kon werken, maar dat men in de andere delen van het land rekening moest houden met een negatieve X- en/of een negatieve Y-co?rdinaat. Om dit probleem op te lossen heeft men in het begin van de jaren zeventig van de twintigste eeuw het nulpunt verschoven, en wel 155 kilometer naar het westen en 463 kilometer naar het zuiden. Nederland ligt nu in zijn geheel in het eerste kwadrant van het assenstelsel, en door de extreem grote Y-verschuiving is de grootst voorkomende X-waarde nog altijd kleiner dan de kleinst mogelijke Y-waarde. Daardoor zijn alle voorkomende co?rdinaten nu positief, en de X- en Y-waarden zijn goed uit elkaar te houden (zie figuur \ref{afbRD}).
 
-Het geldigheidsgebied voor de RD-coördinaten is nauwkeurig gedefinieerd. Globaal mogen deze coördinaten alleen gebruikt worden op het Nederlandse vasteland en in een kleine band daaromheen. Daar valt niet het gehele Nederlandse Continentaal Plat (het Nederlandse deel van de Noordzee) binnen. In België en Duitsland maakt men gebruik van andere coördinaatsystemen.
+Het geldigheidsgebied voor de RD-co?rdinaten is nauwkeurig gedefinieerd. Globaal mogen deze co?rdinaten alleen gebruikt worden op het Nederlandse vasteland en in een kleine band daaromheen. Daar valt niet het gehele Nederlandse Continentaal Plat (het Nederlandse deel van de Noordzee) binnen. In Belgi? en Duitsland maakt men gebruik van andere co?rdinaatsystemen.
 
 Voor meer achtergrondinformatie over de geodetische referentiestelsels van Nederland, zie: [De Bruijne et al. (2005)](http://www.ncgeo.nl/phocadownload/43Referentie.pdf).
 
@@ -647,8 +647,8 @@ Voor meer achtergrondinformatie over de geodetische referentiestelsels van Neder
 \item stereografische projectie
 \item conform (hoekgetrouw)
 \item alleen bruikbaar voor het Nederlandse Grondgebied
-\item alle coördinaatgetallen zijn positief
-\item Y-coördinaat is altijd groter dan X-coördinaat
+\item alle co?rdinaatgetallen zijn positief
+\item Y-co?rdinaat is altijd groter dan X-co?rdinaat
 \item meeteenheid: meters
 \item EPSG:28992
 \end{itemize}
@@ -659,7 +659,7 @@ Voor meer achtergrondinformatie over de geodetische referentiestelsels van Neder
 
 \begin{figure}[!htb]
 \includegraphics{images/RD.png}
-\caption{De coördinaten van het Rijksdriehoeksstelsel}
+\caption{De co?rdinaten van het Rijksdriehoeksstelsel}
 \label{afbRD}
 \end{figure}
 
@@ -678,7 +678,7 @@ ams.spdf <- SpatialPointsDataFrame(coords = ams.df[3:4],
 
 ### alternatieve syntaxis
 
-In de voorgaande paragrafen hebben op de volgende manier een SpatialPointsDataFrame gecreëerd:
+In de voorgaande paragrafen hebben op de volgende manier een SpatialPointsDataFrame gecre?erd:
 
 ```{r}
 URL <- "http://www.twiav.nl/files/NL_Museums_Amsterdam.csv"
@@ -690,7 +690,7 @@ ams.spdf <- SpatialPointsDataFrame(coords = ams.df[3:4],
 In deze paragraaf gaan we het op een iets andere manier doen.
 
 1. Het is niet noodzakelijk om twee verschillende objecten - in het voorbeeld `ams.df` en `ams.spdf` - te gebruiken. Je kunt ook een object zelf omzetten van data.frame naar SpatialPointsDataFrame,
-2. We gaan een alternatieve syntaxis gebruiken voor het aanwijzen van de coördinaten.
+2. We gaan een alternatieve syntaxis gebruiken voor het aanwijzen van de co?rdinaten.
 
 
 ```{r}
@@ -712,9 +712,9 @@ Welke manier beter is? Ach, dat is vaak een persoonlijke keuze van de programmeu
 
 Het zal regelmatig voorkomen dat je een dataset met een bepaald CRS hetbt, terwijl voor de actie die je wilt uitvoeren een ander CRS noodzakelijk is. Gelukkig is het vrij eenvoudig om data te transformeren van het ene naar het andere CRS, op voorwaarde natuurlijk dat je de definitie van het doel-CRS kent.
 
-Bijvoorbeeld: wij willen later in deze handleiding onze Amsterdamse musea op een OpenStreetMap kaart tonen (zie hoofdstuk \ref{chLflt}). Hiervoor is het noodzakelijk dat de coördinaten worden getransformeerd naar WGS84. Gelukkig kennen wij de *EPSG* code van dit CRS, namelijk EPSG:4326.
+Bijvoorbeeld: wij willen later in deze handleiding onze Amsterdamse musea op een OpenStreetMap kaart tonen (zie hoofdstuk \ref{chLflt}). Hiervoor is het noodzakelijk dat de co?rdinaten worden getransformeerd naar WGS84. Gelukkig kennen wij de *EPSG* code van dit CRS, namelijk EPSG:4326.
 
-In het voorbeeld hieronder maken we een nieuw object aan, waarbij de coördinaten uit `ams.spdf` worden overgezet naar WGS84. Bekijk de `coordinates` van `ams.spdf.wgs84`: dit zijn nu geen meters meer, maar decimale graden.
+In het voorbeeld hieronder maken we een nieuw object aan, waarbij de co?rdinaten uit `ams.spdf` worden overgezet naar WGS84. Bekijk de `coordinates` van `ams.spdf.wgs84`: dit zijn nu geen meters meer, maar decimale graden.
 
 ```{r}
 ams.spdf.wgs84 = spTransform(ams.spdf, CRS("+init=epsg:4326"))
@@ -752,7 +752,7 @@ De bibliotheek `rgdal` biedt toegang vanuit **R** tot de functionaliteit van **G
 
 ### GDAL: *Geospatial Data Abstraction Library*
 
-**GDAL** staat voor *Geospatial Data Abstraction Library*. Deze bibliotheek biedt abstracte gegevensmodellen voor geografische gegevens, één voor het raster- en één voor het vectorformaat. Daarnaast bevat **GDAL** een hoeveelheid programma's, zoals bijvoorbeeld `ogr2ogr`, `ogrinfo`, `gdaldem` en `gdal_contour`, voor het bewerken van geografische data. Deze programma's zijn zogeheten *command line utilities* (dat wil zeggen: ze moeten via de commandoregel worden aangesproken) en bieden vele opties voor onder andere:
+**GDAL** staat voor *Geospatial Data Abstraction Library*. Deze bibliotheek biedt abstracte gegevensmodellen voor geografische gegevens, ??n voor het raster- en ??n voor het vectorformaat. Daarnaast bevat **GDAL** een hoeveelheid programma's, zoals bijvoorbeeld `ogr2ogr`, `ogrinfo`, `gdaldem` en `gdal_contour`, voor het bewerken van geografische data. Deze programma's zijn zogeheten *command line utilities* (dat wil zeggen: ze moeten via de commandoregel worden aangesproken) en bieden vele opties voor onder andere:
 
 * het inlezen en wegschrijven van geografische bestanden;
 * het converteren van bestanden van het ene naar het andere geografische formaat (bijvoorbeeld van ESRI SHP naar GeoJSON);
@@ -775,7 +775,7 @@ Typ achter de prompt het volgende commando:
 install.packages("rgdal")
 ```
 
-Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownload en geïnstalleerd. Overigens maakt `rgdal` gebruik van ruimtelijke klassen die in de *package* `sp` zijn gedefiniëerd. Deze afhankelijkheid wordt automatisch gedetecteerd. Dus mocht je `sp` nog niet hebben geïnstalleerd, dan verschijnt in de console de melding: `also installing the dependency 'sp'`.
+Je ziet nu in de console dat de gevraagde bibliotheek automatisch wordt gedownload en ge?nstalleerd. Overigens maakt `rgdal` gebruik van ruimtelijke klassen die in de *package* `sp` zijn gedefini?erd. Deze afhankelijkheid wordt automatisch gedetecteerd. Dus mocht je `sp` nog niet hebben ge?nstalleerd, dan verschijnt in de console de melding: `also installing the dependency 'sp'`.
 
 \newpage
 
@@ -858,9 +858,9 @@ Kijk ook naar de samenvatting (niet afgedrukt in dit boek, omdat deze bijna twee
 ```{r eval=FALSE}
 summary(gem2014)
 ```
-We zien hier dat er al een CRS aan de dataset is toegekend. Ja, nogal wiedes, deze coördinaatreferentiegegevens zijn overgenomen van het invoerbestand.
+We zien hier dat er al een CRS aan de dataset is toegekend. Ja, nogal wiedes, deze co?rdinaatreferentiegegevens zijn overgenomen van het invoerbestand.
 
-Als je de `proj4string` opvraagt, dan zie je dat de dataset geprojecteerd is in RD-coördinaten (en waarom de string in dit boek van de pagina loopt, dat weet ik nog niet...):
+Als je de `proj4string` opvraagt, dan zie je dat de dataset geprojecteerd is in RD-co?rdinaten (en waarom de string in dit boek van de pagina loopt, dat weet ik nog niet...):
 
 ```{r}
 proj4string(gem2014)
@@ -872,7 +872,7 @@ In deze paragraaf lezen we de  tabellen **NL_Spoorwegen2015.TAB** en **NL_Statio
 
 ### Opnieuw stap 1: het klaarzetten van de invoerbestanden
 
-De twee tabellen zitten samen in één zipbestand, dat we willen downloaden en uitpakken in de submap 'Data' van onze werkmap.
+De twee tabellen zitten samen in ??n zipbestand, dat we willen downloaden en uitpakken in de submap 'Data' van onze werkmap.
 
 En daarvoor hoeven we alleen de URL te wijzigen in de eerder gebruikte 'downloadprocedure':
 
@@ -890,7 +890,7 @@ setwd(werkmap)
 rm(werkmap)
 ```
 
-+ *Hé, het valt op dat we telkens het commando `dir.create("./Data", showWarnings = FALSE)` meegeven. Waarom is dat?*
++ *H?, het valt op dat we telkens het commando `dir.create("./Data", showWarnings = FALSE)` meegeven. Waarom is dat?*
 
 + *Nou, dat doen we om zeker te weten dat deze map bestaat. Als de map nog niet aanwezig is dan wordt-ie aangemaakt, en anders wordt de bestaande map gebruikt. Het is dus niet zo dat er telkens data verloren gaan omdat er opnieuw een lege map wordt aangemaakt... En o ja, we willen voorkomen dat **R** ons steeds lastigvalt met de meedeling dat de map al bestaat, vandaar `showWarnings = FALSE`*
 
@@ -944,9 +944,9 @@ We moeten de eerder gebruikte 'downloadprocedure' hier op twee punten aanpassen:
 
 En dan kun je de shapefile als volgt downloaden en uitpakken:
 
-```{r eval=FALSE}
-URL <- "http://www.cbs.nl/nl-NL/menu/themas/dossiers/nederland-regionaal/links/
-                                      2014-bevolkingskernen-in-nederland-2011-el.htm"
+```{r}
+URL <- "http://download.cbs.nl/regionale-kaarten/2011-bevolkingskern-shape.zip"
+
 bestand <- "tijdelijk.zip"
 dir.create("./CBS", showWarnings = FALSE)
 werkmap <- getwd()
@@ -1008,7 +1008,7 @@ Experimenteer met de mogelijkheden van de **Data Viewer** door de volgende vrage
 + Welke gemeente had op 1 januari 2014 de meeste inwoners? Hoeveel?
 + En welke de minste?
 + Hoeveel gemeenten hadden op die datum minder dan 5.000 inwoners? Welke gemeenten zijn dat?
-+ En hoeveel inwoners had de gemeente Súdwest-Fryslân op die dag?
++ En hoeveel inwoners had de gemeente S?dwest-Frysl?n op die dag?
 + Hoeveel gemeenten liggen er in de Veiligheidsregio Haaglanden?
 
 ## Selecteren
@@ -1030,7 +1030,7 @@ Bekijk het resultaat (niet in het boek afgedrukt):
 plot(limburg, col = "darkgreen", border = "lightgray")
 View(limburg)
 ```
-Nu gaan we een selectie uitvoeren op een numerieke kolom. We willen namelijk een overzicht van alle grote gemeenten (hier gedefiniëerd als gemeenten met meer dan 200.000 inwoners):
+Nu gaan we een selectie uitvoeren op een numerieke kolom. We willen namelijk een overzicht van alle grote gemeenten (hier gedefini?erd als gemeenten met meer dan 200.000 inwoners):
 
 ```{r}
 grote_gemeenten <- subset(gem2014, Inwoners > 200000)
@@ -1119,9 +1119,9 @@ View(gem2014_3kolommen_2)
 
 Er zijn nu nog maar 3 kolommen met attribuutgegevens.
 
-#### Rijen èn Kolommen selecteren
+#### Rijen ?n Kolommen selecteren
 
-Natuurlijk kun je ook een selctie maken van rijen èn kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de grote gemeenten:
+Natuurlijk kun je ook een selctie maken van rijen ?n kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de grote gemeenten:
 
 ```{r}
 grote_gemeenten_2 <- subset(gem2014, Inwoners > 200000,
@@ -1191,9 +1191,9 @@ gem2014_drie_kolommen <- gem2014[ , c("Gemeentenaam", "Provincie_naam", "Inwoner
 View(gem2014_drie_kolommen)
 ```
 
-#### Rijen èn Kolommen selecteren
+#### Rijen ?n Kolommen selecteren
 
-Natuurlijk kun je op deze wijze ook een selctie maken van rijen èn kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de wel héééél erg kleine gemeenten:
+Natuurlijk kun je op deze wijze ook een selctie maken van rijen ?n kolommen. In het voorbeeld hieronder selecteren we een aantal kolommen met betrekking tot de wel h????l erg kleine gemeenten:
 
 ```{r}
 super_super_kleine_gemeenten <- gem2014[gem2014$Inwoners < 2000, c(2,26,3)]
@@ -1324,7 +1324,7 @@ Er is ook een vignette *tmap in a nutshell*:
 \tcbset{coltitle=black, colbacktitle=white, colframe=gray!75!black,colback=white,nobeforeafter}
 \begin{tcolorbox}[enlarge by=5mm, hyphenationfix, title=Een 'concurrerende' \textit{package}? {\small\ttfamily{cartography}}]
 Eind oktober 2015 verscheen er een \href{https://stat.ethz.ch/pipermail/r-sig-geo/2015-October/023604.html}{berichtje} in de mailinglijst **R-sig-Geo**, waarin aandacht werd gevraagd voor een nieuwe bibliotheek: {\small\ttfamily{cartography}}.\par
-Deze is ontwikkeld door Timothée Giraud en Nicolas Lambert van de \href{http://elementr.hypotheses.org/}{Groupe ElementR}. Let op de Franse uitspraak: \textbf{ElementR} - \textit{R pour les sciences humaines et sociales}.\par
+Deze is ontwikkeld door Timoth?e Giraud en Nicolas Lambert van de \href{http://elementr.hypotheses.org/}{Groupe ElementR}. Let op de Franse uitspraak: \textbf{ElementR} - \textit{R pour les sciences humaines et sociales}.\par
 Wij hebben nog niet de tijd en de moeite genomen om deze bibliotheek grondig te bekijken, maar gaan dat in de toekomst zeker doen.
 \begin{itemize}
 \item \textbf{Vingette} met voorbeelden: \url{https://cran.r-project.org/web/packages/cartography/vignettes/cartography.html}
@@ -1471,7 +1471,7 @@ ikaart <- addMarkers(ikaart,
 ikaart
 ```
 
-*Et voilà!* De afbeelding in deze bundel is zo statisch als wat. Maar de kaart in de **Viewer** tab is echt interactief: je kunt inzoomen, uitzoomen en pannen. Vergeet ook niet op de markers te klikken om de tooltip te controleren. 
+*Et voil?!* De afbeelding in deze bundel is zo statisch als wat. Maar de kaart in de **Viewer** tab is echt interactief: je kunt inzoomen, uitzoomen en pannen. Vergeet ook niet op de markers te klikken om de tooltip te controleren. 
 
 ![](images/Leafletmap.png)
 
@@ -1489,7 +1489,7 @@ ikaart <- addMarkers(ikaart,
 
 Hierbij diende telkens de uitvoer van een functie als invoer voor de volgende stap: eerst wordt `ikaart` gevuld met een lege htmlwidget, vervolgens dient `ikaart` als invoer voor de functie `addTiles()` om de OSM laag toe te voegen, en dan wordt `ikaart` nog een keer ingevoerd in de functie `addMarkers`...
 
-Deze 3 stappen kunnen worden teruggebracht tot één met behulp van de *pipe operator*, het symbool: `%>%`
+Deze 3 stappen kunnen worden teruggebracht tot ??n met behulp van de *pipe operator*, het symbool: `%>%`
 
 Met deze operator kun je de uitvoer van een functie doorgeven aan de volgende, zodat je functies als het ware aan elkaar kunt reigen. En dat ziet er dan zo uit:
 
@@ -1502,9 +1502,9 @@ ikaart2
 
 Dit geeft dezelfde kaart als net.
 
-Daarmee leidt het gebruik van de deze operator tot code die èn beter leesbaar is, en makkelijker te onderhouden.
+Daarmee leidt het gebruik van de deze operator tot code die ?n beter leesbaar is, en makkelijker te onderhouden.
 
-De pipe operator is een relatief nieuw fenomeen in **R**; hij bestaat pas sinds 2014 en is ontwikkeld door Stefan Milton in zijn `magrittr` package. (Nee, inderdaad: je hebt dit `magrittr` package niet zelf geïnstalleerd - maar het is geïmporteerd door `leaflet`, een bibliotheek die je wel hebt draaien.)
+De pipe operator is een relatief nieuw fenomeen in **R**; hij bestaat pas sinds 2014 en is ontwikkeld door Stefan Milton in zijn `magrittr` package. (Nee, inderdaad: je hebt dit `magrittr` package niet zelf ge?nstalleerd - maar het is ge?mporteerd door `leaflet`, een bibliotheek die je wel hebt draaien.)
 
 Zie voor meer informatie over de bibliotheek `magrittr`
 
@@ -1515,7 +1515,7 @@ Zie voor meer informatie over de bibliotheek `magrittr`
 \begin{figure}[!htb]
 \centering
 \includegraphics{images/logo.png}
-\caption{het 'officiële' logo van het magrittr package}
+\caption{het 'offici?le' logo van het magrittr package}
 \label{MagrittrLogo}
 \end{figure}
 
@@ -1549,7 +1549,7 @@ class(Gem_met_stations)
 View(Gem_met_stations)
 ```
 
-Het data.frame `Gem_met_stations` bevat 398 observaties met 34 variabelen. Er zijn immers 398 stations, en voor elk station zijn alle 34 attribuutgegevens van de betreffende gemeente opgehaald. Sommige gemeenten komen meerdere keren voor, omdat er meer dan één station is.
+Het data.frame `Gem_met_stations` bevat 398 observaties met 34 variabelen. Er zijn immers 398 stations, en voor elk station zijn alle 34 attribuutgegevens van de betreffende gemeente opgehaald. Sommige gemeenten komen meerdere keren voor, omdat er meer dan ??n station is.
 
 OK - dit was om te laten zien hoe de functie werkt. Hieronder volgen twee praktische toepassingen.
 
@@ -1590,7 +1590,7 @@ View(stations2015)
 
 We willen graag weten hoeveel stations er in elke provincie liggen.
 
-Met `over()` halen we de provincienaam bij elk station op, en met `table()` zetten we in één moeite door een telling van de voorkomens in een tabelletje:
+Met `over()` halen we de provincienaam bij elk station op, en met `table()` zetten we in ??n moeite door een telling van de voorkomens in een tabelletje:
 
 ```{r eval=FALSE}
 stations_per_provincie <- table(over(stations2015, gem2014["Provincie_naam"]))
@@ -1650,7 +1650,7 @@ In deze paragraaf gaan we gebruik maken van functies uit het *package* `rgeos`. 
 
 ### GEOS: *Geometry Engine - Open Source*
 
-**GEOS** staat voor *Geometry Engine - Open Source*. Het is een **API** (*application programming interface*) met functies voor het vergelijken en bewerken van geometrische objecten, zoals deze gedefiniëerd zijn in de [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 2: SQL option](http://www.opengeospatial.org/standards/sfs) (de opvolger van een de eerdere **OpenGIS Simple Features Implementation Specification for SQL**) van het [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/). 
+**GEOS** staat voor *Geometry Engine - Open Source*. Het is een **API** (*application programming interface*) met functies voor het vergelijken en bewerken van geometrische objecten, zoals deze gedefini?erd zijn in de [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 2: SQL option](http://www.opengeospatial.org/standards/sfs) (de opvolger van een de eerdere **OpenGIS Simple Features Implementation Specification for SQL**) van het [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/). 
 
 Meer informatie over **GEOS** is te vinden op de website <http://trac.osgeo.org/geos/>.
 
@@ -1670,7 +1670,7 @@ Maak eerst een object `utrecht` aan:
 utrecht <- gem2014[gem2014@data$Gemeentenaam == "Utrecht",]
 ```
 
-Test nu voor elke gemeente of deze `utrecht` raakt, dat wil zegen: aan `utrecht` grenst. Let op: zet om elke gemeente afzonderlijk te testen `byid = TRUE`, anders wordt `gem2014` voor de vergelijking tot één geometrie - heel Nederland - samengevoegd.
+Test nu voor elke gemeente of deze `utrecht` raakt, dat wil zegen: aan `utrecht` grenst. Let op: zet om elke gemeente afzonderlijk te testen `byid = TRUE`, anders wordt `gem2014` voor de vergelijking tot ??n geometrie - heel Nederland - samengevoegd.
 
 ```{r}
 raakt_utrecht <- gTouches(utrecht, gem2014, byid = TRUE)
@@ -1693,7 +1693,7 @@ buurgemeenten_utrecht <- gem2014[which(raakt_utrecht),]
 View(buurgemeenten_utrecht)
 ```
 
-En ja, je kunt de subset ook in één stap aanmaken, en wel als volgt:
+En ja, je kunt de subset ook in ??n stap aanmaken, en wel als volgt:
 
 ```{r}
 buurgemeenten_utrecht2 <- gem2014[which(gTouches(utrecht, gem2014, byid = TRUE)),]
@@ -1739,7 +1739,7 @@ Test nu voor elke gemeente of deze gedeeltelijk - of geheel - met `groot_arnhem`
 overlap_gr_ahm <- gOverlaps(groot_arnhem,gem2014, byid = TRUE)
 ```
 
-Het systeem geeft aan dat de beide geometrieën een verschillende `proj4string` hebben. Dit is geen foutmelding, maar slechts een *warning* (waarschuwing). Vraag: is dit een probleem dat opgelost moet worden of zijn er goede redenen om de waarschuwing alleen voor kennisgeving aan te nemen?
+Het systeem geeft aan dat de beide geometrie?n een verschillende `proj4string` hebben. Dit is geen foutmelding, maar slechts een *warning* (waarschuwing). Vraag: is dit een probleem dat opgelost moet worden of zijn er goede redenen om de waarschuwing alleen voor kennisgeving aan te nemen?
 
 Gebruik vervolgens de functie `which()` om een subset van overlappende gemeenten aan te maken:
 
@@ -1747,7 +1747,7 @@ Gebruik vervolgens de functie `which()` om een subset van overlappende gemeenten
 gem_gr_ahm <- gem2014[which(overlap_gr_ahm),]
 ```
 
-Desgewenst kun je de twee voorafgaande regels code samenvoegen in één stap:
+Desgewenst kun je de twee voorafgaande regels code samenvoegen in ??n stap:
 
 ```{r eval=FALSE}
 gem_gr_ahm2 <- gem2014[which(gOverlaps(groot_arnhem,gem2014, byid = TRUE)),]
@@ -1786,7 +1786,7 @@ Gebruik de functie `which()` om een subset van doorsneden gemeenten aan te maken
 gem_sp_nijm_ven <- gem2014[which(intersect_nijm_ven),]
 ```
 
-En natuurlijk kun je de twee voorafgaande regels code samenvoegen in één stap:
+En natuurlijk kun je de twee voorafgaande regels code samenvoegen in ??n stap:
 
 ```{r eval=FALSE}
 gem_sp_nijm_ven2 <- gem2014[which(gIntersects(spoorlijn_nijmegen_venlo, gem2014, byid = TRUE)),]
@@ -1806,7 +1806,7 @@ text(coordinates(gem_sp_nijm_ven),
 
 \newpage
 
-# Geografische objecten creëren
+# Geografische objecten cre?ren
 
 ## Objecten samenvoegen op basis van attribuutgegevens: `gUnaryUnion()`
 
@@ -1827,9 +1827,9 @@ text(coordinates(prov2014), row.names(prov2014), cex = .7, col = "red")
 
 ## De bibliotheek `photon`
 
-Er bestaan verschillende oplossingen voor het geocoderen van adressen en plaatsnamen met R. Vaak zijn deze oplossingen gebaseerd op commerciële diensten (bijvoorbeeld Google) en maken ze gebruik van niet-vrije data.
+Er bestaan verschillende oplossingen voor het geocoderen van adressen en plaatsnamen met R. Vaak zijn deze oplossingen gebaseerd op commerci?le diensten (bijvoorbeeld Google) en maken ze gebruik van niet-vrije data.
 
-In deze paragraaf kijken we naar een oplossing die gebruik maakt van - vrij beschikbare - OpenStreetMap gegegevens, namelijk `photon`. Wij zijn deze bibliotheek op het spoor gekomen via deze blog: [Géocoder en masse avec R et sans Google Maps](http://rgeomatic.hypotheses.org/622).
+In deze paragraaf kijken we naar een oplossing die gebruik maakt van - vrij beschikbare - OpenStreetMap gegegevens, namelijk `photon`. Wij zijn deze bibliotheek op het spoor gekomen via deze blog: [G?ocoder en masse avec R et sans Google Maps](http://rgeomatic.hypotheses.org/622).
 
 Het *package* `phothon` biedt een **R** Interface naar de Photon API.
 
@@ -1882,13 +1882,13 @@ De auteur van dit boek heeft al wel deze blog geschreven: [raster(): het samenvo
 # Literatuurlijst {-}
 \markboth{Literatuurlijst}{}
 
-+ De Bruijne, Arnoud, Van Buren, Joop, Kösters, Anton & Van der Marel, Hans (2005). *De geodetische referentiestelsels van Nederland; Definitie en vastlegging van ETRS89, RD en NAP en hun onderlinge relaties*.Nederlandse Commissie voor Geodesie (NCG), Delft, maart 2005. URL: <http://www.ncgeo.nl/phocadownload/43Referentie.pdf>
++ De Bruijne, Arnoud, Van Buren, Joop, K?sters, Anton & Van der Marel, Hans (2005). *De geodetische referentiestelsels van Nederland; Definitie en vastlegging van ETRS89, RD en NAP en hun onderlinge relaties*.Nederlandse Commissie voor Geodesie (NCG), Delft, maart 2005. URL: <http://www.ncgeo.nl/phocadownload/43Referentie.pdf>
 
 + Frazier, Melanie (z.d.). *Overview of Coordinate Reference Systems (CRS) in R*. Geraadpleegd op 12 november 2015. URL: <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf> 
 
 + Ihaka, Ross (2009). *The R Project: A Brief History and Thoughts About the Future*. Presentatie gehouden op de Massey University Statistics Day, 23 oktober 2009, Massey University, Palmerston North. URL: <https://www.stat.auckland.ac.nz/~ihaka/downloads/Massey.pdf>
 
-+ Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. Eén van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
++ Pebesma, Edzer & Bivand, Roger S. (2005). *Classes and Methods for Spatial Data: the sp Package*. E?n van de vignettes behorende bij de `sp` bibliotheek. URL: <https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf>
 
 + Peng, Roger D. (2015). *Exploratory Data Analysis with R*. Gepubliceerd als e-book op Leanpub. Er is een versie gepubliceerd op 12 november 2015. URL: <http://leanpub.com/exdata>
 
